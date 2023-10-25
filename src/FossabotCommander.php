@@ -131,6 +131,8 @@ class FossabotCommander implements FossabotCommanderInterface, LoggerAwareInterf
 
                 throw $this->getExceptionFromBody($body, $statusCode, $headers);
             }
+
+            $this->debug('Validated Fossabot request.');
         } catch (Throwable $exception) {
             $this->error(
                 "Caught exception during validation with message [{$exception->getMessage()}].",
@@ -153,9 +155,14 @@ class FossabotCommander implements FossabotCommanderInterface, LoggerAwareInterf
             throw new CannotValidateRequestException('unknown', 'unknown_error', $exception->getMessage(), 400, $body ?? null, $exception);
         }
 
+        // Get context if needed.
         if ($getContext) {
             $context = $this->getContext($customApiToken);
         }
+
+        $this->debug('Invoking FossabotCommand.', [
+            'command' => get_class($command),
+        ]);
 
         // Invoke command.
         return $command->getResponse($context);
@@ -175,7 +182,7 @@ class FossabotCommander implements FossabotCommanderInterface, LoggerAwareInterf
      */
     private function getContext(string $token): FossabotContextInterface
     {
-        $this->debug('Attempting to get message context.');
+        $this->debug('Attempting to get context.');
 
         $contextRequest = $this->requestFactory->createRequest(
             'GET',
@@ -191,6 +198,8 @@ class FossabotCommander implements FossabotCommanderInterface, LoggerAwareInterf
             if ($statusCode !== 200) {
                 throw $this->getExceptionFromBody($body, $statusCode, $headers);
             }
+
+            $this->debug('Successfully received context response.');
         } catch (Throwable $exception) {
             $this->error(
                 "Caught exception getting context with message [{$exception->getMessage()}].",
@@ -215,6 +224,8 @@ class FossabotCommander implements FossabotCommanderInterface, LoggerAwareInterf
             // Transform all other exceptions into a FossabotCommanderException.
             throw new FossabotCommanderException($exception->getMessage(), $exception->getCode(), $exception);
         }
+
+        $this->debug('Creating context data model from context response.');
 
         try {
             return FossabotContext::createFromBody($body);
