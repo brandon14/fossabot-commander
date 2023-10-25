@@ -49,5 +49,5 @@ interface FossabotContext extends FossabotDataModel
     /**
      * Fossabot message context.
      */
-    public function message(): FossabotMessage|null;
+    public function message(): ?FossabotMessage;
 }

@@ -51,8 +51,8 @@ final class InvalidTokenException extends FossabotApiException
         string $fossabotCode,
         string $errorClass,
         string $errorMessage,
-        array|null $body = null,
-        Throwable|null $previous = null,
+        ?array $body = null,
+        ?Throwable $previous = null
     ) {
         parent::__construct(
             $fossabotCode,

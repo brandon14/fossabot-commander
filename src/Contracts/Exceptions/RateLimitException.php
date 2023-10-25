@@ -78,8 +78,8 @@ final class RateLimitException extends FossabotApiException
         int $total,
         int $remaining,
         int $resetsAt,
-        array|null $body = null,
-        Throwable|null $previous = null,
+        ?array $body = null,
+        ?Throwable $previous = null
     ) {
         $this->total = $total;
         $this->remaining = $remaining;

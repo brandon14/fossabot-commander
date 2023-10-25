@@ -52,7 +52,7 @@ final class FossabotUser extends FossabotDataModel implements FossabotUserInterf
         string $providerId,
         string $login,
         string $displayName,
-        array $roles = [],
+        array $roles = []
     ) {
         $this->data = compact('providerId', 'login', 'displayName', 'roles');
     }

@@ -29,8 +29,6 @@
 
 declare(strict_types=1);
 
-use Brandon14\FossabotCommander\Contracts\Context\FossabotRole;
-
 it('gets provider ID', function () {
     $user = contextDataModel()->message()->user();
 
@@ -56,8 +54,7 @@ it('gets roles', function () {
     $user = contextDataModel()->message()->user();
 
     expect($user->roles())->toBeArray()
-        ->and($user->roles())->not()->toBeEmpty()
-        ->and($user->roles())->toContainOnlyInstancesOf(FossabotRole::class);
+        ->and($user->roles())->not()->toBeEmpty();
 });
 
 it('gets roles (no roles present)', function () {

@@ -56,7 +56,7 @@ final class FossabotMessage extends FossabotDataModel implements FossabotMessage
         string $id,
         string $content,
         string $provider,
-        FossabotUserInterface $user,
+        FossabotUserInterface $user
     ) {
         $this->data = compact('id', 'content', 'provider', 'user');
     }

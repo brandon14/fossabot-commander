@@ -33,9 +33,9 @@ namespace Brandon14\FossabotCommander;
 
 use Exception;
 use Throwable;
-use Stringable;
 
 use function compact;
+use function get_class;
 use function urlencode;
 
 use Psr\Log\LoggerTrait;
@@ -93,7 +93,7 @@ class FossabotCommander implements FossabotCommanderInterface, LoggerAwareInterf
     public function __construct(
         ClientInterface $httpClient,
         RequestFactoryInterface $requestFactory,
-        LoggerInterface|null $logger = null,
+        ?LoggerInterface $logger = null
     ) {
         $this->httpClient = $httpClient;
         $this->requestFactory = $requestFactory;
@@ -106,7 +106,7 @@ class FossabotCommander implements FossabotCommanderInterface, LoggerAwareInterf
     public function runCommand(
         FossabotCommand $command,
         string $customApiToken,
-        bool $getContext = true,
+        bool $getContext = true
     ): string {
         $context = null;
         $body = null;
@@ -137,7 +137,7 @@ class FossabotCommander implements FossabotCommanderInterface, LoggerAwareInterf
                 compact('exception'),
             );
 
-            $this->debug('Transforming exception of class ['.$exception::class.'] to ['.CannotValidateRequestException::class.'].');
+            $this->debug('Transforming exception of class ['.get_class($exception).'] to ['.CannotValidateRequestException::class.'].');
 
             // Allow rate limit exceptions to be rethrown here.
             if ($exception instanceof RateLimitException) {
@@ -264,36 +264,39 @@ class FossabotCommander implements FossabotCommanderInterface, LoggerAwareInterf
         $errorMessage = $body['message'] ?? 'An unknown error occurred. Could not get message from Fossabot response.';
 
         // Return the proper exception for the given status code.
-        return match ($statusCode) {
-            400 => new InvalidTokenException(
-                $fossabotCode,
-                $errorClass,
-                $errorMessage,
-                $body,
-            ),
-            429 => new RateLimitException(
-                $fossabotCode,
-                $errorClass,
-                $errorMessage,
-                (int) $headers['x-ratelimit-total'][0],
-                (int) $headers['x-ratelimit-remaining'][0],
-                (int) $headers['x-ratelimit-reset'][0],
-                $body,
-            ),
-            default => new FossabotApiException(
-                $fossabotCode,
-                $errorClass,
-                $errorMessage,
-                $statusCode,
-                $body,
-            ),
-        };
+        switch ($statusCode) {
+            case 400:
+                return new InvalidTokenException(
+                    $fossabotCode,
+                    $errorClass,
+                    $errorMessage,
+                    $body,
+                );
+            case 429:
+                return new RateLimitException(
+                    $fossabotCode,
+                    $errorClass,
+                    $errorMessage,
+                    (int) $headers['x-ratelimit-total'][0],
+                    (int) $headers['x-ratelimit-remaining'][0],
+                    (int) $headers['x-ratelimit-reset'][0],
+                    $body,
+                );
+            default:
+                return new FossabotApiException(
+                    $fossabotCode,
+                    $errorClass,
+                    $errorMessage,
+                    $statusCode,
+                    $body,
+                );
+        }
     }
 
     /**
      * {@inheritDoc}
      */
-    public function log($level, Stringable|string $message, array $context = []): void // @pest-ignore-type
+    public function log($level, $message, array $context = []): void // @pest-ignore-type
     {
         if ($this->logger === null) {
             return;

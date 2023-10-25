@@ -390,9 +390,9 @@ function makeRequest(string $url, string $method = 'GET'): RequestInterface
 function makeResponse(
     int $status,
     array $headers,
-    string|null $body = null,
+    ?string $body = null,
     string $version = '1.1',
-    string|null $reason = null,
+    ?string $reason = null
 ): ResponseInterface {
     return new Response($status, $headers, $body, $version, $reason);
 }

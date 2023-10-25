@@ -68,7 +68,7 @@ final class FossabotChannel extends FossabotDataModel implements FossabotChannel
         string $providerId,
         DateTimeImmutable $createdAt,
         DateTimeImmutable $streamTimestamp,
-        bool $isLive,
+        bool $isLive
     ) {
         $this->data = compact(
             'id',

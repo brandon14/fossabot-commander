@@ -60,7 +60,7 @@ class FossabotApiException extends FossabotCommanderException
     /**
      * Parsed HTTP body from Fossabot API exception.
      */
-    private array|null $body;
+    private ?array $body;
 
     /**
      * HTTP status code from Fossabot API exception.
@@ -80,8 +80,8 @@ class FossabotApiException extends FossabotCommanderException
         string $errorClass,
         string $errorMessage,
         int $statusCode,
-        array|null $body = null,
-        Throwable|null $previous = null,
+        ?array $body = null,
+        ?Throwable $previous = null
     ) {
         $this->fossabotCode = $fossabotCode;
         $this->errorClass = $errorClass;
@@ -139,7 +139,7 @@ class FossabotApiException extends FossabotCommanderException
      *
      * @return array|null HTTP body
      */
-    public function body(): array|null
+    public function body(): ?array
     {
         return $this->body;
     }
@@ -162,7 +162,7 @@ class FossabotApiException extends FossabotCommanderException
             $body = json_encode($this->body, JSON_THROW_ON_ERROR);
             // We ignore this catch here since in our code before any FossabotApiException is made, the body would
             // have already been either validated as valid JSON, or an exception would have been thrown.
-        } catch (Throwable) { // @codeCoverageIgnoreStart
+        } /** @noinspection BadExceptionsProcessingInspection */ catch (Throwable $exception) { // @codeCoverageIgnoreStart
             // Ignore exception and don't add on body.
         } // @codeCoverageIgnoreEnd
 

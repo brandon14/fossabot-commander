@@ -44,7 +44,7 @@ final class StubCommand extends FossabotCommand
     /**
      * {@inheritDoc}
      */
-    public function getResponse(FossabotContext|null $context = null): string
+    public function getResponse(?FossabotContext $context = null): string
     {
         return 'Foo.';
     }

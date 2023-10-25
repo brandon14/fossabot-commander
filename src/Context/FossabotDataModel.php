@@ -32,6 +32,7 @@ declare(strict_types=1);
 namespace Brandon14\FossabotCommander\Context;
 
 use Throwable;
+use ReturnTypeWillChange;
 
 use function method_exists;
 use function array_key_exists;
@@ -71,7 +72,8 @@ abstract class FossabotDataModel implements FossabotDataModelInterface
      *
      * @param string $offset
      */
-    public function offsetGet($offset): mixed // @pest-ignore-type
+    #[ReturnTypeWillChange]
+    public function offsetGet($offset) // @pest-ignore-type
     {
         // Check for property named method.
         if (method_exists($this, $offset)) {
@@ -140,7 +142,7 @@ abstract class FossabotDataModel implements FossabotDataModelInterface
     /**
      * @param string $name Offset name
      */
-    public function __get($name): mixed // @pest-ignore-type
+    public function __get($name) // @pest-ignore-type
     {
         return $this->offsetGet($name);
     }

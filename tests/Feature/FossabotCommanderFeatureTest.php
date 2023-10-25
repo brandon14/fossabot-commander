@@ -49,8 +49,8 @@ it('returns a command', function () {
 
     $request = makeRequest(getFossabotUrl('/validate/'.customToken()));
     $contextRequest = makeRequest(getFossabotUrl('/context/'.customToken()));
-    $response = makeResponse(200, [...standardHeaders(), ...rateLimitingHeaders()], validTokenBody());
-    $contextResponse = makeResponse(200, [...standardHeaders(), ...messageHeaders()], contextBody());
+    $response = makeResponse(200, array_merge(standardHeaders(), rateLimitingHeaders()), validTokenBody());
+    $contextResponse = makeResponse(200, array_merge(standardHeaders(), messageHeaders()), contextBody());
 
     $requestFactory->allows('createRequest')->twice()->andReturns($request, $contextRequest);
     $httpClient->allows('sendRequest')->twice()->andReturns($response, $contextResponse);
@@ -69,7 +69,7 @@ it('handles invalid token on validate call', function () {
 
     $request = makeRequest(getFossabotUrl('/validate/'.customToken()));
     // Return an invalid token response during validation.
-    $response = makeResponse(400, [...standardHeaders(), ...rateLimitingHeaders()], invalidTokenBody());
+    $response = makeResponse(400, array_merge(standardHeaders(), rateLimitingHeaders()), invalidTokenBody());
 
     $requestFactory->allows('createRequest')->once()->andReturns($request);
     $httpClient->allows('sendRequest')->once()->andReturns($response);
@@ -86,7 +86,7 @@ it('handles rate limiting on validate call', function () {
 
     $request = makeRequest(getFossabotUrl('/validate/'.customToken()));
     // Return a rate limited response.
-    $response = makeResponse(429, [...standardHeaders(), ...rateLimitingHeaders()], rateLimitedBody());
+    $response = makeResponse(429, array_merge(standardHeaders(), rateLimitingHeaders()), rateLimitedBody());
 
     $requestFactory->allows('createRequest')->once()->andReturns($request);
     $httpClient->allows('sendRequest')->once()->andReturns($response);
@@ -121,12 +121,29 @@ it('handles exceptions from HTTP client during validation', function () {
     $foss->runCommand($command, customToken());
 })->throws(CannotValidateRequestException::class);
 
+it('handles non-200, non-400, non-429 exceptions during validation', function () {
+    $httpClient = Mockery::mock(ClientInterface::class);
+    $requestFactory = Mockery::mock(RequestFactoryInterface::class);
+
+    $request = makeRequest(getFossabotUrl('/validate/'.customToken()));
+    // Mock a 500 error when validating token.
+    $response = makeResponse(500, array_merge(standardHeaders(), rateLimitingHeaders()), invalidTokenBody());
+
+    $requestFactory->allows('createRequest')->once()->andReturns($request);
+    $httpClient->allows('sendRequest')->once()->andReturns($response);
+
+    $foss = new FossabotCommander($httpClient, $requestFactory);
+    $command = new StubCommand();
+
+    $foss->runCommand($command, customToken());
+})->throws(CannotValidateRequestException::class);
+
 it('handles exceptions from HTTP client during context', function () {
     $httpClient = Mockery::mock(ClientInterface::class);
     $requestFactory = Mockery::mock(RequestFactoryInterface::class);
 
     $request = makeRequest(getFossabotUrl('/validate/'.customToken()));
-    $response = makeResponse(200, [...standardHeaders(), ...rateLimitingHeaders()], validTokenBody());
+    $response = makeResponse(200, array_merge(standardHeaders(), rateLimitingHeaders()), validTokenBody());
     $contextRequest = makeRequest(getFossabotUrl('/context/'.customToken()));
 
     $requestFactory->allows('createRequest')->twice()->andReturns($request, $contextRequest);
@@ -155,7 +172,7 @@ it('handles FossabotCommanderException exceptions from HTTP client during contex
     $requestFactory = Mockery::mock(RequestFactoryInterface::class);
 
     $request = makeRequest(getFossabotUrl('/validate/'.customToken()));
-    $response = makeResponse(200, [...standardHeaders(), ...rateLimitingHeaders()], validTokenBody());
+    $response = makeResponse(200, array_merge(standardHeaders(), rateLimitingHeaders()), validTokenBody());
     $contextRequest = makeRequest(getFossabotUrl('/context/'.customToken()));
 
     $requestFactory->allows('createRequest')->twice()->andReturns($request, $contextRequest);
@@ -193,9 +210,29 @@ it('handles failing to get context', function () {
 
     $request = makeRequest(getFossabotUrl('/validate/'.customToken()));
     $contextRequest = makeRequest(getFossabotUrl('/context/'.customToken()));
-    $response = makeResponse(200, [...standardHeaders(), ...rateLimitingHeaders()], validTokenBody());
+    $response = makeResponse(200, array_merge(standardHeaders(), rateLimitingHeaders()), validTokenBody());
     // Mock invalid token error response on context request.
-    $contextResponse = makeResponse(400, [...standardHeaders(), ...messageHeaders()], invalidTokenBody());
+    $contextResponse = makeResponse(400, array_merge(standardHeaders(), messageHeaders()), invalidTokenBody());
+
+    $requestFactory->allows('createRequest')->twice()->andReturns($request, $contextRequest);
+    $httpClient->allows('sendRequest')->twice()->andReturns($response, $contextResponse);
+
+    $foss = new FossabotCommander($httpClient, $requestFactory);
+    $command = new StubCommand();
+
+    $foss->runCommand($command, customToken());
+})->throws(CannotGetContextException::class);
+
+it('handles non-200, non-400, non-429 exceptions during context', function () {
+    $httpClient = Mockery::mock(ClientInterface::class);
+    $requestFactory = Mockery::mock(RequestFactoryInterface::class);
+
+    $request = makeRequest(getFossabotUrl('/validate/'.customToken()));
+    $contextRequest = makeRequest(getFossabotUrl('/context/'.customToken()));
+    // Return an invalid token response during validation.
+    $response = makeResponse(200, array_merge(standardHeaders(), rateLimitingHeaders()), validTokenBody());
+    // Mock a 500 error when getting context.
+    $contextResponse = makeResponse(500, array_merge(standardHeaders(), messageHeaders()), invalidTokenBody());
 
     $requestFactory->allows('createRequest')->twice()->andReturns($request, $contextRequest);
     $httpClient->allows('sendRequest')->twice()->andReturns($response, $contextResponse);
@@ -212,8 +249,8 @@ it('handles getting context with no message property', function () {
 
     $request = makeRequest(getFossabotUrl('/validate/'.customToken()));
     $contextRequest = makeRequest(getFossabotUrl('/context/'.customToken()));
-    $response = makeResponse(200, [...standardHeaders(), ...rateLimitingHeaders()], validTokenBody());
-    $contextResponse = makeResponse(200, [...standardHeaders(), ...messageHeaders()], contextNoMessageBody());
+    $response = makeResponse(200, array_merge(standardHeaders(), rateLimitingHeaders()), validTokenBody());
+    $contextResponse = makeResponse(200, array_merge(standardHeaders(), messageHeaders()), contextNoMessageBody());
 
     $requestFactory->allows('createRequest')->twice()->andReturns($request, $contextRequest);
     $httpClient->allows('sendRequest')->twice()->andReturns($response, $contextResponse);
@@ -235,7 +272,7 @@ it('skips getting context if getContext is false', function () {
     $requestFactory = Mockery::mock(RequestFactoryInterface::class);
 
     $request = makeRequest(getFossabotUrl('/validate/'.customToken()));
-    $response = makeResponse(200, [...standardHeaders(), ...rateLimitingHeaders()], validTokenBody());
+    $response = makeResponse(200, array_merge(standardHeaders(), rateLimitingHeaders()), validTokenBody());
 
     $requestFactory->allows('createRequest')->once()->andReturns($request);
     $httpClient->allows('sendRequest')->once()->andReturns($response);
@@ -257,9 +294,9 @@ it('handles rate limiting on context call', function () {
 
     $request = makeRequest(getFossabotUrl('/validate/'.customToken()));
     $contextRequest = makeRequest(getFossabotUrl('/context/'.customToken()));
-    $response = makeResponse(200, [...standardHeaders(), ...rateLimitingHeaders()], validTokenBody());
+    $response = makeResponse(200, array_merge(standardHeaders(), rateLimitingHeaders()), validTokenBody());
     // Return a rate limited response on the context call.
-    $contextResponse = makeResponse(429, [...standardHeaders(), ...rateLimitingHeaders()], rateLimitedBody());
+    $contextResponse = makeResponse(429, array_merge(standardHeaders(), rateLimitingHeaders()), rateLimitedBody());
 
     $requestFactory->allows('createRequest')->twice()->andReturns($request, $contextRequest);
     $httpClient->allows('sendRequest')->twice()->andReturns($response, $contextResponse);
@@ -284,7 +321,7 @@ it('throws exception (CannotValidateRequestException) on invalid JSON during val
 
     $request = makeRequest(getFossabotUrl('/validate/'.customToken()));
     // Cut some of JSON string off to give invalid JSON payload.
-    $response = makeResponse(200, [...standardHeaders(), ...rateLimitingHeaders()], mb_substr(validTokenBody(), 0, -5));
+    $response = makeResponse(200, array_merge(standardHeaders(), rateLimitingHeaders()), mb_substr(validTokenBody(), 0, -5));
 
     $requestFactory->allows('createRequest')->once()->andReturns($request);
     $httpClient->allows('sendRequest')->once()->andReturns($response);
@@ -301,9 +338,9 @@ it('throws exception (JsonParsingException) on invalid JSON during context', fun
 
     $request = makeRequest(getFossabotUrl('/validate/'.customToken()));
     $contextRequest = makeRequest(getFossabotUrl('/context/'.customToken()));
-    $response = makeResponse(200, [...standardHeaders(), ...rateLimitingHeaders()], validTokenBody());
+    $response = makeResponse(200, array_merge(standardHeaders(), rateLimitingHeaders()), validTokenBody());
     // Trim some of the context JSON body off to give it invalid JSON.
-    $contextResponse = makeResponse(200, [...standardHeaders(), ...messageHeaders()], mb_substr(contextBody(), 0, -5));
+    $contextResponse = makeResponse(200, array_merge(standardHeaders(), messageHeaders()), mb_substr(contextBody(), 0, -5));
 
     $requestFactory->allows('createRequest')->twice()->andReturns($request, $contextRequest);
     $httpClient->allows('sendRequest')->twice()->andReturns($response, $contextResponse);
@@ -320,9 +357,9 @@ it('handles creating context data with invalid data', function () {
 
     $request = makeRequest(getFossabotUrl('/validate/'.customToken()));
     $contextRequest = makeRequest(getFossabotUrl('/context/'.customToken()));
-    $response = makeResponse(200, [...standardHeaders(), ...rateLimitingHeaders()], validTokenBody());
+    $response = makeResponse(200, array_merge(standardHeaders(), rateLimitingHeaders()), validTokenBody());
     // Use invalid context data here.
-    $contextResponse = makeResponse(200, [...standardHeaders(), ...messageHeaders()], invalidContextBody());
+    $contextResponse = makeResponse(200, array_merge(standardHeaders(), messageHeaders()), invalidContextBody());
 
     $requestFactory->allows('createRequest')->twice()->andReturns($request, $contextRequest);
     $httpClient->allows('sendRequest')->twice()->andReturns($response, $contextResponse);
@@ -340,8 +377,8 @@ it('makes calls to logger if provided', function () {
 
     $request = makeRequest(getFossabotUrl('/validate/'.customToken()));
     $contextRequest = makeRequest(getFossabotUrl('/context/'.customToken()));
-    $response = makeResponse(200, [...standardHeaders(), ...rateLimitingHeaders()], validTokenBody());
-    $contextResponse = makeResponse(200, [...standardHeaders(), ...messageHeaders()], contextBody());
+    $response = makeResponse(200, array_merge(standardHeaders(), rateLimitingHeaders()), validTokenBody());
+    $contextResponse = makeResponse(200, array_merge(standardHeaders(), messageHeaders()), contextBody());
 
     $requestFactory->allows('createRequest')->twice()->andReturns($request, $contextRequest);
     $httpClient->allows('sendRequest')->twice()->andReturns($response, $contextResponse);

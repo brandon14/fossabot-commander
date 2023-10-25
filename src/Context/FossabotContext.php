@@ -50,7 +50,7 @@ final class FossabotContext extends FossabotDataModel implements FossabotContext
      * @param \Brandon14\FossabotCommander\Context\FossabotChannel      $channel Channel data
      * @param \Brandon14\FossabotCommander\Context\FossabotMessage|null $message Message data
      */
-    private function __construct(FossabotChannel $channel, FossabotMessage|null $message = null)
+    private function __construct(FossabotChannel $channel, ?FossabotMessage $message = null)
     {
         $this->data['channel'] = $channel;
         $this->data['message'] = $message;
@@ -85,7 +85,7 @@ final class FossabotContext extends FossabotDataModel implements FossabotContext
     /**
      * {@inheritDoc}
      */
-    public function message(): FossabotMessageInterface|null
+    public function message(): ?FossabotMessageInterface
     {
         return $this->data['message'] ?? null;
     }

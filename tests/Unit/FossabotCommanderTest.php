@@ -40,8 +40,8 @@ it('runs a command', function () {
 
     $request = makeRequest(getFossabotUrl('/validate/'.customToken()));
     $contextRequest = makeRequest(getFossabotUrl('/context/'.customToken()));
-    $response = makeResponse(200, [...standardHeaders(), ...rateLimitingHeaders()], validTokenBody());
-    $contextResponse = makeResponse(200, [...standardHeaders(), ...messageHeaders()], contextBody());
+    $response = makeResponse(200, array_merge(standardHeaders(), rateLimitingHeaders()), validTokenBody());
+    $contextResponse = makeResponse(200, array_merge(standardHeaders(), messageHeaders()), contextBody());
 
     $requestFactory->allows('createRequest')->twice()->andReturns($request, $contextRequest);
     $httpClient->allows('sendRequest')->twice()->andReturns($response, $contextResponse);

@@ -73,6 +73,6 @@ interface FossabotCommander
     public function runCommand(
         FossabotCommand $command,
         string $customApiToken,
-        bool $getContext = true,
+        bool $getContext = true
     ): string;
 }

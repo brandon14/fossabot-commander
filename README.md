@@ -42,12 +42,15 @@
 
 ## Requirements
 
-| Dependency       | Version |
-|------------------|---------|
-| php              | ^8.1    |
-| psr/http-factory | ^1.0    |
-| psr/http-client  | ^1.0    |
-| psr/log          | ^3.0    |
+| Dependency             | Version        |
+|------------------------|----------------|
+| php                    | ^7.4 \|\| ^8.0 |
+| ext-json               | *              |
+| psr/http-factory       | ^1.0           |
+| psr/http-client        | ^1.0           |
+| psr/log                | ^1.0           |
+| symfony/polyfill-php80 | ^1.0           |
+| symfony/polyfill-php81 | ^1.0           |
 
 ## Purpose
 

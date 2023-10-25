@@ -28,34 +28,33 @@
         }
     },
     "require": {
-        "php": "^8.1",
-        "psr/http-factory": "^1.0",
+        "php": "^7.4 || ^8.0",
+        "ext-json": "*",
         "psr/http-client": "^1.0",
-        "psr/log": "^3.0"
+        "psr/http-factory": "^1.0",
+        "psr/log": "^1.0",
+        "symfony/polyfill-php80": "^1.28",
+        "symfony/polyfill-php81": "^1.0"
     },
     "require-dev": {
         "comcast/php-legal-licenses": "^1.2",
         "friendsofphp/php-cs-fixer": "^3.35",
+        "guzzlehttp/guzzle": "^7.8",
+        "mockery/mockery": "^1.6",
+        "nunomaduro/phpinsights": "^2.9",
+        "pestphp/pest": "^1.23.1",
+        "pestphp/pest-plugin-parallel": "^1.2",
         "phpmd/phpmd": "^2.14",
         "roave/security-advisories": "dev-latest",
         "squizlabs/php_codesniffer": "^3.7",
         "symfony/thanks": "^1.2",
-        "vimeo/psalm": "^5.15",
-        "nunomaduro/phpinsights": "^2.9",
-        "guzzlehttp/guzzle": "^7.8",
-        "pestphp/pest": "^2.24",
-        "pestphp/pest-plugin-type-coverage": "^2.4",
-        "mockery/mockery": "^1.6"
+        "vimeo/psalm": "^5.15"
     },
     "suggest": {
         "guzzle/guzzle": "Provides PSR-7 and PSR-17 implementations."
     },
     "scripts": {
-        "analyze": [
-            "@composer run-script analyze:pest"
-        ],
         "analyze:psalm": "psalm",
-        "analyze:pest" : "pest --type-coverage --min=100",
         "analyze:stats": "@composer run-script analyze:psalm -- --stats",
         "analyze:insights": "phpinsights",
         "composer:validate": "@composer validate --no-check-all --strict",
@@ -69,10 +68,8 @@
         "lint:php-cs-fixer:check": "@composer run-script lint:php-cs-fixer:fix -- --dry-run --verbose",
         "lint": [
             "@composer run-script lint:phpcs:check",
-            "@composer run-script lint:phpmd",
             "@composer run-script lint:php-cs-fixer:check",
-            "@composer run-script lint:phpmd",
-            "@composer run-script analyze"
+            "@composer run-script lint:phpmd"
         ],
         "lint:fix": [
             "@composer run-script lint:phpcs:fix",
@@ -80,7 +77,7 @@
         ],
         "test:php": [
             "@putenv XDEBUG_MODE=coverage",
-            "pest --coverage --min=95 --coverage-html ./coverage --coverage-clover ./coverage.xml --parallel"
+            "pest --coverage --min=95 --coverage-html ./coverage --coverage-clover ./coverage.xml"
         ],
         "test": [
             "@composer run-script composer:validate",
@@ -113,6 +110,7 @@
             "symfony/thanks": true,
             "dealerdirect/phpcodesniffer-composer-installer": true,
             "pestphp/pest-plugin": true
-        }
+        },
+        "sort-packages": true
     }
 }

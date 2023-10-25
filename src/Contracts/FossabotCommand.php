@@ -52,5 +52,5 @@ interface FossabotCommand
      *
      * @return string Custom API response
      */
-    public function getResponse(FossabotContext|null $context = null): string;
+    public function getResponse(?FossabotContext $context = null): string;
 }
