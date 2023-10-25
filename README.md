@@ -1,22 +1,22 @@
 <!-- markdownlint-disable MD033 -->
 <p align="center">
-  <a href="https://github.com/brandon14/fossabot-commander/actions/workflows/run-tests.yml" target="_blank"><img alt="GitHub Workflow Status (with event)" src="https://img.shields.io/github/actions/workflow/status/brandon14/fossabot-commander/run-tests?style=for-the-badge&maxAge=36000">
+  <a href="https://github.com/brandon14/fossabot-commander/actions/workflows/run-tests.yml" target="_blank"><img alt="GitHub Workflow Status (with event)" src="https://img.shields.io/github/actions/workflow/status/brandon14/fossabot-commander/run-tests?style=for-the-badge&cacheSeconds=36000">
   </a>
-  <a href="https://codeclimate.com/github/brandon14/fossabot-commander/maintainability"><img src="https://img.shields.io/codeclimate/maintainability/brandon14/fossabot-commander.svg?style=for-the-badge&maxAge=36000" alt="Code Climate"></a>
-  <a href="https://codecov.io/gh/brandon14/fossabot-commander" target="_blank"><img src="https://img.shields.io/codecov/c/github/brandon14/fossabot-commander.svg?style=for-the-badge&maxAge=36000" alt="CodeCov"></a>
-  <a href="https://libraries.io/packagist/brandon14/fossabot-commander"><img alt="Libraries.io dependency status for GitHub repo" src="https://img.shields.io/librariesio/github/brandon14/fossabot-commander.svg?style=for-the-badge&maxAge=36000"></a>
-  <a href="https://github.com/brandon14/fossabot-commander/blob/main/LICENSE"><img src="https://img.shields.io/github/license/brandon14/fossabot-commander.svg?style=for-the-badge&maxAge=36000" alt="License"></a>
+  <a href="https://codeclimate.com/github/brandon14/fossabot-commander/maintainability"><img src="https://img.shields.io/codeclimate/maintainability/brandon14/fossabot-commander.svg?style=for-the-badge&cacheSeconds=36000" alt="Code Climate"></a>
+  <a href="https://codecov.io/gh/brandon14/fossabot-commander" target="_blank"><img src="https://img.shields.io/codecov/c/github/brandon14/fossabot-commander.svg?style=for-the-badge&cacheSeconds=36000" alt="CodeCov"></a>
+  <a href="https://libraries.io/packagist/brandon14/fossabot-commander"><img alt="Libraries.io dependency status for GitHub repo" src="https://img.shields.io/librariesio/github/brandon14/fossabot-commander.svg?style=for-the-badge&cacheSeconds=36000"></a>
+  <a href="https://github.com/brandon14/fossabot-commander/blob/main/LICENSE"><img src="https://img.shields.io/github/license/brandon14/fossabot-commander.svg?style=for-the-badge&cacheSeconds=36000" alt="License"></a>
 </p>
 <p align="center">
-  <a href="https://github.com/brandon14/fossabot-commander/issues"><img src="https://img.shields.io/github/issues/brandon14/fossabot-commander.svg?style=for-the-badge&maxAge=36000" alt="Issues"></a>
-  <a href="https://github.com/brandon14/fossabot-commander/issues?q=is%3Aissue+is%3Aclosed"><img src="https://img.shields.io/github/issues-closed/brandon14/fossabot-commander.svg?style=for-the-badge&maxAge=36000" alt="Issues Closed"></a>
-  <a href="https://github.com/brandon14/fossabot-commander/pulls"><img src="https://img.shields.io/github/issues-pr/brandon14/fossabot-commander.svg?style=for-the-badge&maxAge=36000" alt="Pull Requests"></a>
-  <a href="https://github.com/brandon14/fossabot-commander/pulls?q=is%3Apr+is%3Aclosed"><img src="https://img.shields.io/github/issues-pr-closed/brandon14/fossabot-commander.svg?style=for-the-badge&maxAge=36000" alt="Pull Requests Closed"></a>
+  <a href="https://github.com/brandon14/fossabot-commander/issues"><img src="https://img.shields.io/github/issues/brandon14/fossabot-commander.svg?style=for-the-badge&cacheSeconds=36000" alt="Issues"></a>
+  <a href="https://github.com/brandon14/fossabot-commander/issues?q=is%3Aissue+is%3Aclosed"><img src="https://img.shields.io/github/issues-closed/brandon14/fossabot-commander.svg?style=for-the-badge&cacheSeconds=36000" alt="Issues Closed"></a>
+  <a href="https://github.com/brandon14/fossabot-commander/pulls"><img src="https://img.shields.io/github/issues-pr/brandon14/fossabot-commander.svg?style=for-the-badge&cacheSeconds=36000" alt="Pull Requests"></a>
+  <a href="https://github.com/brandon14/fossabot-commander/pulls?q=is%3Apr+is%3Aclosed"><img src="https://img.shields.io/github/issues-pr-closed/brandon14/fossabot-commander.svg?style=for-the-badge&cacheSeconds=36000" alt="Pull Requests Closed"></a>
 </p>
 <p align="center">
-  <a href="https://github.com/brandon14/fossabot-commander/releases"><img src="https://img.shields.io/github/release/brandon14/fossabot-commander.svg?style=for-the-badge&maxAge=36000" alt="Github Release"></a>
-  <a href="https://github.com/brandon14/fossabot-commander/commits/main"><img src="https://img.shields.io/github/commit-activity/y/brandon14/fossabot-commander.svg?style=for-the-badge&maxAge=36000" alt="Github Commits"></a>
-  <a href="https://github.com/brandon14/fossabot-commander/commits/main"><img src="https://img.shields.io/github/last-commit/brandon14/fossabot-commander.svg?style=for-the-badge&maxAge=36000" alt="Latest Commit"></a>
+  <a href="https://github.com/brandon14/fossabot-commander/releases"><img src="https://img.shields.io/github/release/brandon14/fossabot-commander.svg?style=for-the-badge&cacheSeconds=36000" alt="Github Release"></a>
+  <a href="https://github.com/brandon14/fossabot-commander/commits/main"><img src="https://img.shields.io/github/commit-activity/y/brandon14/fossabot-commander.svg?style=for-the-badge&cacheSeconds=36000" alt="Github Commits"></a>
+  <a href="https://github.com/brandon14/fossabot-commander/commits/main"><img src="https://img.shields.io/github/last-commit/brandon14/fossabot-commander.svg?style=for-the-badge&cacheSeconds=36000" alt="Latest Commit"></a>
 </p>
 <!-- markdownlint-enable MD033 -->
 
@@ -186,7 +186,7 @@ everything up before and after the tests.
 
 ## Versioning
 
-brandon14/fossabot-commander uses [semantic versioning](https://semver.org/) that looks like `MAJOR.MINOR.PATCH`.
+`brandon14/fossabot-commander` uses [semantic versioning](https://semver.org/) that looks like `MAJOR.MINOR.PATCH`.
 
 Major version changes will include backwards-incompatible changes and may require refactoring of projects using it.
 Minor version changes will include backwards-compatible new features and changes and will not break existing usages.
@@ -203,6 +203,6 @@ This code is released under the MIT license.
 
 Copyright &copy; 2023 Brandon Clothier
 
-[![Twitter URL](https://img.shields.io/twitter/url/http/shields.io.svg?style=for-the-badge&logo=twitter&label=Tweet%20%40inhal3exh4le&maxAge=36000)](https://twitter.com/intent/tweet?url=https%3A%2F%2Fapex-api-php&text=Hey%20%40inhal3exh4le%2C%20this%20website%20rocks!)
+[![X (formerly Twitter) URL](https://img.shields.io/twitter/url?url=https%3A%2F%2Fgithub.com%2Fbrandon14%2Ffossabot-commander&style=for-the-badge&logo=twitter&label=TWEET%20%40inhal3exh4le&cacheSeconds=3600)](https://twitter.com/intent/tweet?url=https%3A%2F%2Fgithub.com%2Fbrandon14%2Ffossabot-commander&text=Hey%20@inhal3exh4le%20this%20fossabot-commander%20package%20is%20pretty%20cool%21)
 
-[![Twitter Follow](https://img.shields.io/twitter/follow/inhal3exh4le.svg?style=for-the-badge&label=Follow%20%40inahl3exh4le&logo=twitter&maxAge=36000)](https://twitter.com/intent/follow?screen_name=inhal3exh4le)
+[![X (formerly Twitter) Follow](https://img.shields.io/twitter/follow/inhal3exh4le?style=for-the-badge&logo=twitter&cacheSeconds=3600)](https://twitter.com/intent/follow?screen_name=inhal3exh4le)
