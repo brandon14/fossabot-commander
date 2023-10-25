@@ -1,0 +1,25 @@
+# Composer vendor folder.
+/vendor
+
+# Mac OS shit.
+.DS_Store
+
+# PHP Unit code coverage files.
+coverage.xml
+coverage.text
+coverage.html
+.phpunit.result.cache
+coverage
+
+# Composer lock file since this is a lib.
+composer.lock
+
+# PHP Coding Standards Fixer cache file.
+.php_cs.cache
+.php-cs-fixer.cache
+
+# IntelliJ IDE folders.
+.idea
+
+# VS Code folders.
+.vscode
