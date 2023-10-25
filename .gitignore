@@ -16,6 +16,7 @@ composer.lock
 
 # PHP Coding Standards Fixer cache file.
 .php_cs.cache
+.phpcs.cache
 .php-cs-fixer.cache
 
 # IntelliJ IDE folders.
