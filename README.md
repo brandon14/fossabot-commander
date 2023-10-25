@@ -3,7 +3,7 @@
 
 <!-- markdownlint-disable MD033 -->
 <p align="center">
-  <a href="https://github.com/brandon14/fossabot-commander/actions/workflows/run-tests.yml" target="_blank"><img alt="GitHub Workflow Status (with event)" src="https://img.shields.io/github/actions/workflow/status/brandon14/fossabot-commander/run-tests?style=for-the-badge&cacheSeconds=3600">
+  <a href="https://github.com/brandon14/fossabot-commander/actions/workflows/run-tests.yml" target="_blank"><img alt="GitHub Workflow Status (with event)" src="https://img.shields.io/github/actions/workflow/status/brandon14/fossabot-coimmander/run-tests.yml?style=for-the-badge&cacheSeconds=3600">
   </a>
   <a href="https://codeclimate.com/github/brandon14/fossabot-commander/maintainability" target="_blank"><img alt="Code Climate maintainability" src="https://img.shields.io/codeclimate/maintainability-percentage/brandon14/fossabot-commander?style=for-the-badge&cacheSeconds=3600">
   </a>
