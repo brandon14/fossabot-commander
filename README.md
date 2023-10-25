@@ -3,23 +3,34 @@
 
 <!-- markdownlint-disable MD033 -->
 <p align="center">
-  <a href="https://github.com/brandon14/fossabot-commander/actions/workflows/run-tests.yml" target="_blank"><img alt="GitHub Workflow Status (with event)" src="https://img.shields.io/github/actions/workflow/status/brandon14/fossabot-commander/run-tests?style=for-the-badge&cacheSeconds=36000">
+  <a href="https://github.com/brandon14/fossabot-commander/actions/workflows/run-tests.yml" target="_blank"><img alt="GitHub Workflow Status (with event)" src="https://img.shields.io/github/actions/workflow/status/brandon14/fossabot-commander/run-tests?style=for-the-badge&cacheSeconds=3600">
   </a>
-  <a href="https://codeclimate.com/github/brandon14/fossabot-commander/maintainability" target="_blank"><img src="https://img.shields.io/codeclimate/maintainability/brandon14/fossabot-commander.svg?style=for-the-badge&cacheSeconds=36000" alt="Code Climate"></a>
-  <a href="https://codecov.io/gh/brandon14/fossabot-commander" target="_blank"><img src="https://img.shields.io/codecov/c/github/brandon14/fossabot-commander.svg?style=for-the-badge&cacheSeconds=36000" alt="CodeCov"></a>
-  <a href="https://libraries.io/packagist/brandon14/fossabot-commander" target="_blank"><img alt="Libraries.io dependency status for latest release" src="https://img.shields.io/librariesio/release/packagist/brandon14%2Ffossabot-commander?style=for-the-badge&cacheSeconds=3600"></a>
-  <a href="https://github.com/brandon14/fossabot-commander/blob/main/LICENSE" target="_blank"><img src="https://img.shields.io/github/license/brandon14/fossabot-commander.svg?style=for-the-badge&cacheSeconds=36000" alt="License"></a>
+  <a href="https://codeclimate.com/github/brandon14/fossabot-commander/maintainability" target="_blank"><img alt="Code Climate maintainability" src="https://img.shields.io/codeclimate/maintainability-percentage/brandon14/fossabot-commander?style=for-the-badge&cacheSeconds=3600">
+  </a>
+  <a href="https://codecov.io/gh/brandon14/fossabot-commander" target="_blank"><img alt="Codecov" src="https://img.shields.io/codecov/c/github/brandon14/fossabot-commander?style=for-the-badge&cacheSeconds=3600">
+  </a>
+  <a href="https://libraries.io/packagist/brandon14/fossabot-commander" target="_blank"><img alt="Libraries.io dependency status for latest release" src="https://img.shields.io/librariesio/release/packagist/brandon14%2Ffossabot-commander?style=for-the-badge&cacheSeconds=3600">
+  </a>
+  <a href="https://github.com/brandon14/fossabot-commander/blob/main/LICENSE" target="_blank"><img alt="GitHub" src="https://img.shields.io/github/license/brandon14/fossabot-commander?style=for-the-badge&cacheSeconds=3600">
+  </a>
 </p>
 <p align="center">
-  <a href="https://github.com/brandon14/fossabot-commander/issues" target="_blank"><img src="https://img.shields.io/github/issues/brandon14/fossabot-commander.svg?style=for-the-badge&cacheSeconds=36000" alt="Issues"></a>
-  <a href="https://github.com/brandon14/fossabot-commander/issues?q=is%3Aissue+is%3Aclosed" target="_blank"><img src="https://img.shields.io/github/issues-closed/brandon14/fossabot-commander.svg?style=for-the-badge&cacheSeconds=36000" alt="Issues Closed"></a>
-  <a href="https://github.com/brandon14/fossabot-commander/pulls" target="_blank"><img src="https://img.shields.io/github/issues-pr/brandon14/fossabot-commander.svg?style=for-the-badge&cacheSeconds=36000" alt="Pull Requests"></a>
-  <a href="https://github.com/brandon14/fossabot-commander/pulls?q=is%3Apr+is%3Aclosed" target="_blank"><img src="https://img.shields.io/github/issues-pr-closed/brandon14/fossabot-commander.svg?style=for-the-badge&cacheSeconds=36000" alt="Pull Requests Closed"></a>
+  <a href="https://github.com/brandon14/fossabot-commander/issues" target="_blank"><img alt="GitHub issues" src="https://img.shields.io/github/issues/brandon14/fossabot-commander?style=for-the-badge&cacheSeconds=3600">
+  </a>
+  <a href="https://github.com/brandon14/fossabot-commander/issues?q=is%3Aissue+is%3Aclosed" target="_blank"><img alt="GitHub closed issues" src="https://img.shields.io/github/issues-closed/brandon14/fossabot-commander?style=for-the-badge&cacheSeconds=3600">
+  </a>
+  <a href="https://github.com/brandon14/fossabot-commander/pulls" target="_blank"><img alt="GitHub pull requests" src="https://img.shields.io/github/issues-pr/brandon14/fossabot-commander?style=for-the-badge&cacheSeconds=3600">
+  </a>
+  <a href="https://github.com/brandon14/fossabot-commander/pulls?q=is%3Apr+is%3Aclosed" target="_blank"><img alt="GitHub closed pull requests" src="https://img.shields.io/github/issues-pr-closed/brandon14/fossabot-commander?style=for-the-badge&cacheSeconds=3600">
+  </a>
 </p>
 <p align="center">
-  <a href="https://github.com/brandon14/fossabot-commander/releases" target="_blank"><img src="https://img.shields.io/github/release/brandon14/fossabot-commander.svg?style=for-the-badge&cacheSeconds=36000" alt="Github Release"></a>
-  <a href="https://github.com/brandon14/fossabot-commander/commits/main" target="_blank"><img src="https://img.shields.io/github/commit-activity/y/brandon14/fossabot-commander.svg?style=for-the-badge&cacheSeconds=36000" alt="Github Commits"></a>
-  <a href="https://github.com/brandon14/fossabot-commander/commits/main" target="_blank"><img src="https://img.shields.io/github/last-commit/brandon14/fossabot-commander.svg?style=for-the-badge&cacheSeconds=36000" alt="Latest Commit"></a>
+  <a href="https://github.com/brandon14/fossabot-commander/releases" target="_blank"><img alt="GitHub release (with filter)" src="https://img.shields.io/github/v/release/brandon14/fossabot-commander?style=for-the-badge&cacheSeconds=3600">
+  </a>
+  <a href="https://github.com/brandon14/fossabot-commander/commits/main" target="_blank"><img alt="GitHub commit activity (branch)" src="https://img.shields.io/github/commit-activity/m/brandon14/fossabot-commander?style=for-the-badge&cacheSeconds=3600">
+  </a>
+  <a href="https://github.com/brandon14/fossabot-commander/commits/main" target="_blank"><img alt="GitHub last commit (by committer)" src="https://img.shields.io/github/last-commit/brandon14/fossabot-commander?style=for-the-badge&cacheSeconds=3600">
+  </a>
 </p>
 <!-- markdownlint-enable MD033 -->
 
