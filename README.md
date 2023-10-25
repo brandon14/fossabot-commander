@@ -1,6 +1,3 @@
-> [!WARNING]
-> This package is still in development and does not have a stable release. Use at your own risk.
-
 <!-- markdownlint-disable MD033 -->
 <p align="center">
   <a href="https://github.com/brandon14/fossabot-commander/actions/workflows/run-tests.yml" target="_blank"><img alt="GitHub Workflow Status (with event)" src="https://img.shields.io/github/actions/workflow/status/brandon14/fossabot-coimmander/run-tests.yml?style=for-the-badge&cacheSeconds=3600">
