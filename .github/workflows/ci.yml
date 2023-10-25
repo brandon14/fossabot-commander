@@ -9,24 +9,28 @@ jobs:
       name: Release
       if: startsWith(github.ref, 'refs/tags/')
       runs-on: ubuntu-latest
+      permissions:
+        # Give the default GITHUB_TOKEN write permission to commit and push the
+        # added or changed files to the repository.
+        contents: write
       steps:
         - name: Checkout code
-          uses: actions/checkout@v2
+          uses: actions/checkout@v4
           with:
             ref: ${{ github.head_ref }}
 
         - name: Build changelog
           id: github_release
-          uses: mikepenz/release-changelog-builder-action@v1
+          uses: mikepenz/release-changelog-builder-action@v4
           with:
             outputFile: 'CHANGELOG.md'
           env:
             GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
         - name: Commit changelog changes
-          uses: stefanzweifel/git-auto-commit-action@v4
+          uses: stefanzweifel/git-auto-commit-action@v5
           with:
-            commit_message: Generate CHANGELOG.md
+            commit_message: "chore: Generate CHANGELOG.md"
 
         - name: Update contributors
           uses: minicli/action-contributors@v3
@@ -35,9 +39,9 @@ jobs:
             CONTRIB_OUTPUT_FILE: 'CONTRIBUTORS.md'
 
         - name: Commit contributors changes
-          uses: stefanzweifel/git-auto-commit-action@v4
+          uses: stefanzweifel/git-auto-commit-action@v5
           with:
-            commit_message: Generate CONTRIBUTORS.md
+            commit_message: "chore: Generate CONTRIBUTORS.md"
 
         - name: Build docs
           uses: sudo-bot/action-doctum@v5
@@ -47,9 +51,9 @@ jobs:
             cli-args: "--output-format=github --no-ansi --no-progress -v"
 
         - name: Commit doc changes
-          uses: stefanzweifel/git-auto-commit-action@v4
+          uses: stefanzweifel/git-auto-commit-action@v5
           with:
-            commit_message: Publish docs
+            commit_message: "chore: Publish docs"
             file_pattern: "docs/*"
             add_options: "-f"
             skip_dirty_check: true

@@ -34,7 +34,7 @@ jobs:
         run: sudo apt-get update --fix-missing
 
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
@@ -54,8 +54,17 @@ jobs:
         run: composer run-script test
 
       - name: Upload coverage
-        if: ${{ github.event_name != 'schedule' && matrix.php == '8.0' }}
-        uses: codecov/codecov-action@v2
+        if: ${{ github.event_name != 'schedule' && matrix.php == '8.3' }}
+        uses: codecov/codecov-action@v3
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
         with:
           fail_ci_if_error: true
           files: ./coverage.xml
+      - name: Upload code climate
+        if: ${{ github.event_name != 'schedule' && matrix.php == '8.3' }}
+        uses: paambaati/codeclimate-action@v2.2.4
+        env:
+          CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
+        with:
+          coverageLocations: ${{ github.workspace }}/coverage.xml:clover

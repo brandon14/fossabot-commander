@@ -1,8 +1,9 @@
 <!-- markdownlint-disable MD033 -->
 <p align="center">
- <img alt="GitHub Workflow Status" src="https://img.shields.io/github/workflow/status/brandon14/fossabot-commander/run-tests.svg?style=for-the-badge&maxAge=36000" alt="Build Status">
+  <a href="https://github.com/brandon14/fossabot-commander/actions/workflows/run-tests.yml" target="_blank"><img alt="GitHub Workflow Status (with event)" src="https://img.shields.io/github/actions/workflow/status/brandon14/fossabot-commander/run-tests?style=for-the-badge&maxAge=36000">
+  </a>
   <a href="https://codeclimate.com/github/brandon14/fossabot-commander/maintainability"><img src="https://img.shields.io/codeclimate/maintainability/brandon14/fossabot-commander.svg?style=for-the-badge&maxAge=36000" alt="Code Climate"></a>
-  <a href="https://codecov.io/gh/brandon14/fossabot-commander"><img src="https://img.shields.io/codecov/c/github/brandon14/fossabot-commander.svg?style=for-the-badge&maxAge=36000" alt="CodeCov"></a>
+  <a href="https://codecov.io/gh/brandon14/fossabot-commander" target="_blank"><img src="https://img.shields.io/codecov/c/github/brandon14/fossabot-commander.svg?style=for-the-badge&maxAge=36000" alt="CodeCov"></a>
   <a href="https://libraries.io/packagist/brandon14/fossabot-commander"><img alt="Libraries.io dependency status for GitHub repo" src="https://img.shields.io/librariesio/github/brandon14/fossabot-commander.svg?style=for-the-badge&maxAge=36000"></a>
   <a href="https://github.com/brandon14/fossabot-commander/blob/main/LICENSE"><img src="https://img.shields.io/github/license/brandon14/fossabot-commander.svg?style=for-the-badge&maxAge=36000" alt="License"></a>
 </p>
@@ -38,11 +39,117 @@
 
 ## Requirements
 
+| Dependency       | Version |
+|------------------|---------|
+| php              | ^8.1    |
+| psr/http-factory | ^1.0    |
+| psr/http-client  | ^1.0    |
+| psr/log          | ^3.0    |
+
 ## Purpose
+
+I built this library to aid in responding to [Fossabot's](https://docs.fossabot.com/variables/customapi)
+`customapi` requests when using PHP. If you are running a webserver and want to send Fossabot `customapi`
+requests to that server, this package allows you to easily write commands and run them to return the text
+that would display in the chat message. The reason the commands return strings is because Fossabot
+Fossabot discards any status codes and other HTTP response content, and only uses the raw response body
+which is a string. This string can be JSON, text, etc.
+
+The normal usage for Fossabot's `customapi` might be something like:
+
+Set command `!foo` to `$(customapi https://foo.bar/foo)`.
+
+When someone types `!foo` in your chat, 
+Fossabot will make a request to `https://foo.bar/foo` and whatever that URl returns will be used as the
+chat message. With this package, you can easily create commands, and invoke them via the
+`FossabotCommander::runCommand()` method, and use these utilties in you web framework of choice.
+
+This library validates the Fossabot request using the [request validation](https://docs.fossabot.com/variables/customapi/#validating-requests)
+endpoint so you can be sure that the request came from Fossabot. You can also optionally (on by default)
+choose to get additional context about the request as outlined [here](https://docs.fossabot.com/variables/customapi/#validating-requests)
+to provide more rich integrations with Fossabot. The `FossabotContext` data will be passed into the
+command's `getResponse` method.
 
 ## Installation
 
+```bash
+composer require brandon14/fossabot-commander
+```
+
 ## Usage
+
+You will first need to get the custom API token from the request header. It will be in the 
+`x-fossabot-customapitoken` header.
+
+For a simple command (using Laravel as an example web framework):
+
+```php
+// FooCommand.php
+<?php
+
+declare(strict_types=1);
+
+namespace App\Fossabot\Commands;
+
+use Brandon14\FossabotCommander\FossabotCommand;
+use Brandon14\FossabotCommander\Contracts\Context\FossabotContext;
+
+class FooCommand extends FossabotCommand
+{
+    /**
+     * {@inheritDoc}
+     */
+    public function getResponse(?FossabotContext $context = null) : string
+    {
+        return 'Hello chat!';
+    }
+}
+
+// In some Laravel Controller
+<?php
+
+declare(strict_types=1);
+
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+use App\Fossabot\Commands\FooCommand;
+use Illuminate\Routing\Controller as BaseController;
+use Illuminate\Foundation\Validation\ValidatesRequests;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Brandon14\FossabotCommander\Contracts\FossabotCommander;
+
+class Controller extends BaseController
+{
+    use AuthorizesRequests;
+    use ValidatesRequests;
+
+    private FossabotCommander $commander;
+
+    public function __construct(FossabotCommander $commander)
+    {
+        $this->commander = $commander;
+    }
+    
+    public function fooCommand(Request $request): string
+    {
+        // Get Fossabot API token.
+        $apiToken = $request->header('x-fossabot-customapitoken');
+
+        // Invoke command.
+        return $this->commander->runCommand(new FooCommand(), $apiToken);
+    }
+}
+```
+
+The `FossabotCommander` class requires a PSR compliant `ClientInterface` and a PSR compliant
+`RequestFactoryInterface`. These can be provided by libraries like `guzzle/guzzle` or other PSR
+compliant libraries. In the above example with Laravel we are assuming that the Laravel container
+has the `FossabotCommander` instance bound to the container.
+
+For more complicated commands, the sky is the limit. Depending on how you want to build and instantiate
+your `FossabotCommand` instances, you can use the `FossabotContext` data to provide rich integration
+for your Fossabot chatbot!
 
 ## Standards
 
@@ -79,7 +186,7 @@ everything up before and after the tests.
 
 ## Versioning
 
-php-licenses-generator uses [semantic versioning](https://semver.org/) that looks like `MAJOR.MINOR.PATCH`.
+brandon14/fossabot-commander uses [semantic versioning](https://semver.org/) that looks like `MAJOR.MINOR.PATCH`.
 
 Major version changes will include backwards-incompatible changes and may require refactoring of projects using it.
 Minor version changes will include backwards-compatible new features and changes and will not break existing usages.
