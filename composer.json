@@ -45,6 +45,7 @@
         "friendsofphp/php-cs-fixer": "^3.35",
         "guzzlehttp/guzzle": "^7.8",
         "mockery/mockery": "^1.6",
+        "neronmoon/scriptsdev": "^0.1.9",
         "nunomaduro/phpinsights": "^2.9",
         "pestphp/pest": "^1.23.1",
         "pestphp/pest-plugin-parallel": "^1.2",
@@ -105,6 +106,14 @@
             "dev-master": "1.0-dev",
             "dev-main": "1.0-dev",
             "dev-latest": "1.0-dev"
+        },
+        "scripts-dev": {
+            "post-update-cmd": [
+                "@composer run-script licenses:generate"
+            ],
+            "post-install-cmd": [
+                "@composer run-script licenses:generate"
+            ]
         }
     },
     "minimum-stability": "stable",
@@ -113,7 +122,8 @@
         "allow-plugins": {
             "symfony/thanks": true,
             "dealerdirect/phpcodesniffer-composer-installer": true,
-            "pestphp/pest-plugin": true
+            "pestphp/pest-plugin": true,
+            "neronmoon/scriptsdev": true
         },
         "sort-packages": true
     }

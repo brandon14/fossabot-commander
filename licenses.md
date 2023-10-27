@@ -7,7 +7,7 @@ homepage, and license information for every dependency in this project.
 ## Source
 
 ### brandon14/fossabot-commander
-Library to to easily create Fossabot commands invokable via the Fossabot customapi implementation.
+Library to easily create Fossabot commands invokable via the Fossabot customapi implementation.
 Homepage: [brandon14/fossabot-commander](https://github.com/brandon14/fossabot-commander)
 Licenses Used: MIT
 
@@ -112,7 +112,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 
 
-### psr/log (Version 1.1.4 | d49695b)
+### psr/log (Version 3.0.0 | fe5ea30)
 Common interface for logging libraries
 Homepage: [https://github.com/php-fig/log](https://github.com/php-fig/log)
 Licenses Used: MIT
