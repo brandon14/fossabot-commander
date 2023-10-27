@@ -1,6 +1,10 @@
 {
     "name": "brandon14/fossabot-commander",
-    "description": "Library to to easily create Fossabot commands invokable via the Fossabot customapi implementation.",
+    "description": "Library to easily create Fossabot commands invokable via the Fossabot customapi implementation.",
+    "keywords": [
+        "library",
+        "fossabot"
+    ],
     "type": "library",
     "license": "MIT",
     "homepage": "https://github.com/brandon14/fossabot-commander",
@@ -28,7 +32,7 @@
         }
     },
     "require": {
-        "php": "^7.4 || ^8.0",
+        "php": "^7.4|^8.0",
         "ext-json": "*",
         "psr/http-client": "^1.0",
         "psr/http-factory": "^1.0",
@@ -77,7 +81,7 @@
         ],
         "test:php": [
             "@putenv XDEBUG_MODE=coverage",
-            "pest --coverage --min=95 --coverage-html ./coverage --coverage-clover ./coverage.xml"
+            "pest --coverage --min=95 --coverage-html ./coverage --coverage-clover ./coverage.xml --order-by random --cache-result"
         ],
         "test": [
             "@composer run-script composer:validate",

@@ -155,7 +155,7 @@ class Controller extends BaseController
 ```
 
 The `FossabotCommander` class requires a PSR compliant `ClientInterface` and a PSR compliant
-`RequestFactoryInterface`. These can be provided by libraries like `guzzle/guzzle` or other PSR
+`RequestFactoryInterface`. These can be provided by libraries like `guzzlehttp/guzzle` or other PSR
 compliant libraries. In the above example with Laravel we are assuming that the Laravel container
 has the `FossabotCommander` instance bound to the container.
 
@@ -172,7 +172,7 @@ found in the `.php-cs-fixer.dist.php` file.
 ## Coverage
 
 The latest code coverage information can be found via [Codecov](https://codecov.io/gh/brandon14/fossabot-commander). We
-strive to maintain 100% coverage across the entire Flysystem adapter, so if you are
+strive to maintain 100% coverage across the entire library, so if you are
 [contributing](https://github.com/brandon14/fossabot-commander#contributing), please make sure to include tests for new
 code added.
 

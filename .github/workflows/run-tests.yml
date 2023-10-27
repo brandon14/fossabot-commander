@@ -46,7 +46,7 @@ jobs:
       - name: Install dependencies
         run: |
           composer self-update
-          composer update --${{ matrix.dependency-version }} --prefer-dist --no-interaction --no-suggest
+          composer update --${{ matrix.dependency-version }} --prefer-dist --no-interaction
           composer dump-autoload
           composer validate --no-check-all --strict
 
@@ -54,7 +54,7 @@ jobs:
         run: composer run-script test
 
       - name: Upload coverage
-        if: ${{ github.event_name != 'schedule' && matrix.php == '8.3' }}
+        if: ${{ github.event_name != 'schedule' && matrix.php == '8.2' }}
         uses: codecov/codecov-action@v3
         env:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
@@ -62,7 +62,7 @@ jobs:
           fail_ci_if_error: true
           files: ./coverage.xml
       - name: Upload code climate
-        if: ${{ github.event_name != 'schedule' && matrix.php == '8.3' }}
+        if: ${{ github.event_name != 'schedule' && matrix.php == '8.2' }}
         uses: paambaati/codeclimate-action@v5
         env:
           CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
