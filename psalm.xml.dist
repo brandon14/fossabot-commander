@@ -1,6 +1,9 @@
 <?xml version="1.0"?>
 <psalm xmlns="https://getpsalm.org/schema/config"
-       checkForThrowsDocblock="true">
+       checkForThrowsDocblock="true"
+       findUnusedBaselineEntry="true"
+       findUnusedCode="true"
+>
 
     <projectFiles>
         <directory name="src" />

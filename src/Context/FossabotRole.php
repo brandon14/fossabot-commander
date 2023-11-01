@@ -68,9 +68,9 @@ final class FossabotRole extends FossabotDataModel implements FossabotRoleInterf
     public static function createFromBody(array $body): FossabotRoleInterface
     {
         return new self(
-            $body['id'] ?? null,
-            $body['name'] ?? null,
-            $body['type'] ?? null,
+            $body['id'],
+            $body['name'],
+            $body['type'],
         );
     }
 

@@ -132,14 +132,6 @@ abstract class FossabotDataModel implements FossabotDataModelInterface
     }
 
     /**
-     * {@inheritDoc}
-     */
-    public function __toString(): string
-    {
-        return $this->toString();
-    }
-
-    /**
      * @param string $name Offset name
      */
     public function __get($name) // @pest-ignore-type
@@ -198,6 +190,14 @@ abstract class FossabotDataModel implements FossabotDataModelInterface
     public function toString(): string
     {
         return $this->toJson();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function __toString(): string
+    {
+        return $this->toString();
     }
 
     /**

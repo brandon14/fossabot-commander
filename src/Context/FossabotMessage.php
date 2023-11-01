@@ -74,10 +74,10 @@ final class FossabotMessage extends FossabotDataModel implements FossabotMessage
     public static function createFromBody(array $body): FossabotMessageInterface
     {
         return new self(
-            $body['id'] ?? null,
-            $body['content'] ?? null,
-            $body['provider'] ?? null,
-            FossabotUser::createFromBody($body['user'] ?? null),
+            $body['id'],
+            $body['content'],
+            $body['provider'],
+            FossabotUser::createFromBody($body['user']),
         );
     }
 

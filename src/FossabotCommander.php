@@ -31,20 +31,27 @@ declare(strict_types=1);
 
 namespace Brandon14\FossabotCommander;
 
-use Exception;
 use Throwable;
 
 use function compact;
+
+use DateTimeImmutable;
+use DateTimeInterface;
+
 use function get_class;
 use function urlencode;
 
 use Psr\Log\LoggerTrait;
 
+use function array_merge;
 use function json_decode;
 
 use Psr\Log\LoggerInterface;
 use Psr\Log\LoggerAwareTrait;
 use Psr\Log\LoggerAwareInterface;
+
+use function date_create_immutable;
+
 use Psr\Http\Client\ClientInterface;
 use Psr\Http\Message\RequestFactoryInterface;
 use Brandon14\FossabotCommander\Context\FossabotContext;
@@ -54,9 +61,9 @@ use Brandon14\FossabotCommander\Contracts\Exceptions\FossabotApiException;
 use Brandon14\FossabotCommander\Contracts\Exceptions\JsonParsingException;
 use Brandon14\FossabotCommander\Contracts\Exceptions\InvalidTokenException;
 use Brandon14\FossabotCommander\Contracts\Exceptions\CannotGetContextException;
-use Brandon14\FossabotCommander\Contracts\Exceptions\FossabotCommanderException;
 use Brandon14\FossabotCommander\Contracts\Exceptions\CannotCreateContextException;
 use Brandon14\FossabotCommander\Contracts\Exceptions\CannotValidateRequestException;
+use Brandon14\FossabotCommander\Contracts\Exceptions\NoValidLoggerProvidedException;
 use Brandon14\FossabotCommander\Contracts\FossabotCommander as FossabotCommanderInterface;
 use Brandon14\FossabotCommander\Contracts\Context\FossabotContext as FossabotContextInterface;
 
@@ -86,21 +93,135 @@ class FossabotCommander implements FossabotCommanderInterface, LoggerAwareInterf
     private RequestFactoryInterface $requestFactory;
 
     /**
+     * Whether to enable logging or not.
+     */
+    private bool $logging = false;
+
+    /**
+     * @SuppressWarnings(PHPMD.BooleanArgumentFlag)
+     *
      * @param \Psr\Http\Client\ClientInterface          $httpClient     PSR HTTP client instance
      * @param \Psr\Http\Message\RequestFactoryInterface $requestFactory PSR HTTP request factory instance
      * @param \Psr\Log\LoggerInterface|null             $logger         PSR logger instance
+     * @param bool                                      $logging        Whether to enable logging or not
+     *
+     * @throws \Brandon14\FossabotCommander\Contracts\Exceptions\NoValidLoggerProvidedException
      */
     public function __construct(
         ClientInterface $httpClient,
         RequestFactoryInterface $requestFactory,
-        ?LoggerInterface $logger = null
+        ?LoggerInterface $logger = null,
+        bool $logging = false
     ) {
-        $this->httpClient = $httpClient;
-        $this->requestFactory = $requestFactory;
-        $this->logger = $logger;
+        $this->setHttpClient($httpClient)
+            ->setRequestFactory($requestFactory)
+            ->setLog($logger)
+            ->setLogging($logging);
     }
 
     /**
+     * {@inheritDoc}
+     */
+    public function getHttpClient(): ClientInterface
+    {
+        return $this->httpClient;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setHttpClient(ClientInterface $httpClient): FossabotCommanderInterface
+    {
+        $this->httpClient = $httpClient;
+
+        return $this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getRequestFactory(): RequestFactoryInterface
+    {
+        return $this->requestFactory;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setRequestFactory(RequestFactoryInterface $requestFactory): FossabotCommanderInterface
+    {
+        $this->requestFactory = $requestFactory;
+
+        return $this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getLogger(): ?LoggerInterface
+    {
+        return $this->logger;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setLog(?LoggerInterface $logger): FossabotCommanderInterface
+    {
+        if ($this->logging && $logger === null) {
+            throw new NoValidLoggerProvidedException('No PSR compliant logger provided.');
+        }
+
+        $this->logger = $logger;
+
+        return $this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function enableLogging(): FossabotCommanderInterface
+    {
+        return $this->setLogging(true);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function disableLogging(): FossabotCommanderInterface
+    {
+        return $this->setLogging(false);
+    }
+
+    /**
+     * @SuppressWarnings(PHPMD.BooleanArgumentFlag)
+     *
+     * {@inheritDoc}
+     */
+    public function setLogging(bool $logging): FossabotCommanderInterface
+    {
+        if ($logging === true && $this->logger === null) {
+            throw new NoValidLoggerProvidedException('No PSR compliant logger provided.');
+        }
+
+        $this->logging = $logging;
+
+        return $this;
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @SuppressWarnings(PHPMD.BooleanGetMethodName)
+     */
+    public function getLogging(): bool
+    {
+        return $this->logging;
+    }
+
+    /**
+     * @SuppressWarnings(PHPMD.BooleanArgumentFlag)
+     *
      * {@inheritDoc}
      */
     public function runCommand(
@@ -111,40 +232,27 @@ class FossabotCommander implements FossabotCommanderInterface, LoggerAwareInterf
         $context = null;
         $body = null;
 
-        $this->debug('Sending request to validate incoming Fossabot request.');
-
-        // Validate Fossabot request using the $validateUrl.
-        $validateRequest = $this->requestFactory->createRequest(
-            'GET',
-            self::FOSSABOT_API_BASE_URL.'/validate/'.urlencode($customApiToken),
-        );
+        $this->info('Sending request to validate incoming Fossabot request.');
 
         try {
-            // Make request to validate
-            $validateResponse = $this->httpClient->sendRequest($validateRequest);
-            $body = $this->getResponseBody($validateResponse->getBody()->getContents());
-            $statusCode = $validateResponse->getStatusCode();
-            $headers = $validateResponse->getHeaders();
+            // Send validate request. Will throw exception if unable to validate.
+            $this->sendValidateRequest($customApiToken);
 
-            if ($statusCode !== 200) {
-                $this->debug("Received non-200 HTTP response code [{$statusCode}] back from validation.");
-
-                throw $this->getExceptionFromBody($body, $statusCode, $headers);
-            }
-
-            $this->debug('Validated Fossabot request.');
+            $this->info('Validated Fossabot request.');
         } catch (Throwable $exception) {
             $this->error(
                 "Caught exception during validation with message [{$exception->getMessage()}].",
                 compact('exception'),
             );
 
-            $this->debug('Transforming exception of class ['.get_class($exception).'] to ['.CannotValidateRequestException::class.'].');
-
             // Allow rate limit exceptions to be rethrown here.
             if ($exception instanceof RateLimitException) {
+                $this->debug('Rethrowing ['.RateLimitException::class.'] exception.');
+
                 throw $exception;
             }
+
+            $this->debug('Transforming exception of class ['.get_class($exception).'] to ['.CannotValidateRequestException::class.'].');
 
             // Rethrow API exception as a CannotValidateRequestException.
             if ($exception instanceof FossabotApiException) {
@@ -160,7 +268,7 @@ class FossabotCommander implements FossabotCommanderInterface, LoggerAwareInterf
             $context = $this->getContext($customApiToken);
         }
 
-        $this->debug('Invoking FossabotCommand.', [
+        $this->info('Invoking FossabotCommand.', [
             'command' => get_class($command),
         ]);
 
@@ -169,37 +277,83 @@ class FossabotCommander implements FossabotCommanderInterface, LoggerAwareInterf
     }
 
     /**
+     * Makes and sends a request to validate the Fossabot custom API token provided in the request.
+     *
+     * @param string $customApiToken Fossabot custom API token
+     *
+     * @throws Throwable
+     * @throws \Psr\Http\Client\ClientExceptionInterface
+     * @throws \Brandon14\FossabotCommander\Contracts\Exceptions\RateLimitException
+     * @throws \Brandon14\FossabotCommander\Contracts\Exceptions\JsonParsingException
+     * @throws \Brandon14\FossabotCommander\Contracts\Exceptions\FossabotApiException
+     * @throws \Brandon14\FossabotCommander\Contracts\Exceptions\InvalidTokenException
+     */
+    private function sendValidateRequest(string $customApiToken): void
+    {
+        // Validate Fossabot request using the validate API call.
+        ['body' => $body, 'statusCode' => $statusCode, 'headers' => $headers] = $this->sendRequest(
+            self::FOSSABOT_API_BASE_URL.'/validate/'.urlencode($customApiToken)
+        );
+
+        if ($statusCode !== 200) {
+            $this->info("Received non-200 HTTP response code [{$statusCode}] back from validation.");
+
+            throw $this->getExceptionFromBody($body, $statusCode, $headers);
+        }
+    }
+
+    /**
+     * Sends a Fossabot API request.
+     *
+     * @param string $url Fossabot API url
+     *
+     * @throws Throwable
+     * @throws \Psr\Http\Client\ClientExceptionInterface
+     * @throws \Brandon14\FossabotCommander\Contracts\Exceptions\JsonParsingException
+     *
+     * @return array{
+     *     body: array,
+     *     statusCode: int,
+     *     headers: array,
+     * } Response data
+     */
+    private function sendRequest(string $url): array
+    {
+        $request = $this->requestFactory->createRequest(
+            'GET',
+            $url,
+        );
+
+        $this->debug("Sending Fossabot API request to [{$request->getUri()}].", compact('request'));
+
+        // Make request to validate
+        $response = $this->httpClient->sendRequest($request);
+        $body = $this->getResponseBody($response->getBody()->getContents());
+        $statusCode = $response->getStatusCode();
+        $headers = $response->getHeaders();
+
+        return compact('body', 'statusCode', 'headers');
+    }
+
+    /**
      * Get additional message context from a Fossabot request.
      *
-     * @param string $token Custom API token
+     * @param string $customApiToken Fossabot custom API token
      *
-     * @throws \Brandon14\FossabotCommander\Contracts\Exceptions\JsonParsingException
+     * @throws \Brandon14\FossabotCommander\Contracts\Exceptions\RateLimitException
      * @throws \Brandon14\FossabotCommander\Contracts\Exceptions\CannotGetContextException
-     * @throws \Brandon14\FossabotCommander\Contracts\Exceptions\FossabotCommanderException
      * @throws \Brandon14\FossabotCommander\Contracts\Exceptions\CannotCreateContextException
      *
      * @return \Brandon14\FossabotCommander\Contracts\Context\FossabotContext Fossabot context
      */
-    private function getContext(string $token): FossabotContextInterface
+    private function getContext(string $customApiToken): FossabotContextInterface
     {
-        $this->debug('Attempting to get context.');
-
-        $contextRequest = $this->requestFactory->createRequest(
-            'GET',
-            self::FOSSABOT_API_BASE_URL.'/context/'.urlencode($token),
-        );
+        $this->info('Sending request to get additional context.');
 
         try {
-            $contextResponse = $this->httpClient->sendRequest($contextRequest);
-            $body = $this->getResponseBody($contextResponse->getBody()->getContents());
-            $statusCode = $contextResponse->getStatusCode();
-            $headers = $contextResponse->getHeaders();
+            $body = $this->sendContextRequest($customApiToken);
 
-            if ($statusCode !== 200) {
-                throw $this->getExceptionFromBody($body, $statusCode, $headers);
-            }
-
-            $this->debug('Successfully received context response.');
+            $this->info('Successfully received context response.');
         } catch (Throwable $exception) {
             $this->error(
                 "Caught exception getting context with message [{$exception->getMessage()}].",
@@ -208,24 +362,23 @@ class FossabotCommander implements FossabotCommanderInterface, LoggerAwareInterf
 
             // Allow rate limit exceptions to be rethrown here.
             if ($exception instanceof RateLimitException) {
+                $this->debug('Rethrowing ['.RateLimitException::class.'] exception.');
+
                 throw $exception;
             }
+
+            $this->debug('Transforming exception of class ['.get_class($exception).'] to ['.CannotGetContextException::class.'].');
 
             // Rethrow API exception as a CannotGetContextException.
             if ($exception instanceof FossabotApiException) {
                 throw new CannotGetContextException($exception->fossabotCode(), $exception->errorClass(), $exception->errorMessage(), $exception->statusCode(), $exception->body(), $exception);
             }
 
-            // Rethrow any generic FossabotCommandException.
-            if ($exception instanceof FossabotCommanderException) {
-                throw $exception;
-            }
-
-            // Transform all other exceptions into a FossabotCommanderException.
-            throw new FossabotCommanderException($exception->getMessage(), $exception->getCode(), $exception);
+            // Transform all other exceptions into a CannotGetContextException.
+            throw new CannotGetContextException('unknown', 'unknown_error', $exception->getMessage(), 400, $body ?? null, $exception);
         }
 
-        $this->debug('Creating context data model from context response.');
+        $this->info('Creating context data model from context response.');
 
         try {
             return FossabotContext::createFromBody($body);
@@ -237,6 +390,66 @@ class FossabotCommander implements FossabotCommanderInterface, LoggerAwareInterf
 
             throw new CannotCreateContextException($exception->getMessage(), $exception->getCode(), $exception);
         }
+    }
+
+    /**
+     * Makes and sends a request to get the additional Fossabot context and returns the parsed JSON body as an array.
+     *
+     * @param string $customApiToken Fossabot custom API token
+     *
+     * @throws Throwable
+     * @throws \Psr\Http\Client\ClientExceptionInterface
+     * @throws \Brandon14\FossabotCommander\Contracts\Exceptions\RateLimitException
+     * @throws \Brandon14\FossabotCommander\Contracts\Exceptions\FossabotApiException
+     * @throws \Brandon14\FossabotCommander\Contracts\Exceptions\JsonParsingException
+     * @throws \Brandon14\FossabotCommander\Contracts\Exceptions\InvalidTokenException
+     *
+     * @return array{
+     *     channel: array{
+     *         id: string,
+     *         login: string,
+     *         display_name: string,
+     *         avatar: string,
+     *         slug: string,
+     *         broadcaster_type: string,
+     *         provider: string,
+     *         provider_id: string,
+     *         created_at: string,
+     *         stream_timestamp: string,
+     *         is_live: bool,
+     *     },
+     *     message: array{
+     *         id: string,
+     *         content: string,
+     *         provider: string,
+     *         user: array{
+     *             provider_id: string,
+     *             login: string,
+     *             display_name: string,
+     *             roles: array{
+     *                 array{
+     *                     id: string,
+     *                     name: string,
+     *                     type: string,
+     *                 }
+     *             },
+     *         },
+     *     }|null,
+     * } Fossabot context API response
+     */
+    private function sendContextRequest(string $customApiToken): array
+    {
+        ['body' => $body, 'statusCode' => $statusCode, 'headers' => $headers] = $this->sendRequest(
+            self::FOSSABOT_API_BASE_URL.'/context/'.urlencode($customApiToken)
+        );
+
+        if ($statusCode !== 200) {
+            $this->info("Received non-200 HTTP response code [{$statusCode}] back from context.");
+
+            throw $this->getExceptionFromBody($body, $statusCode, $headers);
+        }
+
+        return $body;
     }
 
     /**
@@ -253,6 +466,11 @@ class FossabotCommander implements FossabotCommanderInterface, LoggerAwareInterf
         try {
             return json_decode($body, true, 512, JSON_THROW_ON_ERROR);
         } catch (Throwable $exception) {
+            $this->error(
+                "Caught exception decoding JSON response body with message [{$exception->getMessage()}].",
+                compact('exception')
+            );
+
             throw new JsonParsingException($exception->getMessage(), $exception->getCode(), $exception);
         }
     }
@@ -265,7 +483,7 @@ class FossabotCommander implements FossabotCommanderInterface, LoggerAwareInterf
      * @param int   $statusCode HTTP status code
      * @param array $headers    HTTP response headers
      *
-     * @throws Exception
+     * @returns \Brandon14\FossabotCommander\Contracts\Exceptions\FossabotApiException Exception
      */
     private function getExceptionFromBody(array $body, int $statusCode, array $headers): FossabotApiException
     {
@@ -309,10 +527,41 @@ class FossabotCommander implements FossabotCommanderInterface, LoggerAwareInterf
      */
     public function log($level, $message, array $context = []): void // @pest-ignore-type
     {
-        if ($this->logger === null) {
+        // Only log if logging is enabled and we have a logger instance.
+        if (! $this->logging || $this->logger === null) {
             return;
         }
 
+        $class = static::class;
+
+        // This should never happen.
+        // @codeCoverageIgnoreStart
+        try {
+            $timestamp = (new DateTimeImmutable())->format(DateTimeInterface::ATOM);
+        } catch (Throwable $exception) {
+            $timestamp = date_create_immutable()->format(DateTimeInterface::ATOM);
+        }
+        // @codeCoverageIgnoreEnd
+
+        $message = "[{$class}] {$message}";
+
+        $context = array_merge($this->getLoggingContext(), compact('timestamp'), $context);
+
         $this->logger->log($level, (string) $message, $context);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getLoggingContext(): array
+    {
+        return [
+            'class' => static::class,
+            'http_client' => get_class($this->httpClient),
+            'request_factory' => get_class($this->requestFactory),
+            'logger' => $this->logger === null ? null : get_class($this->logger),
+            'logging' => $this->logging,
+            'api_url' => self::FOSSABOT_API_BASE_URL,
+        ];
     }
 }

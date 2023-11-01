@@ -29,6 +29,7 @@
 
 declare(strict_types=1);
 
+use Psr\Log\LoggerInterface;
 use Psr\Http\Client\ClientInterface;
 use Psr\Http\Message\RequestFactoryInterface;
 use Brandon14\FossabotCommander\FossabotCommander;
@@ -53,4 +54,151 @@ it('runs a command', function () {
 
     expect($res)->toBeString()
         ->and($res)->toEqual('Foo.');
+});
+
+it('gets HTTP client instance', function () {
+    $httpClient = Mockery::mock(ClientInterface::class);
+    $requestFactory = Mockery::mock(RequestFactoryInterface::class);
+
+    $foss = new FossabotCommander($httpClient, $requestFactory);
+    $client = $foss->getHttpClient();
+
+    expect($client)->toBeInstanceOf(ClientInterface::class)
+        ->and($client)->toBe($httpClient);
+});
+
+it('sets HTTP client instance', function () {
+    $httpClient = Mockery::mock(ClientInterface::class);
+    $requestFactory = Mockery::mock(RequestFactoryInterface::class);
+    $newClient = Mockery::mock(ClientInterface::class);
+
+    $foss = new FossabotCommander($httpClient, $requestFactory);
+    $client = $foss->setHttpClient($newClient)->getHttpClient();
+
+    expect($client)->toBeInstanceOf(ClientInterface::class)
+        ->and($client)->toBe($newClient)
+        ->and($client)->not()->toBe($httpClient);
+});
+
+it('gets request factory instance', function () {
+    $httpClient = Mockery::mock(ClientInterface::class);
+    $requestFactory = Mockery::mock(RequestFactoryInterface::class);
+
+    $foss = new FossabotCommander($httpClient, $requestFactory);
+    $factory = $foss->getRequestFactory();
+
+    expect($factory)->toBeInstanceOf(RequestFactoryInterface::class)
+        ->and($factory)->toBe($requestFactory);
+});
+
+it('sets request factory instance', function () {
+    $httpClient = Mockery::mock(ClientInterface::class);
+    $requestFactory = Mockery::mock(RequestFactoryInterface::class);
+    $newFactory = Mockery::mock(RequestFactoryInterface::class);
+
+    $foss = new FossabotCommander($httpClient, $requestFactory);
+    $factory = $foss->setRequestFactory($newFactory)->getRequestFactory();
+
+    expect($factory)->toBeInstanceOf(RequestFactoryInterface::class)
+        ->and($factory)->toBe($newFactory)
+        ->and($factory)->not()->toBe($requestFactory);
+});
+
+it('gets logger instance', function () {
+    $httpClient = Mockery::mock(ClientInterface::class);
+    $requestFactory = Mockery::mock(RequestFactoryInterface::class);
+    $logger = Mockery::mock(LoggerInterface::class);
+
+    $foss = new FossabotCommander($httpClient, $requestFactory, $logger);
+    $log = $foss->getLogger();
+
+    expect($log)->toBeInstanceOf(LoggerInterface::class)
+        ->and($log)->toBe($logger);
+});
+
+it('sets logger instance', function () {
+    $httpClient = Mockery::mock(ClientInterface::class);
+    $requestFactory = Mockery::mock(RequestFactoryInterface::class);
+    $logger = Mockery::mock(LoggerInterface::class);
+
+    $foss = new FossabotCommander($httpClient, $requestFactory);
+    $log = $foss->setLog($logger)->getLogger();
+
+    expect($log)->toBeInstanceOf(LoggerInterface::class)
+        ->and($log)->toBe($logger);
+});
+
+it('enables logging', function () {
+    $httpClient = Mockery::mock(ClientInterface::class);
+    $requestFactory = Mockery::mock(RequestFactoryInterface::class);
+    $logger = Mockery::mock(LoggerInterface::class);
+
+    // Logging enabled.
+    $foss = new FossabotCommander($httpClient, $requestFactory, $logger, false);
+    $foss->enableLogging();
+    $logging = $foss->getLogging();
+
+    expect($logging)->toBeTrue();
+});
+
+it('disables logging', function () {
+    $httpClient = Mockery::mock(ClientInterface::class);
+    $requestFactory = Mockery::mock(RequestFactoryInterface::class);
+    $logger = Mockery::mock(LoggerInterface::class);
+
+    // Logging enabled.
+    $foss = new FossabotCommander($httpClient, $requestFactory, $logger, true);
+    $foss->disableLogging();
+    $logging = $foss->getLogging();
+
+    expect($logging)->toBeFalse();
+});
+
+it('sets logging', function () {
+    $httpClient = Mockery::mock(ClientInterface::class);
+    $requestFactory = Mockery::mock(RequestFactoryInterface::class);
+    $logger = Mockery::mock(LoggerInterface::class);
+
+    // Logging enabled.
+    $foss = new FossabotCommander($httpClient, $requestFactory, $logger, true);
+    $foss->setLogging(false);
+    $logging = $foss->getLogging();
+
+    expect($logging)->toBeFalse();
+
+    // Logging disabled.
+    $foss = new FossabotCommander($httpClient, $requestFactory, $logger, false);
+    $foss->setLogging(true);
+    $logging = $foss->getLogging();
+
+    expect($logging)->toBeTrue();
+});
+
+it('gets logging', function () {
+    $httpClient = Mockery::mock(ClientInterface::class);
+    $requestFactory = Mockery::mock(RequestFactoryInterface::class);
+    $logger = Mockery::mock(LoggerInterface::class);
+
+    // Logging enabled.
+    $foss = new FossabotCommander($httpClient, $requestFactory, $logger, true);
+    $logging = $foss->getLogging();
+
+    expect($logging)->toBeTrue();
+
+    // Logging disabled.
+    $foss = new FossabotCommander($httpClient, $requestFactory, $logger, false);
+    $logging = $foss->getLogging();
+
+    expect($logging)->toBeFalse();
+});
+
+it('gets logging context', function () {
+    $httpClient = Mockery::mock(ClientInterface::class);
+    $requestFactory = Mockery::mock(RequestFactoryInterface::class);
+
+    // Logging enabled.
+    $foss = new FossabotCommander($httpClient, $requestFactory);
+    $context = $foss->getLoggingContext();
+
+    expect($context)->toBeArray();
 });

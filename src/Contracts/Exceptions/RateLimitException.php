@@ -31,9 +31,10 @@ declare(strict_types=1);
 
 namespace Brandon14\FossabotCommander\Contracts\Exceptions;
 
-use Exception;
 use Throwable;
 use DateTimeImmutable;
+
+use function date_create_immutable;
 
 /**
  * Exception thrown when making a Fossabot API call and it results in a rate limit throttled response (429).
@@ -68,8 +69,6 @@ final class RateLimitException extends FossabotApiException
      * @param int            $resetsAt     Time when rate limit bucket is refilled
      * @param array|null     $body         Parsed HTTP body from Fossabot API exception
      * @param Throwable|null $previous     Previous exception
-     *
-     * @throws Exception
      */
     public function __construct(
         string $fossabotCode,
@@ -83,7 +82,15 @@ final class RateLimitException extends FossabotApiException
     ) {
         $this->total = $total;
         $this->remaining = $remaining;
-        $this->resetsAt = (new DateTimeImmutable())->setTimestamp($resetsAt);
+
+        // This should never happen.
+        // @codeCoverageIgnoreStart
+        try {
+            $this->resetsAt = (new DateTimeImmutable())->setTimestamp($resetsAt);
+        } catch (Throwable $exception) {
+            $this->resetsAt = date_create_immutable()->setTimestamp($resetsAt);
+        }
+        // @codeCoverageIgnoreEnd
 
         parent::__construct(
             $fossabotCode,

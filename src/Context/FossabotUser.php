@@ -76,9 +76,9 @@ final class FossabotUser extends FossabotDataModel implements FossabotUserInterf
         }
 
         return new self(
-            $body['provider_id'] ?? null,
-            $body['login'] ?? null,
-            $body['display_name'] ?? null,
+            $body['provider_id'],
+            $body['login'],
+            $body['display_name'],
             $roles,
         );
     }

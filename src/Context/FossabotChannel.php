@@ -107,17 +107,17 @@ final class FossabotChannel extends FossabotDataModel implements FossabotChannel
     public static function createFromBody(array $body): FossabotChannelInterface
     {
         return new self(
-            $body['id'] ?? null,
-            $body['login'] ?? null,
-            $body['display_name'] ?? null,
-            $body['avatar'] ?? null,
-            $body['slug'] ?? null,
-            $body['broadcaster_type'] ?? null,
-            $body['provider'] ?? null,
-            $body['provider_id'] ?? null,
+            $body['id'],
+            $body['login'],
+            $body['display_name'],
+            $body['avatar'],
+            $body['slug'],
+            $body['broadcaster_type'],
+            $body['provider'],
+            $body['provider_id'],
             new DateTimeImmutable($body['created_at']),
             new DateTimeImmutable($body['stream_timestamp']),
-            $body['is_live'] ?? null,
+            $body['is_live'],
         );
     }
 

@@ -37,11 +37,11 @@ use Brandon14\FossabotCommander\Tests\Stubs\StubCommand;
 use Brandon14\FossabotCommander\Contracts\FossabotCommand;
 use Brandon14\FossabotCommander\Contracts\Context\FossabotContext;
 use Brandon14\FossabotCommander\Contracts\Exceptions\RateLimitException;
-use Brandon14\FossabotCommander\Contracts\Exceptions\JsonParsingException;
 use Brandon14\FossabotCommander\Contracts\Exceptions\CannotGetContextException;
 use Brandon14\FossabotCommander\Contracts\Exceptions\FossabotCommanderException;
 use Brandon14\FossabotCommander\Contracts\Exceptions\CannotCreateContextException;
 use Brandon14\FossabotCommander\Contracts\Exceptions\CannotValidateRequestException;
+use Brandon14\FossabotCommander\Contracts\Exceptions\NoValidLoggerProvidedException;
 
 it('returns a command', function () {
     $httpClient = Mockery::mock(ClientInterface::class);
@@ -155,7 +155,7 @@ it('handles exceptions from HTTP client during context', function () {
             case 0:
                 return $response;
             case 1:
-                throw new RuntimeException();
+                throw new RuntimeException('Foo.');
         }
 
         return true;
@@ -167,7 +167,7 @@ it('handles exceptions from HTTP client during context', function () {
     $foss->runCommand($command, customToken());
 })->throws(FossabotCommanderException::class);
 
-it('handles FossabotCommanderException exceptions from HTTP client during context (rethrows)', function () {
+it('handles FossabotCommanderException exceptions from HTTP client during context (rethrows as CannotGetContextException)', function () {
     $httpClient = Mockery::mock(ClientInterface::class);
     $requestFactory = Mockery::mock(RequestFactoryInterface::class);
 
@@ -177,7 +177,7 @@ it('handles FossabotCommanderException exceptions from HTTP client during contex
 
     $requestFactory->allows('createRequest')->twice()->andReturns($request, $contextRequest);
 
-    $exception = new FossabotCommanderException();
+    $exception = new FossabotCommanderException('Foo.');
     // We want to throw a generic exception on the second request when it would be getting the context.
     $httpClient->allows('sendRequest')->twice()->andReturnUsing(static function () use ($response, $exception) {
         static $counter = 0;
@@ -195,14 +195,8 @@ it('handles FossabotCommanderException exceptions from HTTP client during contex
     $foss = new FossabotCommander($httpClient, $requestFactory);
     $command = new StubCommand();
 
-    try {
-        $foss->runCommand($command, customToken());
-    } catch (FossabotCommanderException $exp) {
-        // Check that it rethrew the same exception in this case.
-        expect($exp)->toBeInstanceOf(FossabotCommanderException::class)
-            ->and($exp)->toEqual($exception);
-    }
-});
+    $foss->runCommand($command, customToken());
+})->throws(CannotGetContextException::class);
 
 it('handles failing to get context', function () {
     $httpClient = Mockery::mock(ClientInterface::class);
@@ -332,7 +326,7 @@ it('throws exception (CannotValidateRequestException) on invalid JSON during val
     $foss->runCommand($command, customToken());
 })->throws(CannotValidateRequestException::class);
 
-it('throws exception (JsonParsingException) on invalid JSON during context', function () {
+it('throws exception (CannotGetContextException) on invalid JSON during context', function () {
     $httpClient = Mockery::mock(ClientInterface::class);
     $requestFactory = Mockery::mock(RequestFactoryInterface::class);
 
@@ -349,7 +343,7 @@ it('throws exception (JsonParsingException) on invalid JSON during context', fun
     $command = new StubCommand();
 
     $foss->runCommand($command, customToken());
-})->throws(JsonParsingException::class);
+})->throws(CannotGetContextException::class);
 
 it('handles creating context data with invalid data', function () {
     $httpClient = Mockery::mock(ClientInterface::class);
@@ -385,8 +379,80 @@ it('makes calls to logger if provided', function () {
     // Ensure we make at least one call to the mocked logger.
     $logger->allows('log')->atLeast()->once();
 
-    $foss = new FossabotCommander($httpClient, $requestFactory, $logger);
+    $foss = new FossabotCommander($httpClient, $requestFactory, $logger, true);
     $command = new StubCommand();
 
     $foss->runCommand($command, customToken());
 });
+
+it('disables logging', function () {
+    $httpClient = Mockery::mock(ClientInterface::class);
+    $requestFactory = Mockery::mock(RequestFactoryInterface::class);
+    $logger = Mockery::mock(LoggerInterface::class);
+
+    $request = makeRequest(getFossabotUrl('/validate/'.customToken()));
+    $contextRequest = makeRequest(getFossabotUrl('/context/'.customToken()));
+    $response = makeResponse(200, array_merge(standardHeaders(), rateLimitingHeaders()), validTokenBody());
+    $contextResponse = makeResponse(200, array_merge(standardHeaders(), messageHeaders()), contextBody());
+
+    $requestFactory->allows('createRequest')->twice()->andReturns($request, $contextRequest);
+    $httpClient->allows('sendRequest')->twice()->andReturns($response, $contextResponse);
+    // Ensure we don't make a call to log since logging is disabled.
+    $logger->allows('log')->never();
+
+    $foss = new FossabotCommander($httpClient, $requestFactory, $logger, true);
+    $foss->disableLogging();
+    $command = new StubCommand();
+
+    $foss->runCommand($command, customToken());
+});
+
+it('enables logging', function () {
+    $httpClient = Mockery::mock(ClientInterface::class);
+    $requestFactory = Mockery::mock(RequestFactoryInterface::class);
+    $logger = Mockery::mock(LoggerInterface::class);
+
+    $request = makeRequest(getFossabotUrl('/validate/'.customToken()));
+    $contextRequest = makeRequest(getFossabotUrl('/context/'.customToken()));
+    $response = makeResponse(200, array_merge(standardHeaders(), rateLimitingHeaders()), validTokenBody());
+    $contextResponse = makeResponse(200, array_merge(standardHeaders(), messageHeaders()), contextBody());
+
+    $requestFactory->allows('createRequest')->twice()->andReturns($request, $contextRequest);
+    $httpClient->allows('sendRequest')->twice()->andReturns($response, $contextResponse);
+    // Ensure we make at least one call to the mocked logger.
+    $logger->allows('log')->atLeast()->once();
+
+    // Disable logging when creating so we can enable it later.
+    $foss = new FossabotCommander($httpClient, $requestFactory, $logger, false);
+    $foss->enableLogging();
+    $command = new StubCommand();
+
+    $foss->runCommand($command, customToken());
+});
+
+it('only allows logging enabled when a valid PSR logger is provided via constructor', function () {
+    $httpClient = Mockery::mock(ClientInterface::class);
+    $requestFactory = Mockery::mock(RequestFactoryInterface::class);
+
+    // Enable logging in constructor, but don't provide PSR logger.
+    new FossabotCommander($httpClient, $requestFactory, null, true);
+})->throws(NoValidLoggerProvidedException::class);
+
+it('only allows logging enabled when a valid PSR logger is provided via enableLogging method', function () {
+    $httpClient = Mockery::mock(ClientInterface::class);
+    $requestFactory = Mockery::mock(RequestFactoryInterface::class);
+
+    $foss = new FossabotCommander($httpClient, $requestFactory, null, false);
+    // Enable logging via method, with no PSR logger provided.
+    $foss->enableLogging();
+})->throws(NoValidLoggerProvidedException::class);
+
+it('only allows setting null logger when logging is disabled', function () {
+    $httpClient = Mockery::mock(ClientInterface::class);
+    $requestFactory = Mockery::mock(RequestFactoryInterface::class);
+    $logger = Mockery::mock(LoggerInterface::class);
+
+    $foss = new FossabotCommander($httpClient, $requestFactory, $logger, true);
+    // Logging is enabled, but we tried to null out the logger instance, should throw exception.
+    $foss->setLog(null);
+})->throws(NoValidLoggerProvidedException::class);
