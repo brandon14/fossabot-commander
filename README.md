@@ -163,6 +163,12 @@ For more complicated commands, the sky is the limit. Depending on how you want t
 your `FossabotCommand` instances, you can use the `FossabotContext` data to provide rich integration
 for your Fossabot chatbot!
 
+### Usage with Laravel:
+
+If you are planning on using `fossabot-commander` in a Laravel project, check out
+the Laravel package [fossabot-commander-laravel](https://github.com/brandon14/fossabot-commander-laravel)
+that I made for easy integration within the Laravel ecosystem.
+
 ## Standards
 
 We strive to meet the [PSR-12](https://www.php-fig.org/psr/psr-12/) coding style for PHP projects, and enforce our
