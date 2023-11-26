@@ -112,7 +112,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 
 
-### psr/log (Version 3.0.0 | fe5ea30)
+### psr/log (Version 1.1.4 | d49695b)
 Common interface for logging libraries
 Homepage: [https://github.com/php-fig/log](https://github.com/php-fig/log)
 Licenses Used: MIT
