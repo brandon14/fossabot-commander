@@ -14,18 +14,9 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-latest]
-        php: [7.4, 8.0, 8.1, 8.2]
+        php: [7.4, 8.0, 8.1, 8.2, 8.3]
         dependency-version: [prefer-lowest, prefer-stable]
         experimental: [false]
-        include:
-          - php: 8.3
-            os: ubuntu-latest
-            dependency-version: prefer-lowest
-            experimental: true
-          - php: 8.3
-            os: ubuntu-latest
-            dependency-version: prefer-stable
-            experimental: true
 
     name: PHP-${{ matrix.php }} - OS-${{ matrix.os }} - ${{ matrix.dependency-version }} - Experimental- ${{ matrix.experimental }}
 
@@ -54,7 +45,7 @@ jobs:
         run: composer run-script test
 
       - name: Upload coverage
-        if: ${{ github.event_name != 'schedule' && matrix.php == '8.2' }}
+        if: ${{ github.event_name != 'schedule' && matrix.php == '8.3' && matrix.dependency-version == 'prefer-stable' }}
         uses: codecov/codecov-action@v3
         env:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
@@ -62,7 +53,7 @@ jobs:
           fail_ci_if_error: true
           files: ./coverage.xml
       - name: Upload code climate
-        if: ${{ github.event_name != 'schedule' && matrix.php == '8.2' }}
+        if: ${{ github.event_name != 'schedule' && matrix.php == '8.3' && matrix.dependency-version == 'prefer-stable' }}
         uses: paambaati/codeclimate-action@v5
         env:
           CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
