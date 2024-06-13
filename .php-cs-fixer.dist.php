@@ -92,5 +92,6 @@ return (new PhpCsFixer\Config())
         ],
         'nullable_type_declaration_for_default_null_value' => true,
         'get_class_to_class_keyword' => false,
+        'fully_qualified_strict_types' => false,
     ])
     ->setFinder($finder);
