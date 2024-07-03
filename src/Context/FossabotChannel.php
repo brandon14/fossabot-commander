@@ -36,7 +36,7 @@ use DateTimeImmutable;
 use Brandon14\FossabotCommander\Contracts\Context\FossabotChannel as FossabotChannelInterface;
 
 /**
- * Fossabot channel context data model. Contains informationa bout the channel in which the custom API was invoked in.
+ * Fossabot channel context data model. Contains information about the channel in which the custom API was invoked in.
  *
  * @see https://docs.fossabot.com/variables/customapi#getting-context
  *
@@ -45,6 +45,8 @@ use Brandon14\FossabotCommander\Contracts\Context\FossabotChannel as FossabotCha
 final class FossabotChannel extends FossabotDataModel implements FossabotChannelInterface
 {
     /**
+     * Constructs a new FossabotChannel class.
+     *
      * @param string            $id              Channel ID
      * @param string            $login           Login name
      * @param string            $displayName     Display name
@@ -123,6 +125,8 @@ final class FossabotChannel extends FossabotDataModel implements FossabotChannel
 
     /**
      * {@inheritDoc}
+     *
+     * @noinspection PhpMethodNamingConventionInspection
      */
     public function id(): string
     {

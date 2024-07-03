@@ -34,6 +34,8 @@ namespace Brandon14\FossabotCommander\Contracts\Exceptions;
 /**
  * Exception thrown when the API call to get the context data fails.
  *
+ * @noinspection PhpClassNamingConventionInspection
+ *
  * @author Brandon Clothier <brandon14125@gmail.com>
  */
 final class CannotGetContextException extends FossabotApiException

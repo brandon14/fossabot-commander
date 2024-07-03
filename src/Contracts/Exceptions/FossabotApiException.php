@@ -38,6 +38,8 @@ use function json_encode;
 /**
  * Generic Fossabot API exception thrown when making Fossabot custom API requests.
  *
+ * @noinspection PhpClassNamingConventionInspection
+ *
  * @author Brandon Clothier <brandon14125@gmail.com>
  */
 class FossabotApiException extends FossabotCommanderException
@@ -68,6 +70,8 @@ class FossabotApiException extends FossabotCommanderException
     private int $statusCode;
 
     /**
+     * Constructs a new FossabotApiException class.
+     *
      * @param string         $fossabotCode Error code from Fossabot API response
      * @param string         $errorClass   Error class (error param) from Fossabot API response
      * @param string         $errorMessage Error message from Fossabot API response
@@ -157,7 +161,7 @@ class FossabotApiException extends FossabotCommanderException
 
         $body = '';
 
-        // Try to parse the body inot a JSON string to add to the string representation of the exception.
+        // Try to parse the body into a JSON string to add to the string representation of the exception.
         try {
             $body = json_encode($this->body, JSON_THROW_ON_ERROR);
             // We ignore this catch here since in our code before any FossabotApiException is made, the body would

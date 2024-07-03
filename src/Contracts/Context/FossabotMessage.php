@@ -43,6 +43,8 @@ interface FossabotMessage extends FossabotDataModel
 {
     /**
      * Message ID.
+     *
+     * @noinspection PhpMethodNamingConventionInspection
      */
     public function id(): string;
 
@@ -52,7 +54,7 @@ interface FossabotMessage extends FossabotDataModel
     public function content(): string;
 
     /**
-     * Message prvider (i.e. twitch, etc.).
+     * Message provider (i.e. twitch, etc.).
      */
     public function provider(): string;
 

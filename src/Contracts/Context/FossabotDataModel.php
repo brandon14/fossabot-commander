@@ -38,6 +38,8 @@ use JsonSerializable;
 /**
  * Base Fossabot custom API data model.
  *
+ * @noinspection PhpClassNamingConventionInspection
+ *
  * @see https://docs.fossabot.com/variables/customapi#getting-context
  *
  * @author Brandon Clothier <brandon14125@gmail.com>
@@ -51,7 +53,7 @@ interface FossabotDataModel extends ArrayAccess, JsonSerializable, Stringable
      *
      * @return $this
      */
-    public static function createFromBody(array $body); // @pest-ignore-type
+    public static function createFromBody(array $body): self; // @pest-ignore-type
 
     /**
      * Get an array representation of the data model.

@@ -44,6 +44,8 @@ interface FossabotChannel extends FossabotDataModel
 {
     /**
      * Channel ID.
+     *
+     * @noinspection PhpMethodNamingConventionInspection
      */
     public function id(): string;
 
@@ -68,12 +70,12 @@ interface FossabotChannel extends FossabotDataModel
     public function slug(): string;
 
     /**
-     * Boradcaster type (i.e. affiliate, partner, etc.).
+     * Broadcaster type (i.e. affiliate, partner, etc.).
      */
     public function broadcasterType(): string;
 
     /**
-     * Boradcaster provider (i.e. twitch, etc.).
+     * Broadcaster provider (i.e. twitch, etc.).
      */
     public function provider(): string;
 

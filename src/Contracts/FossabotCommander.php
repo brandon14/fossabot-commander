@@ -38,6 +38,8 @@ use Psr\Http\Message\RequestFactoryInterface;
 /**
  * Main class to invoke a given {@link \Brandon14\FossabotCommander\Contracts\FossabotCommand} instance.
  *
+ * @noinspection PhpClassNamingConventionInspection
+ *
  * @see https://docs.fossabot.com/variables/customapi
  *
  * @author Brandon Clothier <brandon14125@gmail.com>
@@ -63,12 +65,16 @@ interface FossabotCommander
     /**
      * Get {@link \Psr\Http\Message\RequestFactoryInterface} instance.
      *
+     * @noinspection PhpMethodNamingConventionInspection
+     *
      * @return \Psr\Http\Message\RequestFactoryInterface Request factory instance
      */
     public function getRequestFactory(): RequestFactoryInterface;
 
     /**
      * Set a new {@link \Psr\Http\Message\RequestFactoryInterface} instance.
+     *
+     * @noinspection PhpMethodNamingConventionInspection
      *
      * @param \Psr\Http\Message\RequestFactoryInterface $requestFactory PSR request factory instance
      *
@@ -168,6 +174,8 @@ interface FossabotCommander
 
     /**
      * Gets general class information used for providing additional logging context.
+     *
+     * @noinspection PhpMethodNamingConventionInspection
      */
     public function getLoggingContext(): array;
 }

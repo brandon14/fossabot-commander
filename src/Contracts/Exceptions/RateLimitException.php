@@ -37,7 +37,9 @@ use DateTimeImmutable;
 use function date_create_immutable;
 
 /**
- * Exception thrown when making a Fossabot API call and it results in a rate limit throttled response (429).
+ * Exception thrown when making a Fossabot API call, and it results in a rate limit throttled response (429).
+ *
+ * @noinspection PhpClassNamingConventionInspection
  *
  * @see https://docs.fossabot.com/variables/customapi#rate-limits
  *
@@ -61,6 +63,8 @@ final class RateLimitException extends FossabotApiException
     private DateTimeImmutable $resetsAt;
 
     /**
+     * Constructs a new RateLimitException class.
+     *
      * @param string         $fossabotCode Error code from Fossabot API response
      * @param string         $errorClass   Error class (error param) from Fossabot API response
      * @param string         $errorMessage Error message from Fossabot API response

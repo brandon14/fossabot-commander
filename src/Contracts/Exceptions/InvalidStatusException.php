@@ -35,6 +35,8 @@ namespace Brandon14\FossabotCommander\Contracts\Exceptions;
  * Fossabot API exception thrown when the return status of a call is not 200, or one of the special ones (i.e. rate
  * limit, invalid token, etc.).
  *
+ * @noinspection PhpClassNamingConventionInspection
+ *
  * @author Brandon Clothier <brandon14125@gmail.com>
  */
 final class InvalidStatusException extends FossabotApiException

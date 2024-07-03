@@ -35,6 +35,8 @@ namespace Brandon14\FossabotCommander\Contracts\Exceptions;
  * Exception thrown when enabling logging for the {@link \Brandon14\FossabotCommander\Contracts\FossabotCommander} class
  * when no {@link \Psr\Log\LoggerInterface} has been provided.
  *
+ * @noinspection PhpClassNamingConventionInspection
+ *
  * @author Brandon Clothier <brandon14125@gmail.com>
  */
 final class NoValidLoggerProvidedException extends FossabotCommanderException

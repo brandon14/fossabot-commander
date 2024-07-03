@@ -48,6 +48,8 @@ final class StubCommand extends FossabotCommand
     private ?Throwable $exception;
 
     /**
+     * Constructs a new StubCommand class.
+     *
      * @param Throwable|null $exception Optional exception to throw during response
      */
     public function __construct(?Throwable $exception = null)

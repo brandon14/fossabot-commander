@@ -43,6 +43,8 @@ use Brandon14\FossabotCommander\Contracts\Context\FossabotUser as FossabotUserIn
 final class FossabotUser extends FossabotDataModel implements FossabotUserInterface
 {
     /**
+     * Constructs a new FossabotUser class.
+     *
      * @param string $providerId  Provider ID
      * @param string $login       Login name
      * @param string $displayName Display name

@@ -36,6 +36,8 @@ use RuntimeException;
 /**
  * Generic library exception.
  *
+ * @noinspection PhpClassNamingConventionInspection
+ *
  * @author Brandon Clothier <brandon14125@gmail.com>
  */
 class FossabotCommanderException extends RuntimeException

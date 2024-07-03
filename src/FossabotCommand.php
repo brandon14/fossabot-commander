@@ -37,6 +37,8 @@ use Brandon14\FossabotCommander\Contracts\FossabotCommand as FossabotCommandInte
  * Class to define a response for a Fossabot custom API request. This class is only tasked with returning the response
  * string back to Fossabot, and can use any of the additional context information to make its response.
  *
+ * @noinspection EmptyClassInspection
+ *
  * @author Brandon Clothier <brandon14125@gmail.com>
  */
 abstract class FossabotCommand implements FossabotCommandInterface

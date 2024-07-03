@@ -34,6 +34,8 @@ namespace Brandon14\FossabotCommander\Contracts\Exceptions;
 /**
  * Exception thrown when the context data model cannot be created from the parsed response data.
  *
+ * @noinspection PhpClassNamingConventionInspection
+ *
  * @author Brandon Clothier <brandon14125@gmail.com>
  */
 final class CannotCreateContextException extends FossabotCommanderException

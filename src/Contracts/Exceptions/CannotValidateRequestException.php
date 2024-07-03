@@ -34,6 +34,8 @@ namespace Brandon14\FossabotCommander\Contracts\Exceptions;
 /**
  * Exception thrown when validating the request fails.
  *
+ * @noinspection PhpClassNamingConventionInspection
+ *
  * @author Brandon Clothier <brandon14125@gmail.com>
  */
 final class CannotValidateRequestException extends FossabotApiException

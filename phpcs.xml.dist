@@ -15,6 +15,9 @@
   <exclude-pattern>vendor</exclude-pattern>
   <!-- Exclude tests -->
   <exclude-pattern>tests</exclude-pattern>
+  <!-- Exclude doctum -->
+  <exclude-pattern>docs</exclude-pattern>
+  <exclude-pattern>doctum_cache</exclude-pattern>
 
   <rule ref="PSR2" />
 

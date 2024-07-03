@@ -35,6 +35,8 @@ namespace Brandon14\FossabotCommander\Contracts\Exceptions;
  * Exception thrown when trying to mutate properties of the
  * {@link \Brandon14\FossabotCommander\Contracts\Context\FossabotDataModel} instances.
  *
+ * @noinspection PhpClassNamingConventionInspection
+ *
  * @author Brandon Clothier <brandon14125@gmail.com>
  */
 final class ImmutableDataModelException extends FossabotCommanderException

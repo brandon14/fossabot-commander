@@ -48,7 +48,6 @@ use Brandon14\FossabotCommander\Contracts\Context\FossabotDataModel as FossabotD
  * @see    https://docs.fossabot.com/variables/customapi#getting-context
  *
  * @author Brandon Clothier <brandon14125@gmail.com>
- * /uthor Brandon Clothier <brandon14125@gmail.com>
  */
 abstract class FossabotDataModel implements FossabotDataModelInterface
 {
@@ -58,9 +57,9 @@ abstract class FossabotDataModel implements FossabotDataModelInterface
     protected array $data = [];
 
     /**
-     * {@inheritDoc}
+     * Whether an offset exists.
      *
-     * @param string $offset
+     * @param string $offset Offset name
      */
     public function offsetExists($offset): bool // @pest-ignore-type
     {
@@ -68,9 +67,9 @@ abstract class FossabotDataModel implements FossabotDataModelInterface
     }
 
     /**
-     * {@inheritDoc}
+     * Offset to retrieve.
      *
-     * @param string $offset
+     * @param string $offset Offset name
      */
     #[ReturnTypeWillChange]
     public function offsetGet($offset) // @pest-ignore-type
@@ -91,10 +90,12 @@ abstract class FossabotDataModel implements FossabotDataModelInterface
     }
 
     /**
-     * {@inheritDoc}
+     * Offset to set.
      *
-     * @param string $offset
-     * @param mixed  $value
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+     *
+     * @param string $offset Offset name
+     * @param mixed  $value  Property value
      *
      * @throws \Brandon14\FossabotCommander\Contracts\Exceptions\ImmutableDataModelException
      */
@@ -104,9 +105,9 @@ abstract class FossabotDataModel implements FossabotDataModelInterface
     }
 
     /**
-     * {@inheritDoc}
+     * Offset to unset.
      *
-     * @param string $offset
+     * @param string $offset Offset name
      *
      * @throws \Brandon14\FossabotCommander\Contracts\Exceptions\ImmutableDataModelException
      */
@@ -116,7 +117,7 @@ abstract class FossabotDataModel implements FossabotDataModelInterface
     }
 
     /**
-     * @return array Serialized data
+     * Serializes data.
      */
     public function __serialize(): array
     {
@@ -124,6 +125,8 @@ abstract class FossabotDataModel implements FossabotDataModelInterface
     }
 
     /**
+     * Unserializes data.
+     *
      * @param array $data Unserialized data
      */
     public function __unserialize(array $data): void
@@ -132,6 +135,8 @@ abstract class FossabotDataModel implements FossabotDataModelInterface
     }
 
     /**
+     * Gets property.
+     *
      * @param string $name Offset name
      */
     public function __get($name) // @pest-ignore-type
@@ -140,6 +145,8 @@ abstract class FossabotDataModel implements FossabotDataModelInterface
     }
 
     /**
+     * Sets property.
+     *
      * @param string $name  Offset name
      * @param mixed  $value Offset value
      *
@@ -151,6 +158,8 @@ abstract class FossabotDataModel implements FossabotDataModelInterface
     }
 
     /**
+     * Checks for existence of property.
+     *
      * @param string $name Offset name
      */
     public function __isset($name): bool // @pest-ignore-type
@@ -159,6 +168,8 @@ abstract class FossabotDataModel implements FossabotDataModelInterface
     }
 
     /**
+     * Unsets property.
+     *
      * @param string $name Offset name
      *
      * @throws \Brandon14\FossabotCommander\Contracts\Exceptions\ImmutableDataModelException
@@ -169,7 +180,7 @@ abstract class FossabotDataModel implements FossabotDataModelInterface
     }
 
     /**
-     * {@inheritDoc}
+     * Specify data which should be serialized to JSON.
      */
     public function jsonSerialize(): array
     {
@@ -193,7 +204,8 @@ abstract class FossabotDataModel implements FossabotDataModelInterface
     }
 
     /**
-     * {@inheritDoc}
+     * Magic method https://www.php.net/manual/en/language.oop5.magic.php#object. toString  allows a class to decide
+     * how it will react when it is treated like a string.
      */
     public function __toString(): string
     {

@@ -45,6 +45,8 @@ use Brandon14\FossabotCommander\Contracts\Context\FossabotRole as FossabotRoleIn
 final class FossabotRole extends FossabotDataModel implements FossabotRoleInterface
 {
     /**
+     * Constructs a new FossabotRole class.
+     *
      * @param string $id   Role ID
      * @param string $name Role name
      * @param string $type Role type
@@ -76,6 +78,8 @@ final class FossabotRole extends FossabotDataModel implements FossabotRoleInterf
 
     /**
      * {@inheritDoc}
+     *
+     * @noinspection PhpMethodNamingConventionInspection
      */
     public function id(): string
     {
