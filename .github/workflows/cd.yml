@@ -20,7 +20,6 @@ jobs:
           uses: mikepenz/release-changelog-builder-action@v4
           with:
             outputFile: 'CHANGELOG.md'
-            toTag: ${{ github.ref }}
           env:
             GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
