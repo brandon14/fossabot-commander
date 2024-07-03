@@ -27,6 +27,8 @@ COMMENT;
 
 $finder = PhpCsFixer\Finder::create()
     ->notPath('vendor')
+    ->notPath('docs')
+    ->notPath('doctum_cache')
     ->notName('test.php')
     ->in(__DIR__)
     ->name('*.php')

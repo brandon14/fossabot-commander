@@ -36,11 +36,15 @@ use Throwable;
 /**
  * Exception thrown when making a Fossabot API call results in a 400 response status.
  *
+ * @noinspection PhpClassNamingConventionInspection
+ *
  * @author Brandon Clothier <brandon14125@gmail.com>
  */
 final class InvalidTokenException extends FossabotApiException
 {
     /**
+     * Constructs a new InvalidTokenException class.
+     *
      * @param string         $fossabotCode Error code from Fossabot API response
      * @param string         $errorClass   Error class (error param) from Fossabot API response
      * @param string         $errorMessage Error message from Fossabot API response

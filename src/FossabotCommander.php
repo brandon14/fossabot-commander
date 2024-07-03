@@ -60,6 +60,7 @@ use Brandon14\FossabotCommander\Contracts\Exceptions\RateLimitException;
 use Brandon14\FossabotCommander\Contracts\Exceptions\FossabotApiException;
 use Brandon14\FossabotCommander\Contracts\Exceptions\JsonParsingException;
 use Brandon14\FossabotCommander\Contracts\Exceptions\InvalidTokenException;
+use Brandon14\FossabotCommander\Contracts\Exceptions\InvalidStatusException;
 use Brandon14\FossabotCommander\Contracts\Exceptions\CannotGetContextException;
 use Brandon14\FossabotCommander\Contracts\Exceptions\CannotCreateContextException;
 use Brandon14\FossabotCommander\Contracts\Exceptions\CannotExecuteCommandException;
@@ -79,9 +80,19 @@ class FossabotCommander implements FossabotCommanderInterface, LoggerAwareInterf
     use LoggerTrait;
 
     /**
+     * Fossabot API version.
+     */
+    private const FOSSABOT_API_VERSION = 'v2';
+
+    /**
+     * Fossabot API route.
+     */
+    private const FOSSABOT_API_ROUTE = 'customapi';
+
+    /**
      * Fossabot API base URL.
      */
-    private const FOSSABOT_API_BASE_URL = 'https://api.fossabot.com/v2/customapi';
+    private const FOSSABOT_API_BASE_URL = 'https://api.fossabot.com/'.self::FOSSABOT_API_ROUTE.'/'.self::FOSSABOT_API_ROUTE;
 
     /**
      * PSR HTTP client instance.
@@ -99,6 +110,8 @@ class FossabotCommander implements FossabotCommanderInterface, LoggerAwareInterf
     private bool $logging = false;
 
     /**
+     * Constructs a new FossabotCommander class.
+     *
      * @SuppressWarnings(PHPMD.BooleanArgumentFlag)
      *
      * @param \Psr\Http\Client\ClientInterface          $httpClient     PSR HTTP client instance
@@ -140,6 +153,8 @@ class FossabotCommander implements FossabotCommanderInterface, LoggerAwareInterf
 
     /**
      * {@inheritDoc}
+     *
+     * @noinspection PhpMethodNamingConventionInspection
      */
     public function getRequestFactory(): RequestFactoryInterface
     {
@@ -148,6 +163,8 @@ class FossabotCommander implements FossabotCommanderInterface, LoggerAwareInterf
 
     /**
      * {@inheritDoc}
+     *
+     * @noinspection PhpMethodNamingConventionInspection
      */
     public function setRequestFactory(RequestFactoryInterface $requestFactory): FossabotCommanderInterface
     {
@@ -195,9 +212,9 @@ class FossabotCommander implements FossabotCommanderInterface, LoggerAwareInterf
     }
 
     /**
-     * @SuppressWarnings(PHPMD.BooleanArgumentFlag)
-     *
      * {@inheritDoc}
+     *
+     * @SuppressWarnings(PHPMD.BooleanArgumentFlag)
      */
     public function setLogging(bool $logging): FossabotCommanderInterface
     {
@@ -221,9 +238,9 @@ class FossabotCommander implements FossabotCommanderInterface, LoggerAwareInterf
     }
 
     /**
-     * @SuppressWarnings(PHPMD.BooleanArgumentFlag)
-     *
      * {@inheritDoc}
+     *
+     * @SuppressWarnings(PHPMD.BooleanArgumentFlag)
      */
     public function runCommand(
         FossabotCommand $command,
@@ -294,6 +311,8 @@ class FossabotCommander implements FossabotCommanderInterface, LoggerAwareInterf
     /**
      * Makes and sends a request to validate the Fossabot custom API token provided in the request.
      *
+     * @noinspection PhpMethodNamingConventionInspection
+     *
      * @param string $customApiToken Fossabot custom API token
      *
      * @throws Throwable
@@ -302,6 +321,7 @@ class FossabotCommander implements FossabotCommanderInterface, LoggerAwareInterf
      * @throws \Brandon14\FossabotCommander\Contracts\Exceptions\JsonParsingException
      * @throws \Brandon14\FossabotCommander\Contracts\Exceptions\FossabotApiException
      * @throws \Brandon14\FossabotCommander\Contracts\Exceptions\InvalidTokenException
+     * @throws \Brandon14\FossabotCommander\Contracts\Exceptions\InvalidStatusException
      */
     private function sendValidateRequest(string $customApiToken): void
     {
@@ -410,6 +430,8 @@ class FossabotCommander implements FossabotCommanderInterface, LoggerAwareInterf
     /**
      * Makes and sends a request to get the additional Fossabot context and returns the parsed JSON body as an array.
      *
+     * @noinspection PhpMethodNamingConventionInspection
+     *
      * @param string $customApiToken Fossabot custom API token
      *
      * @throws Throwable
@@ -418,6 +440,7 @@ class FossabotCommander implements FossabotCommanderInterface, LoggerAwareInterf
      * @throws \Brandon14\FossabotCommander\Contracts\Exceptions\FossabotApiException
      * @throws \Brandon14\FossabotCommander\Contracts\Exceptions\JsonParsingException
      * @throws \Brandon14\FossabotCommander\Contracts\Exceptions\InvalidTokenException
+     * @throws \Brandon14\FossabotCommander\Contracts\Exceptions\InvalidStatusException
      *
      * @return array{
      *     channel: array{
@@ -494,6 +517,9 @@ class FossabotCommander implements FossabotCommanderInterface, LoggerAwareInterf
      * Gets the exception context data from a given Fossabot API error response and creates the appropriate exception
      * class.
      *
+     * @noinspection MultipleReturnStatementsInspection
+     * @noinspection PhpMethodNamingConventionInspection
+     *
      * @param array $body       Parsed JSON body
      * @param int   $statusCode HTTP status code
      * @param array $headers    HTTP response headers
@@ -527,7 +553,7 @@ class FossabotCommander implements FossabotCommanderInterface, LoggerAwareInterf
                     $body,
                 );
             default:
-                return new FossabotApiException(
+                return new InvalidStatusException(
                     $fossabotCode,
                     $errorClass,
                     $errorMessage,
@@ -539,6 +565,8 @@ class FossabotCommander implements FossabotCommanderInterface, LoggerAwareInterf
 
     /**
      * {@inheritDoc}
+     *
+     * @noinspection PhpMethodNamingConventionInspection
      */
     public function log($level, $message, array $context = []): void // @pest-ignore-type
     {
@@ -567,6 +595,8 @@ class FossabotCommander implements FossabotCommanderInterface, LoggerAwareInterf
 
     /**
      * {@inheritDoc}
+     *
+     * @noinspection PhpMethodNamingConventionInspection
      */
     public function getLoggingContext(): array
     {

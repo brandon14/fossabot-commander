@@ -174,6 +174,8 @@ function contextBody(): string
 /**
  * Get mocked valid context with no message portion present.
  *
+ * @noinspection PhpFunctionNamingConventionInspection
+ *
  * @return string JSON body
  */
 function contextNoMessageBody(): string
@@ -241,6 +243,8 @@ function rateLimitedBody(): string
  * Get a mocked invalid context body. This shouldn't ever come back from their API, but is included to ensure we can
  * either make the context objects, or throw an exception.
  *
+ * @noinspection PhpFunctionNamingConventionInspection
+ *
  * @return string JSON body
  */
 function invalidContextBody(): string
@@ -303,6 +307,8 @@ function standardHeaders(): array
 
 /**
  * Mocked rate limiting Fossabot API headers.
+ *
+ * @noinspection PhpFunctionNamingConventionInspection
  *
  * @return array|string[][] Array of headers
  */
@@ -417,6 +423,8 @@ function contextDataModel(): FossabotContextInterface
  * Make a mock {@link \Brandon14\FossabotCommander\Contracts\Context\FossabotContext} instance for testing with no
  * message context included.
  *
+ * @noinspection PhpFunctionNamingConventionInspection
+ *
  * @throws \JsonException
  *
  * @return \Brandon14\FossabotCommander\Contracts\Context\FossabotContext Fossabot context data
@@ -433,6 +441,8 @@ function contextNoMessageDataModel(): FossabotContextInterface
 /**
  * Make a mock {@link \Brandon14\FossabotCommander\Contracts\Context\FossabotContext} instance for testing with no roles
  * on user context data.
+ *
+ * @noinspection PhpFunctionNamingConventionInspection
  *
  * @throws \JsonException
  *

@@ -47,6 +47,8 @@ use Brandon14\FossabotCommander\Contracts\Context\FossabotMessage as FossabotMes
 final class FossabotContext extends FossabotDataModel implements FossabotContextInterface
 {
     /**
+     * Constructs a new FossabotContext class.
+     *
      * @param \Brandon14\FossabotCommander\Context\FossabotChannel      $channel Channel data
      * @param \Brandon14\FossabotCommander\Context\FossabotMessage|null $message Message data
      */

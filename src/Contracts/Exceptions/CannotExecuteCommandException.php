@@ -35,6 +35,8 @@ namespace Brandon14\FossabotCommander\Contracts\Exceptions;
  * Exception thrown when the {@link \Brandon14\FossabotCommander\Contracts\FossabotCommand::getResponse()} throws an
  * exception.
  *
+ * @noinspection PhpClassNamingConventionInspection
+ *
  * @author Brandon Clothier <brandon14125@gmail.com>
  */
 final class CannotExecuteCommandException extends FossabotCommanderException

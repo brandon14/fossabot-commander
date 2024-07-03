@@ -47,6 +47,8 @@ use Brandon14\FossabotCommander\Contracts\Context\FossabotMessage as FossabotMes
 final class FossabotMessage extends FossabotDataModel implements FossabotMessageInterface
 {
     /**
+     * Constructs a new FossabotMessage class.
+     *
      * @param string                                                      $id       Message ID
      * @param string                                                      $content  Message content
      * @param string                                                      $provider Provider
@@ -83,6 +85,8 @@ final class FossabotMessage extends FossabotDataModel implements FossabotMessage
 
     /**
      * {@inheritDoc}
+     *
+     * @noinspection PhpMethodNamingConventionInspection
      */
     public function id(): string
     {

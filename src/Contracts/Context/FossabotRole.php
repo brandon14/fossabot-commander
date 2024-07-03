@@ -42,6 +42,8 @@ interface FossabotRole extends FossabotDataModel
 {
     /**
      * Role ID.
+     *
+     * @noinspection PhpMethodNamingConventionInspection
      */
     public function id(): string;
 

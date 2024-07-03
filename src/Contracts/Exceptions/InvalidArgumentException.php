@@ -35,6 +35,8 @@ namespace Brandon14\FossabotCommander\Contracts\Exceptions;
  * Exception thrown from {@link \Brandon14\FossabotCommander\Contracts\Context\FossabotDataModel} instances when
  * accessing invalid property names.
  *
+ * @noinspection PhpClassNamingConventionInspection
+ *
  * @author Brandon Clothier <brandon14125@gmail.com>
  */
 final class InvalidArgumentException extends FossabotCommanderException
