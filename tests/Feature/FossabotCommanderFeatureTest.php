@@ -5,7 +5,7 @@
  *
  * MIT License
  *
- * Copyright (c) 2023 Brandon Clothier
+ * Copyright (c) 2023-2024 Brandon Clothier
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -40,6 +40,7 @@ use Brandon14\FossabotCommander\Contracts\Exceptions\RateLimitException;
 use Brandon14\FossabotCommander\Contracts\Exceptions\CannotGetContextException;
 use Brandon14\FossabotCommander\Contracts\Exceptions\FossabotCommanderException;
 use Brandon14\FossabotCommander\Contracts\Exceptions\CannotCreateContextException;
+use Brandon14\FossabotCommander\Contracts\Exceptions\CannotExecuteCommandException;
 use Brandon14\FossabotCommander\Contracts\Exceptions\CannotValidateRequestException;
 use Brandon14\FossabotCommander\Contracts\Exceptions\NoValidLoggerProvidedException;
 
@@ -363,6 +364,25 @@ it('handles creating context data with invalid data', function () {
 
     $foss->runCommand($command, customToken());
 })->throws(CannotCreateContextException::class);
+
+it('handles exceptions thrown from FossabotCommand::getResponse()', function () {
+    $httpClient = Mockery::mock(ClientInterface::class);
+    $requestFactory = Mockery::mock(RequestFactoryInterface::class);
+
+    $request = makeRequest(getFossabotUrl('/validate/'.customToken()));
+    $contextRequest = makeRequest(getFossabotUrl('/context/'.customToken()));
+    $response = makeResponse(200, array_merge(standardHeaders(), rateLimitingHeaders()), validTokenBody());
+    $contextResponse = makeResponse(200, array_merge(standardHeaders(), messageHeaders()), contextBody());
+
+    $requestFactory->allows('createRequest')->twice()->andReturns($request, $contextRequest);
+    $httpClient->allows('sendRequest')->twice()->andReturns($response, $contextResponse);
+
+    $foss = new FossabotCommander($httpClient, $requestFactory);
+    // Command will throw an exception when executed.
+    $command = new StubCommand(new RuntimeException('This is an exception.'));
+
+    $foss->runCommand($command, customToken());
+})->throws(CannotExecuteCommandException::class);
 
 it('makes calls to logger if provided', function () {
     $httpClient = Mockery::mock(ClientInterface::class);

@@ -5,7 +5,7 @@
  *
  * MIT License
  *
- * Copyright (c) 2023 Brandon Clothier
+ * Copyright (c) 2023-2024 Brandon Clothier
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -62,6 +62,7 @@ use Brandon14\FossabotCommander\Contracts\Exceptions\JsonParsingException;
 use Brandon14\FossabotCommander\Contracts\Exceptions\InvalidTokenException;
 use Brandon14\FossabotCommander\Contracts\Exceptions\CannotGetContextException;
 use Brandon14\FossabotCommander\Contracts\Exceptions\CannotCreateContextException;
+use Brandon14\FossabotCommander\Contracts\Exceptions\CannotExecuteCommandException;
 use Brandon14\FossabotCommander\Contracts\Exceptions\CannotValidateRequestException;
 use Brandon14\FossabotCommander\Contracts\Exceptions\NoValidLoggerProvidedException;
 use Brandon14\FossabotCommander\Contracts\FossabotCommander as FossabotCommanderInterface;
@@ -273,7 +274,21 @@ class FossabotCommander implements FossabotCommanderInterface, LoggerAwareInterf
         ]);
 
         // Invoke command.
-        return $command->getResponse($context);
+        try {
+            return $command->getResponse($context);
+        } catch (Throwable $exception) {
+            $message = $exception->getMessage();
+            $this->error(
+                "Caught exception during command execution with message [{$message}].",
+                compact('exception'),
+            );
+
+            $this->debug(
+                'Transforming exception of class ['.get_class($exception).'] to ['.CannotExecuteCommandException::class.'].'
+            );
+
+            throw new CannotExecuteCommandException($message, $exception->getCode(), $exception);
+        }
     }
 
     /**

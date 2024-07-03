@@ -5,7 +5,7 @@
  *
  * MIT License
  *
- * Copyright (c) 2023 Brandon Clothier
+ * Copyright (c) 2023-2024 Brandon Clothier
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -31,6 +31,7 @@ declare(strict_types=1);
 
 namespace Brandon14\FossabotCommander\Contracts;
 
+use Throwable;
 use Brandon14\FossabotCommander\Contracts\Context\FossabotContext;
 
 /**
@@ -49,6 +50,8 @@ interface FossabotCommand
      * method as true, which is default.
      *
      * @param \Brandon14\FossabotCommander\Contracts\Context\FossabotContext|null $context Request context
+     *
+     * @throws Throwable
      *
      * @return string Custom API response
      */

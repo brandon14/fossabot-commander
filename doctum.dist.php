@@ -29,14 +29,36 @@
 
 declare(strict_types=1);
 
-namespace Brandon14\FossabotCommander\Contracts\Exceptions;
+use Doctum\Doctum;
+use Symfony\Component\Finder\Finder;
+use Doctum\Version\GitVersionCollection;
+use Doctum\RemoteRepository\GitHubRemoteRepository;
 
-/**
- * Exception thrown when the context data model cannot be created from the parsed response data.
- *
- * @author Brandon Clothier <brandon14125@gmail.com>
- */
-final class CannotCreateContextException extends FossabotCommanderException
-{
-    // Intentionally left blank.
-}
+$dir = __DIR__.'/src';
+$iterator = Finder::create()
+    ->files()
+    ->name('*.php')
+    ->in($dir);
+
+$versions = GitVersionCollection::create($dir)
+    ->addFromTags('v*')
+    ->add('main', 'main')
+    ->add('1.0-dev', '1.0-dev');
+
+return new Doctum($iterator, [
+    'versions' => $versions,
+    'title' => 'brandon14/fossabot-commander Documentation',
+    'source_dir' => dirname($dir).'/',
+    'remote_repository' => new GitHubRemoteRepository('brandon14/fossabot-commander', dirname($dir)),
+    'base_url' => 'https://brandon14.github.io/fossabot-commander/',
+    'build_dir' => __DIR__.'/docs/%version%',
+    'cache_dir' => __DIR__.'/doctum_cache/%version%',
+    'footer_link' => [
+        'href' => 'https://github.com/brandon14/fossabot-commander',
+        'rel' => 'noreferrer noopener',
+        'target' => '_blank',
+        'before_text' => 'You can edit the configuration',
+        'link_text' => 'on this', // Required if the href key is set
+        'after_text' => 'repository',
+    ],
+]);

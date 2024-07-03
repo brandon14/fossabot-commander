@@ -13,7 +13,7 @@ Licenses Used: MIT
 
 MIT License
 
-Copyright (c) 2023 Brandon Clothier
+Copyright (c) 2023-2024 Brandon Clothier
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -60,8 +60,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 
 
-### psr/http-factory (Version 1.0.2 | e616d01)
-Common interfaces for PSR-7 HTTP message factories
+### psr/http-factory (Version 1.1.0 | 2b4765f)
+PSR-17: Common interfaces for PSR-7 HTTP message factories
 Homepage: Not configured.
 Licenses Used: MIT
 MIT License
@@ -112,7 +112,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 
 
-### psr/log (Version 1.1.4 | d49695b)
+### psr/log (Version 3.0.0 | fe5ea30)
 Common interface for logging libraries
 Homepage: [https://github.com/php-fig/log](https://github.com/php-fig/log)
 Licenses Used: MIT
@@ -137,7 +137,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 
 
-### symfony/polyfill-php80 (Version v1.28.0 | 6caa573)
+### symfony/polyfill-php80 (Version v1.30.0 | 77fa799)
 Symfony polyfill backporting some PHP 8.0+ features to lower PHP versions
 Homepage: [https://symfony.com](https://symfony.com)
 Licenses Used: MIT
@@ -162,7 +162,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 
 
-### symfony/polyfill-php81 (Version v1.28.0 | 7581cd6)
+### symfony/polyfill-php81 (Version v1.30.0 | 3fb0757)
 Symfony polyfill backporting some PHP 8.1+ features to lower PHP versions
 Homepage: [https://symfony.com](https://symfony.com)
 Licenses Used: MIT

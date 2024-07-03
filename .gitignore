@@ -24,3 +24,7 @@ composer.lock
 
 # VS Code folders.
 .vscode
+
+# Doctum docs
+docs
+doctum_cache

@@ -222,8 +222,6 @@ addressed.
 
 This code is released under the MIT license.
 
-Copyright &copy; 2023 Brandon Clothier
-
-[![X (formerly Twitter) URL](https://img.shields.io/twitter/url?url=https%3A%2F%2Fgithub.com%2Fbrandon14%2Ffossabot-commander&style=for-the-badge&logo=twitter&label=TWEET%20%40inhal3exh4le&cacheSeconds=3600)](https://twitter.com/intent/tweet?url=https%3A%2F%2Fgithub.com%2Fbrandon14%2Ffossabot-commander&text=Hey%20@inhal3exh4le%20this%20fossabot-commander%20package%20is%20pretty%20cool%21)
+Copyright &copy; 2023-2024 Brandon Clothier
 
 [![X (formerly Twitter) Follow](https://img.shields.io/twitter/follow/inhal3exh4le?style=for-the-badge&logo=twitter&cacheSeconds=3600)](https://twitter.com/intent/follow?screen_name=inhal3exh4le)

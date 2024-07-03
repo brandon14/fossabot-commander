@@ -1,0 +1,41 @@
+name: ci
+on:
+  push:
+    branches: [main]
+
+jobs:
+    cd:
+      name: cd
+      runs-on: ubuntu-latest
+      permissions:
+        # Give the default GITHUB_TOKEN write permission to commit and push the
+        # added or changed files to the repository.
+        contents: write
+      steps:
+        - name: Checkout code
+          uses: actions/checkout@v4
+
+        - name: Build changelog
+          id: github_release
+          uses: mikepenz/release-changelog-builder-action@v4
+          with:
+            outputFile: 'CHANGELOG.md'
+            toTag: ${{ github.ref }}
+          env:
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+        - name: Commit changelog changes
+          uses: stefanzweifel/git-auto-commit-action@v5
+          with:
+            commit_message: "chore: Update CHANGELOG.md"
+
+        - name: Update contributors
+          uses: minicli/action-contributors@v3
+          env:
+            CONTRIB_REPOSITORY: 'brandon14/fossabot-commander'
+            CONTRIB_OUTPUT_FILE: 'CONTRIBUTORS.md'
+
+        - name: Commit contributors changes
+          uses: stefanzweifel/git-auto-commit-action@v5
+          with:
+            commit_message: "chore: Update CONTRIBUTORS.md"

@@ -5,7 +5,7 @@
  *
  * MIT License
  *
- * Copyright (c) 2023 Brandon Clothier
+ * Copyright (c) 2023-2024 Brandon Clothier
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -31,6 +31,7 @@ declare(strict_types=1);
 
 namespace Brandon14\FossabotCommander\Tests\Stubs;
 
+use Throwable;
 use Brandon14\FossabotCommander\FossabotCommand;
 use Brandon14\FossabotCommander\Contracts\Context\FossabotContext;
 
@@ -42,10 +43,27 @@ use Brandon14\FossabotCommander\Contracts\Context\FossabotContext;
 final class StubCommand extends FossabotCommand
 {
     /**
+     * Optional exception to be thrown during the response.
+     */
+    private ?Throwable $exception;
+
+    /**
+     * @param Throwable|null $exception Optional exception to throw during response
+     */
+    public function __construct(?Throwable $exception = null)
+    {
+        $this->exception = $exception;
+    }
+
+    /**
      * {@inheritDoc}
      */
     public function getResponse(?FossabotContext $context = null): string
     {
+        if ($this->exception !== null) {
+            throw $this->exception;
+        }
+
         return 'Foo.';
     }
 }

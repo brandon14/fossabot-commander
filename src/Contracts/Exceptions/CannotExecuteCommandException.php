@@ -32,11 +32,12 @@ declare(strict_types=1);
 namespace Brandon14\FossabotCommander\Contracts\Exceptions;
 
 /**
- * Exception thrown when the context data model cannot be created from the parsed response data.
+ * Exception thrown when the {@link \Brandon14\FossabotCommander\Contracts\FossabotCommand::getResponse()} throws an
+ * exception.
  *
  * @author Brandon Clothier <brandon14125@gmail.com>
  */
-final class CannotCreateContextException extends FossabotCommanderException
+final class CannotExecuteCommandException extends FossabotCommanderException
 {
     // Intentionally left blank.
 }
