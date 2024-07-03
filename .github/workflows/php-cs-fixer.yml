@@ -5,6 +5,7 @@ on:
     branches-ignore:
       - main
       - 1.0-dev
+      - gh-pages
 
 jobs:
   php-cs-fixer:
