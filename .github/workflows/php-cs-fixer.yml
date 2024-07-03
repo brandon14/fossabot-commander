@@ -26,7 +26,17 @@ jobs:
         with:
           args: --config=.php-cs-fixer.dist.php --allow-risky=yes
 
+      - name: Import GPG key
+        uses: crazy-max/ghaction-import-gpg@v6
+        with:
+          gpg_private_key: ${{ secrets.GPG_PRIVATE_KEY }}
+          passphrase: ${{ secrets.PASSPHRASE }}
+          git_user_signingkey: true
+          git_commit_gpgsign: true
+
       - name: Commit changes
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_message: "chore: Fix styling from PHP-CS-Fixer"
+          commit_user_name: brandon14
+          commit_options: '-S'
