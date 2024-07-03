@@ -31,6 +31,12 @@ jobs:
           git_user_signingkey: true
           git_commit_gpgsign: true
 
+      - name: Checkout code to gh-pages
+        uses: actions/checkout@v4
+        with:
+          ref: gh-pages
+          fetch-depth: 0
+
       - name: Commit doc changes
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
