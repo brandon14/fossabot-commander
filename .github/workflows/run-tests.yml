@@ -1,0 +1,61 @@
+name: run-tests
+on:
+  push:
+    branches: [main, develop, feature/*, release/*, hotfix/*]
+  pull_request:
+    branches: [main, develop]
+  schedule:
+    - cron: '0 0 * * *'
+jobs:
+  run-tests:
+    runs-on: ${{ matrix.os }}
+    continue-on-error: ${{ matrix.experimental }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest]
+        php: [7.4, 8.0, 8.1, 8.2, 8.3, 8.4]
+        dependency-version: [prefer-lowest, prefer-stable]
+        experimental: [false]
+
+    name: PHP-${{ matrix.php }} - OS-${{ matrix.os }} - ${{ matrix.dependency-version }} - Experimental- ${{ matrix.experimental }}
+
+    steps:
+      - name: Update apt
+        run: sudo apt-get update --fix-missing
+
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          extensions: curl, json, mbstring
+          coverage: xdebug
+
+      - name: Install dependencies
+        run: |
+          composer self-update
+          composer update --${{ matrix.dependency-version }} --prefer-dist --no-interaction
+          composer dump-autoload
+          composer validate --no-check-all --strict
+
+      - name: Execute tests
+        run: composer run-script test
+
+      - name: Upload coverage
+        if: ${{ github.event_name != 'schedule' && matrix.php == '8.3' && matrix.dependency-version == 'prefer-stable' }}
+        uses: codecov/codecov-action@v4
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+        with:
+          fail_ci_if_error: true
+          files: ./coverage.xml
+      - name: Upload code climate
+        if: ${{ github.event_name != 'schedule' && matrix.php == '8.3' && matrix.dependency-version == 'prefer-stable' }}
+        uses: paambaati/codeclimate-action@v8
+        env:
+          CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
+        with:
+          coverageLocations: ${{ github.workspace }}/coverage.xml:clover

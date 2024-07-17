@@ -1,0 +1,49 @@
+name: build-docs
+on:
+  push:
+    tags:
+      - 'v*'
+jobs:
+  build-docs:
+    name: build-docs
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          ref: gh-pages
+          fetch-depth: 0
+
+      - name: Build docs.yml
+        uses: sudo-bot/action-doctum@v5
+        with:
+          config-file: doctum.dist.php
+          method: "update"
+          cli-args: "--output-format=github --no-ansi --no-progress -v"
+
+      - name: Import GPG key
+        uses: crazy-max/ghaction-import-gpg@v6
+        with:
+          gpg_private_key: ${{ secrets.GPG_PRIVATE_KEY }}
+          passphrase: ${{ secrets.PASSPHRASE }}
+          git_user_signingkey: true
+          git_commit_gpgsign: true
+
+      - name: Checkout code to gh-pages
+        uses: actions/checkout@v4
+        with:
+          ref: gh-pages
+          fetch-depth: 0
+
+      - name: Commit doc changes
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "chore: Publish docs.yml"
+          file_pattern: "docs.yml/*"
+          add_options: "-f"
+          skip_dirty_check: true
+          commit_user_name: brandon14
+          commit_user_email: brandon14125@gmail.com
+          commit_options: '-S'

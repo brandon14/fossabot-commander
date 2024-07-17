@@ -1,0 +1,63 @@
+name: ci
+on:
+  push:
+    branches: [main]
+
+jobs:
+    cd:
+      name: cd
+      runs-on: ubuntu-latest
+      permissions:
+        # Give the default GITHUB_TOKEN write permission to commit and push the
+        # added or changed files to the repository.
+        contents: write
+      steps:
+        - name: Checkout code
+          uses: actions/checkout@v4
+
+        - name: Build changelog
+          id: github_release
+          uses: mikepenz/release-changelog-builder-action@v4
+          with:
+            outputFile: 'CHANGELOG.md'
+            toTag: ${{ github.ref }}
+          env:
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+        - name: Import GPG key
+          uses: crazy-max/ghaction-import-gpg@v6
+          with:
+            gpg_private_key: ${{ secrets.GPG_PRIVATE_KEY }}
+            passphrase: ${{ secrets.PASSPHRASE }}
+            git_user_signingkey: true
+            git_commit_gpgsign: true
+
+        - name: Commit changelog changes
+          uses: stefanzweifel/git-auto-commit-action@v5
+          with:
+            commit_message: "chore: Update CHANGELOG.md"
+            commit_user_name: brandon14
+            commit_user_email: brandon14125@gmail.com
+            commit_options: '-S --force'
+
+        - name: Update contributors
+          uses: minicli/action-contributors@v3
+          env:
+            CONTRIB_REPOSITORY: 'brandon14/fossabot-commander'
+            CONTRIB_OUTPUT_FILE: 'CONTRIBUTORS.md'
+
+        - name: Import GPG key
+          uses: crazy-max/ghaction-import-gpg@v6
+          with:
+            gpg_private_key: ${{ secrets.GPG_PRIVATE_KEY }}
+            passphrase: ${{ secrets.PASSPHRASE }}
+            git_user_signingkey: true
+            git_commit_gpgsign: true
+
+        - name: Commit contributors changes
+          uses: stefanzweifel/git-auto-commit-action@v5
+          with:
+            commit_message: "chore: Update CONTRIBUTORS.md"
+            commit_user_name: brandon14
+            commit_user_email: brandon14125@gmail.com
+            commit_options: '-S --force'
