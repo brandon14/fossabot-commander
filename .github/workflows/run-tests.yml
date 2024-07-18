@@ -21,7 +21,11 @@ jobs:
           - php: 8.4
             experimental: true
             os: ubuntu-latest
-            dependency-version: [prefer-lowest, prefer-stable]
+            dependency-version: prefer-lowest
+          - php: 8.4
+            experimental: true
+            os: ubuntu-latest
+            dependency-version: prefer-stable
 
     name: PHP-${{ matrix.php }} - OS-${{ matrix.os }} - ${{ matrix.dependency-version }} - Experimental- ${{ matrix.experimental }}
 
