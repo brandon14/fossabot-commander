@@ -19,8 +19,8 @@ jobs:
         experimental: [false]
         include:
           - php: 8.4
-            experimental: [true]
-            os: [ubuntu-latest]
+            experimental: true
+            os: ubuntu-latest
             dependency-version: [prefer-lowest, prefer-stable]
 
     name: PHP-${{ matrix.php }} - OS-${{ matrix.os }} - ${{ matrix.dependency-version }} - Experimental- ${{ matrix.experimental }}
