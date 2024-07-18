@@ -21,7 +21,7 @@ jobs:
         with:
           config-file: doctum.dist.php
           method: "update"
-          cli-args: "--output-format=github --no-ansi --no-progress -v"
+          cli-args: "--output-format=github --no-ansi --no-progress --ignore-parse-errors -v"
 
       - name: Import GPG key
         uses: crazy-max/ghaction-import-gpg@v6
