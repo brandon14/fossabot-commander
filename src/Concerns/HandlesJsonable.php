@@ -44,6 +44,8 @@ use Brandon14\FossabotCommander\Contracts\Exceptions\JsonParsingException;
  *
  * @mixin \Brandon14\FossabotCommander\Contracts\Arrayable
  *
+ * @internal
+ *
  * @author Brandon Clothier <brandon14125@gmail.com>
  */
 trait HandlesJsonable
