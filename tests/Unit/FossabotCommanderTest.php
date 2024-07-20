@@ -227,3 +227,41 @@ it('gets logging context', function () {
 
     expect($context)->toBeArray();
 });
+
+it('sets include logging context', function () {
+    $httpClient = Mockery::mock(ClientInterface::class);
+    $requestFactory = Mockery::mock(RequestFactoryInterface::class);
+    $logger = Mockery::mock(LoggerInterface::class);
+
+    // Additional context enabled.
+    $foss = new FossabotCommander($httpClient, $requestFactory, $logger, true, true);
+    $foss->setIncludeLogContext(false);
+    $includeContext = $foss->getIncludeLogContext();
+
+    expect($includeContext)->toBeFalse();
+
+    // Additional context disabled.
+    $foss = new FossabotCommander($httpClient, $requestFactory, $logger, true, false);
+    $foss->setIncludeLogContext(true);
+    $includeContext = $foss->getIncludeLogContext();
+
+    expect($includeContext)->toBeTrue();
+});
+
+it('gets include logging context', function () {
+    $httpClient = Mockery::mock(ClientInterface::class);
+    $requestFactory = Mockery::mock(RequestFactoryInterface::class);
+    $logger = Mockery::mock(LoggerInterface::class);
+
+    // Additional context enabled.
+    $foss = new FossabotCommander($httpClient, $requestFactory, $logger, true, true);
+    $includeContext = $foss->getIncludeLogContext();
+
+    expect($includeContext)->toBeTrue();
+
+    // Additional context disabled.
+    $foss = new FossabotCommander($httpClient, $requestFactory, $logger, true, false);
+    $includeContext = $foss->getIncludeLogContext();
+
+    expect($includeContext)->toBeFalse();
+});

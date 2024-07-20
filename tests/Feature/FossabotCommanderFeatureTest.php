@@ -501,3 +501,121 @@ it('only allows setting null logger when logging is disabled', function () {
     // Logging is enabled, but we tried to null out the logger instance, should throw exception.
     $foss->setLog(null);
 })->throws(NoValidLoggerProvidedException::class);
+
+it('includes additional logging context by default', function () {
+    $httpClient = Mockery::mock(ClientInterface::class);
+    $requestFactory = Mockery::mock(RequestFactoryInterface::class);
+    $logger = Mockery::mock(LoggerInterface::class);
+
+    $request = makeRequest(getFossabotUrl('/validate/'.customToken()));
+    $contextRequest = makeRequest(getFossabotUrl('/context/'.customToken()));
+    $response = makeResponse(200, array_merge(standardHeaders(), rateLimitingHeaders()), validTokenBody());
+    $contextResponse = makeResponse(200, array_merge(standardHeaders(), messageHeaders()), contextBody());
+
+    $requestFactory->shouldReceive('createRequest')->twice()->andReturns($request, $contextRequest);
+    $httpClient->shouldReceive('sendRequest')->twice()->andReturns($response, $contextResponse);
+
+    // Assert that log was called with context.
+    $logger->shouldReceive('log')
+        ->atLeast()
+        ->once()
+        ->withArgs(static function ($level, $message, $context) {
+            return is_array($context) && count($context) > 0;
+        });
+
+    $foss = new FossabotCommander($httpClient, $requestFactory, $logger, true);
+
+    $response = 'This is a test response.';
+    $command = new StubCommand($response);
+
+    $foss->runCommand($command, customToken());
+
+    // Test that overriding setIncludeLogContext adds logging context.
+    $httpClient = Mockery::mock(ClientInterface::class);
+    $requestFactory = Mockery::mock(RequestFactoryInterface::class);
+    $logger = Mockery::mock(LoggerInterface::class);
+
+    $request = makeRequest(getFossabotUrl('/validate/'.customToken()));
+    $contextRequest = makeRequest(getFossabotUrl('/context/'.customToken()));
+    $response = makeResponse(200, array_merge(standardHeaders(), rateLimitingHeaders()), validTokenBody());
+    $contextResponse = makeResponse(200, array_merge(standardHeaders(), messageHeaders()), contextBody());
+
+    $requestFactory->shouldReceive('createRequest')->twice()->andReturns($request, $contextRequest);
+    $httpClient->shouldReceive('sendRequest')->twice()->andReturns($response, $contextResponse);
+
+    // Assert that log was called with context.
+    $logger->shouldReceive('log')
+        ->atLeast()
+        ->once()
+        ->withArgs(static function ($level, $message, $context) {
+            return is_array($context) && count($context) > 0;
+        });
+
+    $foss = new FossabotCommander($httpClient, $requestFactory, $logger, true, false);
+    // Override include logging context.
+    $foss->setIncludeLogContext(true);
+
+    $response = 'This is a test response.';
+    $command = new StubCommand($response);
+
+    $foss->runCommand($command, customToken());
+});
+
+it('doesn\'t include additional logging context when instructed', function () {
+    $httpClient = Mockery::mock(ClientInterface::class);
+    $requestFactory = Mockery::mock(RequestFactoryInterface::class);
+    $logger = Mockery::mock(LoggerInterface::class);
+
+    $request = makeRequest(getFossabotUrl('/validate/'.customToken()));
+    $contextRequest = makeRequest(getFossabotUrl('/context/'.customToken()));
+    $response = makeResponse(200, array_merge(standardHeaders(), rateLimitingHeaders()), validTokenBody());
+    $contextResponse = makeResponse(200, array_merge(standardHeaders(), messageHeaders()), contextBody());
+
+    $requestFactory->shouldReceive('createRequest')->twice()->andReturns($request, $contextRequest);
+    $httpClient->shouldReceive('sendRequest')->twice()->andReturns($response, $contextResponse);
+
+    // Assert that log was not called with context.
+    $logger->shouldReceive('log')
+        ->atLeast()
+        ->once()
+        ->withArgs(static function ($level, $message, $context) {
+            return is_array($context) && count($context) === 0;
+        });
+
+    $foss = new FossabotCommander($httpClient, $requestFactory, $logger, true, false);
+
+    $response = 'This is a test response.';
+    $command = new StubCommand($response);
+
+    $foss->runCommand($command, customToken());
+
+    // Test that overriding setIncludeLogContext does not add logging context.
+    $httpClient = Mockery::mock(ClientInterface::class);
+    $requestFactory = Mockery::mock(RequestFactoryInterface::class);
+    $logger = Mockery::mock(LoggerInterface::class);
+
+    $request = makeRequest(getFossabotUrl('/validate/'.customToken()));
+    $contextRequest = makeRequest(getFossabotUrl('/context/'.customToken()));
+    $response = makeResponse(200, array_merge(standardHeaders(), rateLimitingHeaders()), validTokenBody());
+    $contextResponse = makeResponse(200, array_merge(standardHeaders(), messageHeaders()), contextBody());
+
+    $requestFactory->shouldReceive('createRequest')->twice()->andReturns($request, $contextRequest);
+    $httpClient->shouldReceive('sendRequest')->twice()->andReturns($response, $contextResponse);
+
+    // Assert that log was not called with context.
+    $logger->shouldReceive('log')
+        ->atLeast()
+        ->once()
+        ->withArgs(static function ($level, $message, $context) {
+            return is_array($context) && count($context) === 0;
+        });
+
+    $foss = new FossabotCommander($httpClient, $requestFactory, $logger, true, true);
+    // Override include logging context.
+    $foss->setIncludeLogContext(false);
+
+    $response = 'This is a test response.';
+    $command = new StubCommand($response);
+
+    $foss->runCommand($command, customToken());
+});
