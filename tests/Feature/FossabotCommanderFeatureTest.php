@@ -560,7 +560,8 @@ it('includes additional logging context by default', function () {
 
     $foss = new FossabotCommander($httpClient, $requestFactory, $logger, true);
 
-    $command = new StubCommand();
+    $response = 'This is a test response.';
+    $command = getStubCommand($response);
 
     $foss->runCommand($command, customToken());
 
@@ -589,7 +590,8 @@ it('includes additional logging context by default', function () {
     // Override include logging context.
     $foss->setIncludeLogContext(true);
 
-    $command = new StubCommand();
+    $response = 'This is a test response.';
+    $command = getStubCommand($response);
 
     $foss->runCommand($command, customToken());
 });
@@ -617,7 +619,8 @@ it('doesn\'t include additional logging context when instructed', function () {
 
     $foss = new FossabotCommander($httpClient, $requestFactory, $logger, true, false);
 
-    $command = new StubCommand();
+    $response = 'This is a test response.';
+    $command = getStubCommand($response);
 
     $foss->runCommand($command, customToken());
 
@@ -646,7 +649,8 @@ it('doesn\'t include additional logging context when instructed', function () {
     // Override include logging context.
     $foss->setIncludeLogContext(false);
 
-    $command = new StubCommand();
+    $response = 'This is a test response.';
+    $command = getStubCommand($response);
 
     $foss->runCommand($command, customToken());
 });
