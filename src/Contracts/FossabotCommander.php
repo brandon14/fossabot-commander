@@ -137,6 +137,28 @@ interface FossabotCommander
     public function getLogging(): bool;
 
     /**
+     * Set whether to include additional context with logging messages.
+     *
+     * @SuppressWarnings(PHPMD.BooleanArgumentFlag)
+     *
+     * @noinspection PhpMethodNamingConventionInspection
+     *
+     * @param bool $includeLogContext Whether to include additional context with logging messages
+     */
+    public function setIncludeLogContext(bool $includeLogContext): self;
+
+    /**
+     * Gets the configured logging context setting.
+     *
+     * @SuppressWarnings(PHPMD.BooleanGetMethodName)
+     *
+     * @noinspection PhpMethodNamingConventionInspection
+     *
+     * @return bool Logging context
+     */
+    public function getIncludeLogContext(): bool;
+
+    /**
      * Will execute a given {@link \Brandon14\FossabotCommander\Contracts\FossabotCommand} instance. If this method
      * throws a {@link \Brandon14\FossabotCommander\Contracts\Exceptions\CannotValidateRequestException}, then it was
      * unable to verify that the request came from Fossabot, and should be treated as a critical error.

@@ -120,14 +120,23 @@ class FossabotCommander implements FossabotCommanderInterface, LoggerAwareInterf
     private bool $logging = false;
 
     /**
+     * Whether to include additional context to log messages.
+     *
+     * @noinspection PhpPropertyNamingConventionInspection
+     */
+    private bool $includeLogContext = false;
+
+    /**
      * Constructs a new FossabotCommander class.
      *
      * @SuppressWarnings(PHPMD.BooleanArgumentFlag)
      *
-     * @param \Psr\Http\Client\ClientInterface          $httpClient     PSR HTTP client instance
-     * @param \Psr\Http\Message\RequestFactoryInterface $requestFactory PSR HTTP request factory instance
-     * @param \Psr\Log\LoggerInterface|null             $logger         PSR logger instance
-     * @param bool                                      $logging        Whether to enable logging or not
+     * @param \Psr\Http\Client\ClientInterface          $httpClient        PSR HTTP client instance
+     * @param \Psr\Http\Message\RequestFactoryInterface $requestFactory    PSR HTTP request factory instance
+     * @param \Psr\Log\LoggerInterface|null             $logger            PSR logger instance
+     * @param bool                                      $logging           Whether to enable logging or not
+     * @param bool                                      $includeLogContext Whether to include additional context to log
+     *                                                                     messages
      *
      * @throws \Brandon14\FossabotCommander\Contracts\Exceptions\NoValidLoggerProvidedException
      */
@@ -135,12 +144,14 @@ class FossabotCommander implements FossabotCommanderInterface, LoggerAwareInterf
         ClientInterface $httpClient,
         RequestFactoryInterface $requestFactory,
         ?LoggerInterface $logger = null,
-        bool $logging = false
+        bool $logging = false,
+        bool $includeLogContext = true
     ) {
         $this->setHttpClient($httpClient)
             ->setRequestFactory($requestFactory)
             ->setLog($logger)
-            ->setLogging($logging);
+            ->setLogging($logging)
+            ->setIncludeLogContext($includeLogContext);
     }
 
     /**
@@ -245,6 +256,32 @@ class FossabotCommander implements FossabotCommanderInterface, LoggerAwareInterf
     public function getLogging(): bool
     {
         return $this->logging;
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @SuppressWarnings(PHPMD.BooleanArgumentFlag)
+     *
+     * @noinspection PhpMethodNamingConventionInspection
+     */
+    public function setIncludeLogContext(bool $includeLogContext): FossabotCommanderInterface
+    {
+        $this->includeLogContext = $includeLogContext;
+
+        return $this;
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @SuppressWarnings(PHPMD.BooleanGetMethodName)
+     *
+     * @noinspection PhpMethodNamingConventionInspection
+     */
+    public function getIncludeLogContext(): bool
+    {
+        return $this->includeLogContext;
     }
 
     /**
@@ -598,6 +635,8 @@ class FossabotCommander implements FossabotCommanderInterface, LoggerAwareInterf
     /**
      * {@inheritDoc}
      *
+     * @SuppressWarnings(PHPMD.ElseExpression)
+     *
      * @noinspection PhpMethodNamingConventionInspection
      */
     public function log($level, $message, array $context = []): void // @pest-ignore-type
@@ -609,18 +648,23 @@ class FossabotCommander implements FossabotCommanderInterface, LoggerAwareInterf
 
         $class = static::class;
 
-        // This should never happen.
-        // @codeCoverageIgnoreStart
-        try {
-            $timestamp = (new DateTimeImmutable())->format(DateTimeInterface::ATOM);
-        } catch (Throwable $exception) {
-            $timestamp = date_create_immutable()->format(DateTimeInterface::ATOM);
+        // Get additional context together if it needs to be included, otherwise set to empty array.
+        if ($this->includeLogContext) {
+            // This should never happen.
+            // @codeCoverageIgnoreStart
+            try {
+                $timestamp = (new DateTimeImmutable())->format(DateTimeInterface::ATOM);
+            } catch (Throwable $exception) {
+                $timestamp = date_create_immutable()->format(DateTimeInterface::ATOM);
+            }
+            // @codeCoverageIgnoreEnd
+
+            $context = array_merge($this->getLoggingContext(), compact('timestamp'), $context);
+        } else {
+            $context = [];
         }
-        // @codeCoverageIgnoreEnd
 
         $message = "[{$class}] {$message}";
-
-        $context = array_merge($this->getLoggingContext(), compact('timestamp'), $context);
 
         $this->logger->log($level, (string) $message, $context);
     }
