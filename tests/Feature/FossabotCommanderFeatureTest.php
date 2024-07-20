@@ -33,7 +33,6 @@ use Psr\Log\LoggerInterface;
 use Psr\Http\Client\ClientInterface;
 use Psr\Http\Message\RequestFactoryInterface;
 use Brandon14\FossabotCommander\FossabotCommander;
-use Brandon14\FossabotCommander\Tests\Stubs\StubCommand;
 use Brandon14\FossabotCommander\Contracts\FossabotCommand;
 use Brandon14\FossabotCommander\Contracts\Context\FossabotContext;
 use Brandon14\FossabotCommander\Contracts\Exceptions\RateLimitException;
