@@ -37,6 +37,8 @@ namespace Brandon14\FossabotCommander\Concerns;
  *
  * @noinspection PhpClassNamingConventionInspection
  *
+ * @internal
+ *
  * @author Brandon Clothier <brandon14125@gmail.com>
  */
 trait HandlesStringable

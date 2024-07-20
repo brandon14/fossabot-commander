@@ -3,7 +3,7 @@
   <a href="https://packagist.org/packages/brandon14/fossabot-commander" target="_blank"><img alt="Packagist PHP Version" src="https://img.shields.io/packagist/dependency-v/brandon14/fossabot-commander/php?style=for-the-badge&cacheSeconds=3600"></a>
 </p>
 <p align="center">
-  <a href="https://github.com/brandon14/fossabot-commander/actions/workflows/run-tests.yml" target="_blank"><img alt="GitHub Workflow Status (with event)" src="https://img.shields.io/github/actions/workflow/status/brandon14/fossabot-commander/run-tests.yml?style=for-the-badge&cacheSeconds=3600">
+  <a href="https://github.com/brandon14/fossabot-commander/actions/workflows/run-tests.yml" target="_blank"><img alt="GitHub Actions Workflow Status" src="https://img.shields.io/github/actions/workflow/status/brandon14/fossabot-commander/run-tests.yml?style=for-the-badge&cacheSeconds=3600">
   </a>
   <a href="https://codeclimate.com/github/brandon14/fossabot-commander/maintainability" target="_blank"><img alt="Code Climate maintainability" src="https://img.shields.io/codeclimate/maintainability-percentage/brandon14/fossabot-commander?style=for-the-badge&cacheSeconds=3600">
   </a>

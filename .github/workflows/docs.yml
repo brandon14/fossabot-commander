@@ -41,7 +41,7 @@ jobs:
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_message: "chore: Publish docs.yml"
-          file_pattern: "docs.yml/*"
+          file_pattern: "docs/*"
           add_options: "-f"
           skip_dirty_check: true
           commit_user_name: brandon14

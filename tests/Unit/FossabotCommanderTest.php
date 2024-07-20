@@ -33,7 +33,6 @@ use Psr\Log\LoggerInterface;
 use Psr\Http\Client\ClientInterface;
 use Psr\Http\Message\RequestFactoryInterface;
 use Brandon14\FossabotCommander\FossabotCommander;
-use Brandon14\FossabotCommander\Tests\Stubs\StubCommand;
 use Brandon14\FossabotCommander\Contracts\Context\FossabotContext;
 
 it('runs a command', function () {
@@ -49,12 +48,14 @@ it('runs a command', function () {
     $httpClient->allows('sendRequest')->twice()->andReturns($response, $contextResponse);
 
     $foss = new FossabotCommander($httpClient, $requestFactory);
-    $command = new StubCommand();
+
+    $response = 'This is a test response.';
+    $command = getStubCommand($response);
 
     $res = $foss->runCommand($command, customToken());
 
     expect($res)->toBeString()
-        ->and($res)->toEqual('Foo.');
+        ->and($res)->toEqual($response);
 });
 
 it('runs a callable command', function () {
@@ -226,4 +227,42 @@ it('gets logging context', function () {
     $context = $foss->getLoggingContext();
 
     expect($context)->toBeArray();
+});
+
+it('sets include logging context', function () {
+    $httpClient = Mockery::mock(ClientInterface::class);
+    $requestFactory = Mockery::mock(RequestFactoryInterface::class);
+    $logger = Mockery::mock(LoggerInterface::class);
+
+    // Additional context enabled.
+    $foss = new FossabotCommander($httpClient, $requestFactory, $logger, true, true);
+    $foss->setIncludeLogContext(false);
+    $includeContext = $foss->getIncludeLogContext();
+
+    expect($includeContext)->toBeFalse();
+
+    // Additional context disabled.
+    $foss = new FossabotCommander($httpClient, $requestFactory, $logger, true, false);
+    $foss->setIncludeLogContext(true);
+    $includeContext = $foss->getIncludeLogContext();
+
+    expect($includeContext)->toBeTrue();
+});
+
+it('gets include logging context', function () {
+    $httpClient = Mockery::mock(ClientInterface::class);
+    $requestFactory = Mockery::mock(RequestFactoryInterface::class);
+    $logger = Mockery::mock(LoggerInterface::class);
+
+    // Additional context enabled.
+    $foss = new FossabotCommander($httpClient, $requestFactory, $logger, true, true);
+    $includeContext = $foss->getIncludeLogContext();
+
+    expect($includeContext)->toBeTrue();
+
+    // Additional context disabled.
+    $foss = new FossabotCommander($httpClient, $requestFactory, $logger, true, false);
+    $includeContext = $foss->getIncludeLogContext();
+
+    expect($includeContext)->toBeFalse();
 });
