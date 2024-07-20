@@ -33,7 +33,6 @@ use Psr\Log\LoggerInterface;
 use Psr\Http\Client\ClientInterface;
 use Psr\Http\Message\RequestFactoryInterface;
 use Brandon14\FossabotCommander\FossabotCommander;
-use Brandon14\FossabotCommander\Tests\Stubs\StubCommand;
 use Brandon14\FossabotCommander\Contracts\FossabotCommand;
 use Brandon14\FossabotCommander\Contracts\Context\FossabotContext;
 use Brandon14\FossabotCommander\Contracts\Exceptions\RateLimitException;
@@ -53,15 +52,17 @@ it('returns a command', function () {
     $response = makeResponse(200, array_merge(standardHeaders(), rateLimitingHeaders()), validTokenBody());
     $contextResponse = makeResponse(200, array_merge(standardHeaders(), messageHeaders()), contextBody());
 
-    $requestFactory->allows('createRequest')->twice()->andReturns($request, $contextRequest);
-    $httpClient->allows('sendRequest')->twice()->andReturns($response, $contextResponse);
+    $requestFactory->shouldReceive('createRequest')->twice()->andReturns($request, $contextRequest);
+    $httpClient->shouldReceive('sendRequest')->twice()->andReturns($response, $contextResponse);
 
     $foss = new FossabotCommander($httpClient, $requestFactory);
-    $command = new StubCommand();
+
+    $response = 'This is a test response.';
+    $command = getStubCommand($response);
 
     $res = $foss->runCommand($command, customToken());
 
-    expect($res)->toEqual('Foo.');
+    expect($res)->toEqual($response);
 });
 
 it('handles invalid token on validate call', function () {
@@ -72,11 +73,13 @@ it('handles invalid token on validate call', function () {
     // Return an invalid token response during validation.
     $response = makeResponse(400, array_merge(standardHeaders(), rateLimitingHeaders()), invalidTokenBody());
 
-    $requestFactory->allows('createRequest')->once()->andReturns($request);
-    $httpClient->allows('sendRequest')->once()->andReturns($response);
+    $requestFactory->shouldReceive('createRequest')->once()->andReturns($request);
+    $httpClient->shouldReceive('sendRequest')->once()->andReturns($response);
 
     $foss = new FossabotCommander($httpClient, $requestFactory);
-    $command = new StubCommand();
+
+    $response = 'This is a test response.';
+    $command = getStubCommand($response);
 
     $foss->runCommand($command, customToken());
 })->throws(CannotValidateRequestException::class);
@@ -89,11 +92,13 @@ it('handles rate limiting on validate call', function () {
     // Return a rate limited response.
     $response = makeResponse(429, array_merge(standardHeaders(), rateLimitingHeaders()), rateLimitedBody());
 
-    $requestFactory->allows('createRequest')->once()->andReturns($request);
-    $httpClient->allows('sendRequest')->once()->andReturns($response);
+    $requestFactory->shouldReceive('createRequest')->once()->andReturns($request);
+    $httpClient->shouldReceive('sendRequest')->once()->andReturns($response);
 
     $foss = new FossabotCommander($httpClient, $requestFactory);
-    $command = new StubCommand();
+
+    $response = 'This is a test response.';
+    $command = getStubCommand($response);
 
     // Check that we get a RateLimitException and that the exception has the correct rate limit information context.
     try {
@@ -112,12 +117,14 @@ it('handles exceptions from HTTP client during validation', function () {
 
     $request = makeRequest(getFossabotUrl('/validate/'.customToken()));
 
-    $requestFactory->allows('createRequest')->once()->andReturns($request);
+    $requestFactory->shouldReceive('createRequest')->once()->andReturns($request);
     // We want to throw an exception on the validate request.
-    $httpClient->allows('sendRequest')->once()->andThrows(new RuntimeException());
+    $httpClient->shouldReceive('sendRequest')->once()->andThrows(new RuntimeException());
 
     $foss = new FossabotCommander($httpClient, $requestFactory);
-    $command = new StubCommand();
+
+    $response = 'This is a test response.';
+    $command = getStubCommand($response);
 
     $foss->runCommand($command, customToken());
 })->throws(CannotValidateRequestException::class);
@@ -130,11 +137,13 @@ it('handles non-200, non-400, non-429 exceptions during validation', function ()
     // Mock a 500 error when validating token.
     $response = makeResponse(500, array_merge(standardHeaders(), rateLimitingHeaders()), invalidTokenBody());
 
-    $requestFactory->allows('createRequest')->once()->andReturns($request);
-    $httpClient->allows('sendRequest')->once()->andReturns($response);
+    $requestFactory->shouldReceive('createRequest')->once()->andReturns($request);
+    $httpClient->shouldReceive('sendRequest')->once()->andReturns($response);
 
     $foss = new FossabotCommander($httpClient, $requestFactory);
-    $command = new StubCommand();
+
+    $response = 'This is a test response.';
+    $command = getStubCommand($response);
 
     $foss->runCommand($command, customToken());
 })->throws(CannotValidateRequestException::class);
@@ -147,9 +156,9 @@ it('handles exceptions from HTTP client during context', function () {
     $response = makeResponse(200, array_merge(standardHeaders(), rateLimitingHeaders()), validTokenBody());
     $contextRequest = makeRequest(getFossabotUrl('/context/'.customToken()));
 
-    $requestFactory->allows('createRequest')->twice()->andReturns($request, $contextRequest);
+    $requestFactory->shouldReceive('createRequest')->twice()->andReturns($request, $contextRequest);
     // We want to throw a generic exception on the second request when it would be getting the context.
-    $httpClient->allows('sendRequest')->twice()->andReturnUsing(static function () use ($response) {
+    $httpClient->shouldReceive('sendRequest')->twice()->andReturnUsing(static function () use ($response) {
         static $counter = 0;
 
         switch ($counter++) {
@@ -163,7 +172,9 @@ it('handles exceptions from HTTP client during context', function () {
     });
 
     $foss = new FossabotCommander($httpClient, $requestFactory);
-    $command = new StubCommand();
+
+    $response = 'This is a test response.';
+    $command = getStubCommand($response);
 
     $foss->runCommand($command, customToken());
 })->throws(FossabotCommanderException::class);
@@ -176,11 +187,11 @@ it('handles FossabotCommanderException exceptions from HTTP client during contex
     $response = makeResponse(200, array_merge(standardHeaders(), rateLimitingHeaders()), validTokenBody());
     $contextRequest = makeRequest(getFossabotUrl('/context/'.customToken()));
 
-    $requestFactory->allows('createRequest')->twice()->andReturns($request, $contextRequest);
+    $requestFactory->shouldReceive('createRequest')->twice()->andReturns($request, $contextRequest);
 
     $exception = new FossabotCommanderException('Foo.');
     // We want to throw a generic exception on the second request when it would be getting the context.
-    $httpClient->allows('sendRequest')->twice()->andReturnUsing(static function () use ($response, $exception) {
+    $httpClient->shouldReceive('sendRequest')->twice()->andReturnUsing(static function () use ($response, $exception) {
         static $counter = 0;
 
         switch ($counter++) {
@@ -194,7 +205,9 @@ it('handles FossabotCommanderException exceptions from HTTP client during contex
     });
 
     $foss = new FossabotCommander($httpClient, $requestFactory);
-    $command = new StubCommand();
+
+    $response = 'This is a test response.';
+    $command = getStubCommand($response);
 
     $foss->runCommand($command, customToken());
 })->throws(CannotGetContextException::class);
@@ -209,11 +222,13 @@ it('handles failing to get context', function () {
     // Mock invalid token error response on context request.
     $contextResponse = makeResponse(400, array_merge(standardHeaders(), messageHeaders()), invalidTokenBody());
 
-    $requestFactory->allows('createRequest')->twice()->andReturns($request, $contextRequest);
-    $httpClient->allows('sendRequest')->twice()->andReturns($response, $contextResponse);
+    $requestFactory->shouldReceive('createRequest')->twice()->andReturns($request, $contextRequest);
+    $httpClient->shouldReceive('sendRequest')->twice()->andReturns($response, $contextResponse);
 
     $foss = new FossabotCommander($httpClient, $requestFactory);
-    $command = new StubCommand();
+
+    $response = 'This is a test response.';
+    $command = getStubCommand($response);
 
     $foss->runCommand($command, customToken());
 })->throws(CannotGetContextException::class);
@@ -229,11 +244,13 @@ it('handles non-200, non-400, non-429 exceptions during context', function () {
     // Mock a 500 error when getting context.
     $contextResponse = makeResponse(500, array_merge(standardHeaders(), messageHeaders()), invalidTokenBody());
 
-    $requestFactory->allows('createRequest')->twice()->andReturns($request, $contextRequest);
-    $httpClient->allows('sendRequest')->twice()->andReturns($response, $contextResponse);
+    $requestFactory->shouldReceive('createRequest')->twice()->andReturns($request, $contextRequest);
+    $httpClient->shouldReceive('sendRequest')->twice()->andReturns($response, $contextResponse);
 
     $foss = new FossabotCommander($httpClient, $requestFactory);
-    $command = new StubCommand();
+
+    $response = 'This is a test response.';
+    $command = getStubCommand($response);
 
     $foss->runCommand($command, customToken());
 })->throws(CannotGetContextException::class);
@@ -247,17 +264,17 @@ it('handles getting context with no message property', function () {
     $response = makeResponse(200, array_merge(standardHeaders(), rateLimitingHeaders()), validTokenBody());
     $contextResponse = makeResponse(200, array_merge(standardHeaders(), messageHeaders()), contextNoMessageBody());
 
-    $requestFactory->allows('createRequest')->twice()->andReturns($request, $contextRequest);
-    $httpClient->allows('sendRequest')->twice()->andReturns($response, $contextResponse);
+    $requestFactory->shouldReceive('createRequest')->twice()->andReturns($request, $contextRequest);
+    $httpClient->shouldReceive('sendRequest')->twice()->andReturns($response, $contextResponse);
 
     $foss = new FossabotCommander($httpClient, $requestFactory);
 
     $command = Mockery::mock(FossabotCommand::class);
 
     // Ensure we get a context object with no message.
-    $command->allows('getResponse')->once()->withArgs(function ($context) {
+    $command->shouldReceive('getResponse')->once()->withArgs(function ($context) {
         return $context !== null && is_a($context, FossabotContext::class) && $context->message() === null;
-    })->andReturn('Foo.');
+    })->andReturn('This is a test response.');
 
     $foss->runCommand($command, customToken());
 });
@@ -269,17 +286,17 @@ it('skips getting context if getContext is false', function () {
     $request = makeRequest(getFossabotUrl('/validate/'.customToken()));
     $response = makeResponse(200, array_merge(standardHeaders(), rateLimitingHeaders()), validTokenBody());
 
-    $requestFactory->allows('createRequest')->once()->andReturns($request);
-    $httpClient->allows('sendRequest')->once()->andReturns($response);
+    $requestFactory->shouldReceive('createRequest')->once()->andReturns($request);
+    $httpClient->shouldReceive('sendRequest')->once()->andReturns($response);
 
     $foss = new FossabotCommander($httpClient, $requestFactory);
 
     $command = Mockery::mock(FossabotCommand::class);
 
     // Ensure we get no context passed to the command since we didn't fetch the context.
-    $command->allows('getResponse')->once()->withArgs(function ($context) {
+    $command->shouldReceive('getResponse')->once()->withArgs(function ($context) {
         return $context === null;
-    })->andReturn('Foo.');
+    })->andReturn('This is a test response.');
 
     $foss->runCommand($command, customToken(), false);
 });
@@ -293,11 +310,13 @@ it('handles rate limiting on context call', function () {
     // Return a rate limited response on the context call.
     $contextResponse = makeResponse(429, array_merge(standardHeaders(), rateLimitingHeaders()), rateLimitedBody());
 
-    $requestFactory->allows('createRequest')->twice()->andReturns($request, $contextRequest);
-    $httpClient->allows('sendRequest')->twice()->andReturns($response, $contextResponse);
+    $requestFactory->shouldReceive('createRequest')->twice()->andReturns($request, $contextRequest);
+    $httpClient->shouldReceive('sendRequest')->twice()->andReturns($response, $contextResponse);
 
     $foss = new FossabotCommander($httpClient, $requestFactory);
-    $command = new StubCommand();
+
+    $response = 'This is a test response.';
+    $command = getStubCommand($response);
 
     // Check that we get a RateLimitException and that the exception has the correct rate limit information context.
     try {
@@ -320,11 +339,13 @@ it('handles rate limiting when no rate limiting headers are found', function () 
     // Return a rate limited response on the context call. Don't provide rate limiting headers.
     $contextResponse = makeResponse(429, array_merge(standardHeaders(), []), rateLimitedBody());
 
-    $requestFactory->allows('createRequest')->twice()->andReturns($request, $contextRequest);
-    $httpClient->allows('sendRequest')->twice()->andReturns($response, $contextResponse);
+    $requestFactory->shouldReceive('createRequest')->twice()->andReturns($request, $contextRequest);
+    $httpClient->shouldReceive('sendRequest')->twice()->andReturns($response, $contextResponse);
 
     $foss = new FossabotCommander($httpClient, $requestFactory);
-    $command = new StubCommand();
+
+    $response = 'This is a test response.';
+    $command = getStubCommand($response);
 
     // Check that we get a InvalidStatusException and the exception code is 429 for rate limiting.
     try {
@@ -343,11 +364,13 @@ it('throws exception (CannotValidateRequestException) on invalid JSON during val
     // Cut some of JSON string off to give invalid JSON payload.
     $response = makeResponse(200, array_merge(standardHeaders(), rateLimitingHeaders()), mb_substr(validTokenBody(), 0, -5));
 
-    $requestFactory->allows('createRequest')->once()->andReturns($request);
-    $httpClient->allows('sendRequest')->once()->andReturns($response);
+    $requestFactory->shouldReceive('createRequest')->once()->andReturns($request);
+    $httpClient->shouldReceive('sendRequest')->once()->andReturns($response);
 
     $foss = new FossabotCommander($httpClient, $requestFactory);
-    $command = new StubCommand();
+
+    $response = 'This is a test response.';
+    $command = getStubCommand($response);
 
     $foss->runCommand($command, customToken());
 })->throws(CannotValidateRequestException::class);
@@ -362,11 +385,13 @@ it('throws exception (CannotGetContextException) on invalid JSON during context'
     // Trim some of the context JSON body off to give it invalid JSON.
     $contextResponse = makeResponse(200, array_merge(standardHeaders(), messageHeaders()), mb_substr(contextBody(), 0, -5));
 
-    $requestFactory->allows('createRequest')->twice()->andReturns($request, $contextRequest);
-    $httpClient->allows('sendRequest')->twice()->andReturns($response, $contextResponse);
+    $requestFactory->shouldReceive('createRequest')->twice()->andReturns($request, $contextRequest);
+    $httpClient->shouldReceive('sendRequest')->twice()->andReturns($response, $contextResponse);
 
     $foss = new FossabotCommander($httpClient, $requestFactory);
-    $command = new StubCommand();
+
+    $response = 'This is a test response.';
+    $command = getStubCommand($response);
 
     $foss->runCommand($command, customToken());
 })->throws(CannotGetContextException::class);
@@ -381,11 +406,13 @@ it('handles creating context data with invalid data', function () {
     // Use invalid context data here.
     $contextResponse = makeResponse(200, array_merge(standardHeaders(), messageHeaders()), invalidContextBody());
 
-    $requestFactory->allows('createRequest')->twice()->andReturns($request, $contextRequest);
-    $httpClient->allows('sendRequest')->twice()->andReturns($response, $contextResponse);
+    $requestFactory->shouldReceive('createRequest')->twice()->andReturns($request, $contextRequest);
+    $httpClient->shouldReceive('sendRequest')->twice()->andReturns($response, $contextResponse);
 
     $foss = new FossabotCommander($httpClient, $requestFactory);
-    $command = new StubCommand();
+
+    $response = 'This is a test response.';
+    $command = getStubCommand($response);
 
     $foss->runCommand($command, customToken());
 })->throws(CannotCreateContextException::class);
@@ -399,12 +426,14 @@ it('handles exceptions thrown from FossabotCommand::getResponse()', function () 
     $response = makeResponse(200, array_merge(standardHeaders(), rateLimitingHeaders()), validTokenBody());
     $contextResponse = makeResponse(200, array_merge(standardHeaders(), messageHeaders()), contextBody());
 
-    $requestFactory->allows('createRequest')->twice()->andReturns($request, $contextRequest);
-    $httpClient->allows('sendRequest')->twice()->andReturns($response, $contextResponse);
+    $requestFactory->shouldReceive('createRequest')->twice()->andReturns($request, $contextRequest);
+    $httpClient->shouldReceive('sendRequest')->twice()->andReturns($response, $contextResponse);
 
     $foss = new FossabotCommander($httpClient, $requestFactory);
+
     // Command will throw an exception when executed.
-    $command = new StubCommand(new RuntimeException('This is an exception.'));
+    $response = 'This is a test response.';
+    $command = getStubCommand($response, new RuntimeException('This is an exception.'));
 
     $foss->runCommand($command, customToken());
 })->throws(CannotExecuteCommandException::class);
@@ -419,13 +448,15 @@ it('makes calls to logger if provided', function () {
     $response = makeResponse(200, array_merge(standardHeaders(), rateLimitingHeaders()), validTokenBody());
     $contextResponse = makeResponse(200, array_merge(standardHeaders(), messageHeaders()), contextBody());
 
-    $requestFactory->allows('createRequest')->twice()->andReturns($request, $contextRequest);
-    $httpClient->allows('sendRequest')->twice()->andReturns($response, $contextResponse);
+    $requestFactory->shouldReceive('createRequest')->twice()->andReturns($request, $contextRequest);
+    $httpClient->shouldReceive('sendRequest')->twice()->andReturns($response, $contextResponse);
     // Ensure we make at least one call to the mocked logger.
-    $logger->allows('log')->atLeast()->once();
+    $logger->shouldReceive('log')->atLeast()->once();
 
     $foss = new FossabotCommander($httpClient, $requestFactory, $logger, true);
-    $command = new StubCommand();
+
+    $response = 'This is a test response.';
+    $command = getStubCommand($response);
 
     $foss->runCommand($command, customToken());
 });
@@ -440,14 +471,16 @@ it('disables logging', function () {
     $response = makeResponse(200, array_merge(standardHeaders(), rateLimitingHeaders()), validTokenBody());
     $contextResponse = makeResponse(200, array_merge(standardHeaders(), messageHeaders()), contextBody());
 
-    $requestFactory->allows('createRequest')->twice()->andReturns($request, $contextRequest);
-    $httpClient->allows('sendRequest')->twice()->andReturns($response, $contextResponse);
+    $requestFactory->shouldReceive('createRequest')->twice()->andReturns($request, $contextRequest);
+    $httpClient->shouldReceive('sendRequest')->twice()->andReturns($response, $contextResponse);
     // Ensure we don't make a call to log since logging is disabled.
-    $logger->allows('log')->never();
+    $logger->shouldReceive('log')->never();
 
     $foss = new FossabotCommander($httpClient, $requestFactory, $logger, true);
     $foss->disableLogging();
-    $command = new StubCommand();
+
+    $response = 'This is a test response.';
+    $command = getStubCommand($response);
 
     $foss->runCommand($command, customToken());
 });
@@ -462,15 +495,17 @@ it('enables logging', function () {
     $response = makeResponse(200, array_merge(standardHeaders(), rateLimitingHeaders()), validTokenBody());
     $contextResponse = makeResponse(200, array_merge(standardHeaders(), messageHeaders()), contextBody());
 
-    $requestFactory->allows('createRequest')->twice()->andReturns($request, $contextRequest);
-    $httpClient->allows('sendRequest')->twice()->andReturns($response, $contextResponse);
+    $requestFactory->shouldReceive('createRequest')->twice()->andReturns($request, $contextRequest);
+    $httpClient->shouldReceive('sendRequest')->twice()->andReturns($response, $contextResponse);
     // Ensure we make at least one call to the mocked logger.
-    $logger->allows('log')->atLeast()->once();
+    $logger->shouldReceive('log')->atLeast()->once();
 
-    // Disable logging when creating so we can enable it later.
+    // Disable logging when creating, so we can enable it later.
     $foss = new FossabotCommander($httpClient, $requestFactory, $logger, false);
     $foss->enableLogging();
-    $command = new StubCommand();
+
+    $response = 'This is a test response.';
+    $command = getStubCommand($response);
 
     $foss->runCommand($command, customToken());
 });

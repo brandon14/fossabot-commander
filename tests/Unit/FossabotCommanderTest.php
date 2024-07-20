@@ -33,7 +33,6 @@ use Psr\Log\LoggerInterface;
 use Psr\Http\Client\ClientInterface;
 use Psr\Http\Message\RequestFactoryInterface;
 use Brandon14\FossabotCommander\FossabotCommander;
-use Brandon14\FossabotCommander\Tests\Stubs\StubCommand;
 use Brandon14\FossabotCommander\Contracts\Context\FossabotContext;
 
 it('runs a command', function () {
@@ -49,12 +48,14 @@ it('runs a command', function () {
     $httpClient->allows('sendRequest')->twice()->andReturns($response, $contextResponse);
 
     $foss = new FossabotCommander($httpClient, $requestFactory);
-    $command = new StubCommand();
+
+    $response = 'This is a test response.';
+    $command = getStubCommand($response);
 
     $res = $foss->runCommand($command, customToken());
 
     expect($res)->toBeString()
-        ->and($res)->toEqual('Foo.');
+        ->and($res)->toEqual($response);
 });
 
 it('runs a callable command', function () {
