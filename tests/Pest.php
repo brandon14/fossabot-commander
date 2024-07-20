@@ -67,6 +67,8 @@ use GuzzleHttp\Psr7\Response;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use Brandon14\FossabotCommander\Context\FossabotContext;
+use Brandon14\FossabotCommander\Tests\Stubs\StubCommand;
+use Brandon14\FossabotCommander\Contracts\FossabotCommand;
 use Brandon14\FossabotCommander\Contracts\Context\FossabotContext as FossabotContextInterface;
 
 // Custom functions for mocking data.
@@ -457,4 +459,17 @@ function contextNoRolesDataModel(): FossabotContextInterface
     $body['message']['user']['roles'] = [];
 
     return FossabotContext::createFromBody($body);
+}
+
+/**
+ * Returns a mock {@link \Brandon14\FossabotCommander\Contracts\FossabotCommand} to use in testing.
+ *
+ * @param string          $response  Command response
+ * @param \Throwable|null $exception Optional exception to throw from command
+ *
+ * @return \Brandon14\FossabotCommander\Contracts\FossabotCommand Command instance
+ */
+function getStubCommand(string $response = 'This is a test response.', ?Throwable $exception = null): FossabotCommand
+{
+    return new StubCommand($response, $exception);
 }

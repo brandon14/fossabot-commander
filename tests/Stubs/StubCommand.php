@@ -43,6 +43,11 @@ use Brandon14\FossabotCommander\Contracts\Context\FossabotContext;
 final class StubCommand extends FossabotCommand
 {
     /**
+     * Command response string.
+     */
+    private string $response;
+
+    /**
      * Optional exception to be thrown during the response.
      */
     private ?Throwable $exception;
@@ -52,8 +57,9 @@ final class StubCommand extends FossabotCommand
      *
      * @param Throwable|null $exception Optional exception to throw during response
      */
-    public function __construct(?Throwable $exception = null)
+    public function __construct(string $response, ?Throwable $exception = null)
     {
+        $this->response = $response;
         $this->exception = $exception;
     }
 
@@ -66,6 +72,6 @@ final class StubCommand extends FossabotCommand
             throw $this->exception;
         }
 
-        return 'Foo.';
+        return $this->response;
     }
 }
