@@ -44,7 +44,9 @@ use Brandon14\FossabotCommander\Contracts\Context\FossabotDataModel as FossabotD
 /**
  * Base Fossabot custom API data model.
  *
- * @see    https://docs.fossabot.com/variables/customapi#getting-context
+ * @see https://docs.fossabot.com/variables/customapi#getting-context
+ *
+ * @internal
  *
  * @author Brandon Clothier <brandon14125@gmail.com>
  */
