@@ -36,11 +36,12 @@ jobs:
         with:
           ref: gh-pages
           fetch-depth: 0
+          clean: false
 
       - name: Commit doc changes
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
-          commit_message: "chore: Publish docs.yml"
+          commit_message: "chore: Publish docs"
           file_pattern: "docs/*"
           add_options: "-f"
           skip_dirty_check: true
