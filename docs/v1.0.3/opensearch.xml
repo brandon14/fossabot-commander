@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<OpenSearchDescription xmlns="http://a9.com/-/spec/opensearch/1.1/" xmlns:referrer="http://a9.com/-/opensearch/extensions/referrer/">
+    <ShortName>brandon14/fossabot-commander Documentation (v1.0.3)</ShortName>
+    <Description>Searches brandon14/fossabot-commander Documentation (v1.0.3)</Description>
+    <Tags>brandon14/fossabot-commander Documentation</Tags>
+    <Url type="text/html" method="GET" template="https://brandon14.github.io/fossabot-commander/search.html?search={searchTerms}&amp;utm_source={referrer:source?}"/>
+    <InputEncoding>UTF-8</InputEncoding>
+    <AdultContent>false</AdultContent>
+</OpenSearchDescription>
