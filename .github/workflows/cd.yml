@@ -39,7 +39,7 @@ jobs:
             commit_message: "chore: Update CHANGELOG.md"
             commit_user_name: brandon14
             commit_user_email: brandon14125@gmail.com
-            commit_options: '-S --force'
+            commit_options: '-S'
 
         - name: Update contributors
           uses: minicli/action-contributors@v3
@@ -61,4 +61,4 @@ jobs:
             commit_message: "chore: Update CONTRIBUTORS.md"
             commit_user_name: brandon14
             commit_user_email: brandon14125@gmail.com
-            commit_options: '-S --force'
+            commit_options: '-S'
