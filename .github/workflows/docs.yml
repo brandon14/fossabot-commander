@@ -23,6 +23,27 @@ jobs:
           method: "update"
           cli-args: "--output-format=github --no-ansi --no-progress --ignore-parse-errors -v"
 
+      - name: Build docs index file
+        uses: DamianReeves/write-file-action@master
+        with:
+          path: docs/index.html
+          write-mode: "overwrite"
+          contents: |
+            <!doctype HTML>
+            <html lang="en-US">
+              <head>
+                <meta charset="UTF-8">
+                <meta http-equiv="refresh" content="0; url=${{ github.ref_name }}/index.html">
+                <script type="text/javascript">
+                  window.location.href = "${{ github.ref_name }}/index.html"
+                </script>
+                <title>docs Redirect</title>
+              </head>
+              <body>
+                If you are not redirected automatically, follow this <a href='${{ github.ref_name }}/index.html'>link to the docs page</a>.
+              </body>
+            </html>
+
       - name: Import GPG key
         uses: crazy-max/ghaction-import-gpg@v6
         with:
