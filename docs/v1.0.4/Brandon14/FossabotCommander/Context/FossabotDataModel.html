@@ -1,0 +1,973 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="robots" content="index, follow, all" />
+    <title>Brandon14\FossabotCommander\Context\FossabotDataModel | brandon14/fossabot-commander Documentation</title>
+
+            <link rel="stylesheet" type="text/css" href="../../../css/bootstrap.min.css">
+        <link rel="stylesheet" type="text/css" href="../../../css/bootstrap-theme.min.css">
+        <link rel="stylesheet" type="text/css" href="../../../css/doctum.css">
+        <link rel="stylesheet" type="text/css" href="../../../fonts/doctum-font.css">
+        <script src="../../../js/jquery-3.5.1.slim.min.js"></script>
+        <script async defer src="../../../doctum.js"></script>
+        <script async defer src="../../../js/bootstrap.min.js"></script>
+        <script async defer src="../../../js/autocomplete.min.js"></script>
+        <meta name="MobileOptimized" content="width">
+        <meta name="HandheldFriendly" content="true">
+        <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+
+        <link rel="search"
+          type="application/opensearchdescription+xml"
+          href="https://brandon14.github.io/fossabot-commander/opensearch.xml"
+          title="brandon14/fossabot-commander Documentation (v1.0.0)" />
+    <link rel="search"
+          type="application/opensearchdescription+xml"
+          href="https://brandon14.github.io/fossabot-commander/opensearch.xml"
+          title="brandon14/fossabot-commander Documentation (v1.0.1)" />
+    <link rel="search"
+          type="application/opensearchdescription+xml"
+          href="https://brandon14.github.io/fossabot-commander/opensearch.xml"
+          title="brandon14/fossabot-commander Documentation (v1.0.2)" />
+    <link rel="search"
+          type="application/opensearchdescription+xml"
+          href="https://brandon14.github.io/fossabot-commander/opensearch.xml"
+          title="brandon14/fossabot-commander Documentation (v1.0.3)" />
+    <link rel="search"
+          type="application/opensearchdescription+xml"
+          href="https://brandon14.github.io/fossabot-commander/opensearch.xml"
+          title="brandon14/fossabot-commander Documentation (v1.0.4)" />
+    <link rel="search"
+          type="application/opensearchdescription+xml"
+          href="https://brandon14.github.io/fossabot-commander/opensearch.xml"
+          title="brandon14/fossabot-commander Documentation (main)" />
+    <link rel="search"
+          type="application/opensearchdescription+xml"
+          href="https://brandon14.github.io/fossabot-commander/opensearch.xml"
+          title="brandon14/fossabot-commander Documentation (1.0-dev)" />
+    </head>
+
+    <body id="class" data-name="class:Brandon14_FossabotCommander_Context_FossabotDataModel" data-root-path="../../../" data-search-index-url="../../../doctum-search.json">
+            <div id="content">
+        <div id="left-column">
+                <div id="control-panel">
+                    <form action="#">
+                <select class="form-control" id="version-switcher" name="version">
+                                            <option
+                            value="../../../../v1.0.0/index.html"
+                            data-version="v1.0.0" >v1.0.0</option>
+                                            <option
+                            value="../../../../v1.0.1/index.html"
+                            data-version="v1.0.1" >v1.0.1</option>
+                                            <option
+                            value="../../../../v1.0.2/index.html"
+                            data-version="v1.0.2" >v1.0.2</option>
+                                            <option
+                            value="../../../../v1.0.3/index.html"
+                            data-version="v1.0.3" >v1.0.3</option>
+                                            <option
+                            value="../../../../v1.0.4/index.html"
+                            data-version="v1.0.4" selected>v1.0.4</option>
+                                            <option
+                            value="../../../../main/index.html"
+                            data-version="main" >main</option>
+                                            <option
+                            value="../../../../1.0-dev/index.html"
+                            data-version="1.0-dev" >1.0-dev</option>
+                                    </select>
+            </form>
+                <div class="search-bar hidden" id="search-progress-bar-container">
+            <div class="progress">
+                <div class="progress-bar" role="progressbar" id="search-progress-bar"
+                    aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%"></div>
+            </div>
+        </div>
+        <form id="search-form" action="../../../search.html">
+            <span class="icon icon-search"></span>
+            <input name="search"
+                   id="doctum-search-auto-complete"
+                   class="typeahead form-control"
+                   type="search"
+                   placeholder="Search"
+                   spellcheck="false"
+                   autocorrect="off"
+                   autocomplete="off"
+                   autocapitalize="off">
+            <div class="auto-complete-results" id="auto-complete-results"></div>
+        </form>
+    </div>
+
+                <div id="api-tree"></div>
+
+        </div>
+        <div id="right-column">
+                <nav id="site-nav" class="navbar navbar-default" role="navigation">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-elements">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="../../../index.html">brandon14/fossabot-commander Documentation</a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar-elements">
+                <ul class="nav navbar-nav">
+                                        <li role="presentation" class="dropdown visible-xs-block visible-sm-block">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#"
+                            role="button" aria-haspopup="true" aria-expanded="false">Versions&nbsp;<span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu">
+                        <li ><a href="../../../../v1.0.0/index.html" data-version="v1.0.0">v1.0.0</a></li>
+                        <li ><a href="../../../../v1.0.1/index.html" data-version="v1.0.1">v1.0.1</a></li>
+                        <li ><a href="../../../../v1.0.2/index.html" data-version="v1.0.2">v1.0.2</a></li>
+                        <li ><a href="../../../../v1.0.3/index.html" data-version="v1.0.3">v1.0.3</a></li>
+                        <li class="active"><a href="../../../../v1.0.4/index.html" data-version="v1.0.4">v1.0.4</a></li>
+                        <li ><a href="../../../../main/index.html" data-version="main">main</a></li>
+                        <li ><a href="../../../../1.0-dev/index.html" data-version="1.0-dev">1.0-dev</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="../../../classes.html">Classes</a></li>
+                    <li><a href="../../../namespaces.html">Namespaces</a></li>
+                    <li><a href="../../../interfaces.html">Interfaces</a></li>
+                    <li><a href="../../../traits.html">Traits</a></li>
+                    <li><a href="../../../doc-index.html">Index</a></li>
+                    <li><a href="../../../search.html">Search</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+                        <div class="namespace-breadcrumbs">
+            <ol class="breadcrumb">
+                <li><span class="label label-default">class</span></li>
+                        <li><a href="../../../Brandon14.html">Brandon14</a></li><li class="backslash">\</li><li><a href="../../../Brandon14/FossabotCommander.html">FossabotCommander</a></li><li class="backslash">\</li><li><a href="../../../Brandon14/FossabotCommander/Context.html">Context</a></li><li class="backslash">\</li><li>FossabotDataModel</li>
+            </ol>
+        </div>
+                <div id="page-content">
+    <div class="page-header">
+        <h1>FossabotDataModel    
+            </h1>
+    </div>
+
+    
+    <p>    abstract     class
+    <strong>FossabotDataModel</strong>        implements        <a href="../../../Brandon14/FossabotCommander/Contracts/Context/FossabotDataModel.html"><abbr title="Brandon14\FossabotCommander\Contracts\Context\FossabotDataModel">FossabotDataModel</abbr></a>        (<a href="https://github.com/brandon14/fossabot-commander/blob/v1.0.4/src/Context/FossabotDataModel.php">View source</a>)
+</p>
+
+        
+    
+                        <table>
+            <tr>
+                <td><span class="label label-warning">internal</span></td>
+                <td>&nbsp; </td>
+            </tr>
+        </table>
+                &nbsp;
+    
+
+            <div class="description">
+            <p><p>Base Fossabot custom API data model.</p></p>                    </div>
+            
+                <h2>Traits</h2>
+
+        
+    <div class="container-fluid underlined">
+                    <div class="row">
+                <div class="col-md-6">
+                    <a href="../../../Brandon14/FossabotCommander/Concerns/HandlesStringable.html"><abbr title="Brandon14\FossabotCommander\Concerns\HandlesStringable">HandlesStringable</abbr></a>    </div>
+                <div class="col-md-6"><p>Trait to consolidate the methods needs to implement the <a href="../../../Brandon14/FossabotCommander/Contracts/Stringable.html">\Brandon14\FossabotCommander\Contracts\Stringable</a>
+interface.</p></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-6">
+                    <a href="../../../Brandon14/FossabotCommander/Concerns/HandlesJsonable.html"><abbr title="Brandon14\FossabotCommander\Concerns\HandlesJsonable">HandlesJsonable</abbr></a>    </div>
+                <div class="col-md-6"><p>Trait to consolidate functionality of converting a class to JSON representation.</p></div>
+            </div>
+            </div>
+    
+    
+            <h2>Properties</h2>
+
+            <table class="table table-condensed">
+                    <tr>
+                <td class="type" id="property_data">
+                                        protected                                        
+                                                                                
+                                    </td>
+                <td>$data</td>
+                <td class="last"><p>Data model.</p></td>
+                <td></td>
+            </tr>
+            </table>
+
+    
+            <h2>Methods</h2>
+
+            <div class="container-fluid underlined">
+                    <div class="row">
+                <div class="col-md-2 type">
+                    string
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_toJson">toJson</a>($options = 0)
+        
+                                            <p>{@inheritDoc}</p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="../../../Brandon14/FossabotCommander/Concerns/HandlesJsonable.html#method_toJson">
+<abbr title="Brandon14\FossabotCommander\Concerns\HandlesJsonable">HandlesJsonable</abbr></a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    
+                </div>
+                <div class="col-md-8">
+                    <a href="#method___toString">__toString</a>()
+        
+                                            <p><p>Magic method <a href="https://www.php.net/manual/en/language.oop5.magic.php#object">https://www.php.net/manual/en/language.oop5.magic.php#object</a>. toString  allows a class to decide
+how it will react when it is treated like a string.</p></p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="../../../Brandon14/FossabotCommander/Concerns/HandlesStringable.html#method___toString">
+<abbr title="Brandon14\FossabotCommander\Concerns\HandlesStringable">HandlesStringable</abbr></a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    string
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_toString">toString</a>()
+        
+                                            <p>{@inheritDoc}</p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="../../../Brandon14/FossabotCommander/Concerns/HandlesStringable.html#method_toString">
+<abbr title="Brandon14\FossabotCommander\Concerns\HandlesStringable">HandlesStringable</abbr></a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    bool
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_offsetExists">offsetExists</a>(string $offset)
+        
+                                            <p><p>Whether an offset exists.</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_offsetGet">offsetGet</a>(string $offset)
+        
+                                            <p><p>Offset to retrieve.</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    void
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_offsetSet">offsetSet</a>(string $offset, mixed $value)
+        
+                                            <p><p>Offset to set.</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    void
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_offsetUnset">offsetUnset</a>(string $offset)
+        
+                                            <p><p>Offset to unset.</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    array
+                </div>
+                <div class="col-md-8">
+                    <a href="#method___serialize">__serialize</a>()
+        
+                                            <p><p>Serializes data.</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    void
+                </div>
+                <div class="col-md-8">
+                    <a href="#method___unserialize">__unserialize</a>(array $data)
+        
+                                            <p><p>Unserializes data.</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    
+                </div>
+                <div class="col-md-8">
+                    <a href="#method___get">__get</a>(string $name)
+        
+                                            <p><p>Gets property.</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    void
+                </div>
+                <div class="col-md-8">
+                    <a href="#method___set">__set</a>(string $name, mixed $value)
+        
+                                            <p><p>Sets property.</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    bool
+                </div>
+                <div class="col-md-8">
+                    <a href="#method___isset">__isset</a>(string $name)
+        
+                                            <p><p>Checks for existence of property.</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    void
+                </div>
+                <div class="col-md-8">
+                    <a href="#method___unset">__unset</a>(string $name)
+        
+                                            <p><p>Unsets property.</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    array
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_jsonSerialize">jsonSerialize</a>()
+        
+                                            <p><p>Specify data which should be serialized to JSON.</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_toArray">toArray</a>()
+        
+                                            <p class="no-description">No description</p>
+                                    </div>
+                <div class="col-md-2"></div>
+            </div>
+            </div>
+
+
+        <h2>Details</h2>
+
+            <div id="method-details">
+                    <div class="method-item">
+                    <h3 id="method_toJson">
+        <div class="location">in <a href="../../../Brandon14/FossabotCommander/Concerns/HandlesJsonable.html#method_toJson">
+<abbr title="Brandon14\FossabotCommander\Concerns\HandlesJsonable">HandlesJsonable</abbr></a> <a href="https://github.com/brandon14/fossabot-commander/blob/v1.0.4/src/Concerns/HandlesJsonable.php#L56">at line 56</a></div>
+        <code>                    string
+    <strong>toJson</strong>($options = 0)
+        </code>
+    </h3>
+    <div class="details">    
+    
+            
+
+        <div class="method-description">
+                            <p>{@inheritDoc}</p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td></td>
+                <td>$options</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>string</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method___toString">
+        <div class="location">in <a href="../../../Brandon14/FossabotCommander/Concerns/HandlesStringable.html#method___toString">
+<abbr title="Brandon14\FossabotCommander\Concerns\HandlesStringable">HandlesStringable</abbr></a> <a href="https://github.com/brandon14/fossabot-commander/blob/v1.0.4/src/Concerns/HandlesStringable.php#L52">at line 52</a></div>
+        <code>                    
+    <strong>__toString</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+    
+            
+
+        <div class="method-description">
+                            <p><p>Magic method <a href="https://www.php.net/manual/en/language.oop5.magic.php#object">https://www.php.net/manual/en/language.oop5.magic.php#object</a>. toString  allows a class to decide
+how it will react when it is treated like a string.</p></p>                        
+        </div>
+        <div class="tags">
+            
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_toString">
+        <div class="location">in <a href="../../../Brandon14/FossabotCommander/Concerns/HandlesStringable.html#method_toString">
+<abbr title="Brandon14\FossabotCommander\Concerns\HandlesStringable">HandlesStringable</abbr></a> <a href="https://github.com/brandon14/fossabot-commander/blob/v1.0.4/src/Concerns/HandlesStringable.php#L60">at line 60</a></div>
+        <code>                    string
+    <strong>toString</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+    
+            
+
+        <div class="method-description">
+                            <p>{@inheritDoc}</p>                        
+        </div>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>string</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_offsetExists">
+        <div class="location"><a href="https://github.com/brandon14/fossabot-commander/blob/v1.0.4/src/Context/FossabotDataModel.php#L67">at line 67</a></div>
+        <code>                    bool
+    <strong>offsetExists</strong>(string $offset)
+        </code>
+    </h3>
+    <div class="details">    
+    
+            
+
+        <div class="method-description">
+                            <p><p>Whether an offset exists.</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>string</td>
+                <td>$offset</td>
+                <td><p>Offset name</p></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>bool</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_offsetGet">
+        <div class="location"><a href="https://github.com/brandon14/fossabot-commander/blob/v1.0.4/src/Context/FossabotDataModel.php#L77">at line 77</a></div>
+        <code>                    
+    <strong>offsetGet</strong>(string $offset)
+        </code>
+    </h3>
+    <div class="details">    
+    
+            
+
+        <div class="method-description">
+                            <p><p>Offset to retrieve.</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>string</td>
+                <td>$offset</td>
+                <td><p>Offset name</p></td>
+            </tr>
+            </table>
+
+            
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_offsetSet">
+        <div class="location"><a href="https://github.com/brandon14/fossabot-commander/blob/v1.0.4/src/Context/FossabotDataModel.php#L105">at line 105</a></div>
+        <code>                    void
+    <strong>offsetSet</strong>(string $offset, mixed $value)
+        </code>
+    </h3>
+    <div class="details">    
+    
+            
+
+        <div class="method-description">
+                            <p><p>Offset to set.</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>string</td>
+                <td>$offset</td>
+                <td><p>Offset name</p></td>
+            </tr>
+                    <tr>
+                <td>mixed</td>
+                <td>$value</td>
+                <td><p>Property value</p></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>void</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+                            <h4>Exceptions</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td><a href="../../../Brandon14/FossabotCommander/Contracts/Exceptions/ImmutableDataModelException.html"><abbr title="Brandon14\FossabotCommander\Contracts\Exceptions\ImmutableDataModelException">ImmutableDataModelException</abbr></a></td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_offsetUnset">
+        <div class="location"><a href="https://github.com/brandon14/fossabot-commander/blob/v1.0.4/src/Context/FossabotDataModel.php#L117">at line 117</a></div>
+        <code>                    void
+    <strong>offsetUnset</strong>(string $offset)
+        </code>
+    </h3>
+    <div class="details">    
+    
+            
+
+        <div class="method-description">
+                            <p><p>Offset to unset.</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>string</td>
+                <td>$offset</td>
+                <td><p>Offset name</p></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>void</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+                            <h4>Exceptions</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td><a href="../../../Brandon14/FossabotCommander/Contracts/Exceptions/ImmutableDataModelException.html"><abbr title="Brandon14\FossabotCommander\Contracts\Exceptions\ImmutableDataModelException">ImmutableDataModelException</abbr></a></td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method___serialize">
+        <div class="location"><a href="https://github.com/brandon14/fossabot-commander/blob/v1.0.4/src/Context/FossabotDataModel.php#L125">at line 125</a></div>
+        <code>                    array
+    <strong>__serialize</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+    
+            
+
+        <div class="method-description">
+                            <p><p>Serializes data.</p></p>                        
+        </div>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>array</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method___unserialize">
+        <div class="location"><a href="https://github.com/brandon14/fossabot-commander/blob/v1.0.4/src/Context/FossabotDataModel.php#L135">at line 135</a></div>
+        <code>                    void
+    <strong>__unserialize</strong>(array $data)
+        </code>
+    </h3>
+    <div class="details">    
+    
+            
+
+        <div class="method-description">
+                            <p><p>Unserializes data.</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>array</td>
+                <td>$data</td>
+                <td><p>Unserialized data</p></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>void</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method___get">
+        <div class="location"><a href="https://github.com/brandon14/fossabot-commander/blob/v1.0.4/src/Context/FossabotDataModel.php#L145">at line 145</a></div>
+        <code>                    
+    <strong>__get</strong>(string $name)
+        </code>
+    </h3>
+    <div class="details">    
+    
+            
+
+        <div class="method-description">
+                            <p><p>Gets property.</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>string</td>
+                <td>$name</td>
+                <td><p>Offset name</p></td>
+            </tr>
+            </table>
+
+            
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method___set">
+        <div class="location"><a href="https://github.com/brandon14/fossabot-commander/blob/v1.0.4/src/Context/FossabotDataModel.php#L158">at line 158</a></div>
+        <code>                    void
+    <strong>__set</strong>(string $name, mixed $value)
+        </code>
+    </h3>
+    <div class="details">    
+    
+            
+
+        <div class="method-description">
+                            <p><p>Sets property.</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>string</td>
+                <td>$name</td>
+                <td><p>Offset name</p></td>
+            </tr>
+                    <tr>
+                <td>mixed</td>
+                <td>$value</td>
+                <td><p>Offset value</p></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>void</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+                            <h4>Exceptions</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td><a href="../../../Brandon14/FossabotCommander/Contracts/Exceptions/ImmutableDataModelException.html"><abbr title="Brandon14\FossabotCommander\Contracts\Exceptions\ImmutableDataModelException">ImmutableDataModelException</abbr></a></td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method___isset">
+        <div class="location"><a href="https://github.com/brandon14/fossabot-commander/blob/v1.0.4/src/Context/FossabotDataModel.php#L168">at line 168</a></div>
+        <code>                    bool
+    <strong>__isset</strong>(string $name)
+        </code>
+    </h3>
+    <div class="details">    
+    
+            
+
+        <div class="method-description">
+                            <p><p>Checks for existence of property.</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>string</td>
+                <td>$name</td>
+                <td><p>Offset name</p></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>bool</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method___unset">
+        <div class="location"><a href="https://github.com/brandon14/fossabot-commander/blob/v1.0.4/src/Context/FossabotDataModel.php#L180">at line 180</a></div>
+        <code>                    void
+    <strong>__unset</strong>(string $name)
+        </code>
+    </h3>
+    <div class="details">    
+    
+            
+
+        <div class="method-description">
+                            <p><p>Unsets property.</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>string</td>
+                <td>$name</td>
+                <td><p>Offset name</p></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>void</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+                            <h4>Exceptions</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td><a href="../../../Brandon14/FossabotCommander/Contracts/Exceptions/ImmutableDataModelException.html"><abbr title="Brandon14\FossabotCommander\Contracts\Exceptions\ImmutableDataModelException">ImmutableDataModelException</abbr></a></td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_jsonSerialize">
+        <div class="location"><a href="https://github.com/brandon14/fossabot-commander/blob/v1.0.4/src/Context/FossabotDataModel.php#L188">at line 188</a></div>
+        <code>                    array
+    <strong>jsonSerialize</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+    
+            
+
+        <div class="method-description">
+                            <p><p>Specify data which should be serialized to JSON.</p></p>                        
+        </div>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>array</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_toArray">
+        <div class="location"><a href="https://github.com/brandon14/fossabot-commander/blob/v1.0.4/src/Context/FossabotDataModel.php#L196">at line 196</a></div>
+        <code>                    
+    <strong>toArray</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+    
+            
+
+        <div class="method-description">
+                            <p class="no-description">No description</p>
+                    
+        </div>
+        <div class="tags">
+            
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+            </div>
+
+    
+</div><div id="footer">
+        Generated by <a href="https://github.com/code-lts/doctum">Doctum, a API Documentation generator and fork of Sami</a>.            <br/>You can edit the configuration <a href="https://github.com/brandon14/fossabot-commander" rel="noreferrer noopener" target="_blank">on this</a> repository</div></div>
+    </div>
+    </body>
+
+</html>
